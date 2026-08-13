@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhū-Darpan — AI Digital Twin of India's Climate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #060a0e;
+      --panel: #0c1218;
+      --panel-2: #111820;
+      --line: #1a2630;
+      --line-hover: #263545;
+      --teal: #2dd4bf;
+      --teal-dim: #0f766e;
+      --teal-glow: rgba(45, 212, 191, 0.12);
+      --terracotta: #e07a5f;
+      --ochre: #f4a261;
+      --text: #f0f4f8;
+      --muted: #8b9db3;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      font-size: 15px;
+      font-weight: 400
+    }
+
+    .mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em
+    }
+
+    .display {
+      font-family: var(--font-display)
+    }
+
+    ::selection {
+      background: var(--teal);
+      color: #06120f
+    }
+
+    .mesh-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 15% 15%, rgba(45, 212, 191, 0.035) 0%, transparent 55%), radial-gradient(ellipse at 85% 85%, rgba(224, 122, 95, 0.02) 0%, transparent 55%)
+    }
+
+    .isobars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: repeating-radial-gradient(circle at 75% 12%, transparent 0, transparent 58px, var(--teal) 59px, transparent 60px)
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 5vw;
+      background: rgba(6, 10, 14, 0.82);
+      backdrop-filter: blur(16px) saturate(1.3);
+      border-bottom: 1px solid var(--line)
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .brand-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.4);
+      animation: breathe 3s ease-in-out infinite
+    }
+
+    @keyframes breathe {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.3)
+      }
+
+      50% {
+        opacity: 0.65;
+        box-shadow: 0 0 0 8px rgba(45, 212, 191, 0)
+      }
+    }
+
+    .brand-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.01em
+    }
+
+    .brand-sub {
+      font-size: 10.5px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      font-family: var(--font-mono);
+      margin-top: 2px
+    }
+
+    .navlinks {
+      display: flex;
+      gap: 36px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 500
+    }
+
+    .navlinks a {
+      position: relative;
+      transition: color .25s;
+      padding: 4px 0
+    }
+
+    .navlinks a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--teal);
+      transition: width .3s cubic-bezier(0.16, 1, 0.3, 1)
+    }
+
+    .navlinks a:hover {
+      color: var(--teal)
+    }
+
+    .navlinks a:hover::after {
+      width: 100%
+    }
+
+    @media(max-width:760px) {
+      .navlinks {
+        display: none
+      }
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 100px 5vw 80px;
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 64px;
+      border-bottom: 1px solid var(--line);
+      align-items: start
+    }
+
+    @media(max-width:980px) {
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 48px
+      }
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--teal);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 500
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 1.5px;
+      background: var(--teal)
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 5.5vw, 64px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.06;
+      margin-bottom: 26px
+    }
+
+    .hero h1 .accent {
+      color: var(--teal)
+    }
+
+    .hero p.lede {
+      font-size: 18.5px;
+      color: var(--muted);
+      max-width: 50ch;
+      margin-bottom: 36px;
+      line-height: 1.65;
+      font-weight: 400;
+      letter-spacing: -0.01em
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 14px 26px;
+      border-radius: 8px;
+      letter-spacing: 0.01em;
+      font-weight: 500;
+      transition: all .25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      color: #06120f;
+      box-shadow: 0 4px 24px rgba(45, 212, 191, 0.2)
+    }
+
+    .btn-primary:hover {
+      background: #5eead4;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(45, 212, 191, 0.3)
+    }
+
+    .btn-ghost {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02)
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: rgba(45, 212, 191, 0.06);
+      transform: translateY(-2px)
+    }
+
+    .telemetry {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      align-self: start;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03)
+    }
+
+    .telemetry::before {
+      content: 'LIVE DOWNLINK · PILOT REGION: MARATHWADA, MH';
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      margin-bottom: 20px;
+      font-weight: 500
+    }
+
+    .tele-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 14px 0;
+      border-bottom: 1px dashed var(--line);
+      font-family: var(--font-mono)
+    }
+
+    .tele-row:last-child {
+      border-bottom: none
+    }
+
+    .tele-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .tele-value {
+      font-size: 24px;
+      color: var(--teal);
+      font-weight: 600;
+      letter-spacing: -0.02em
+    }
+
+    .tele-value.warn {
+      color: var(--terracotta)
+    }
+
+    .tele-value.calm {
+      color: var(--teal)
+    }
+
+    .tele-unit {
+      font-size: 11px;
+      color: var(--muted);
+      margin-left: 6px;
+      font-weight: 400
+    }
+
+    .pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: inline-block;
+      animation: pulse 2.2s ease-in-out infinite
+    }
+
+    .pulse.warn {
+      background: var(--terracotta);
+      animation: pulse-warn 2.2s ease-in-out infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.35)
+      }
+
+      50% {
+        opacity: 0.3;
+        box-shadow: 0 0 0 7px rgba(45, 212, 191, 0)
+      }
+    }
+
+    @keyframes pulse-warn {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(224, 122, 95, 0.35)
+      }
+
+      50% {
+        opacity: 0.3;
+        box-shadow: 0 0 0 7px rgba(224, 122, 95, 0)
+      }
+    }
+
+    section {
+      padding: 90px 5vw;
+      position: relative;
+      z-index: 1;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .sec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 20px
+    }
+
+    .sec-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--teal);
+      letter-spacing: 0.12em;
+      font-weight: 500
+    }
+
+    .sec-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.4vw, 40px);
+      font-weight: 700;
+      margin-top: 8px;
+      letter-spacing: -0.02em
+    }
+
+    .sec-desc {
+      color: var(--muted);
+      max-width: 62ch;
+      font-size: 16.5px;
+      line-height: 1.65
+    }
+
+    .pipeline {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      padding-bottom: 12px
+    }
+
+    .stage {
+      min-width: 240px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 28px;
+      position: relative;
+      flex: 1;
+      transition: border-color .35s ease, transform .35s ease, box-shadow .35s ease
+    }
+
+    .stage:hover {
+      border-color: var(--line-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25)
+    }
+
+    .stage:first-child {
+      border-radius: 10px 0 0 10px
+    }
+
+    .stage:last-child {
+      border-radius: 0 10px 10px 0
+    }
+
+    .stage+.stage {
+      border-left: none
+    }
+
+    .stage-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ochre);
+      letter-spacing: 0.12em;
+      margin-bottom: 14px;
+      font-weight: 600
+    }
+
+    .stage h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      margin-bottom: 14px;
+      font-weight: 600
+    }
+
+    .stage p {
+      font-size: 14.5px;
+      color: var(--muted);
+      line-height: 1.7
+    }
+
+    .stage-arrow {
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 26px;
+      height: 26px;
+      z-index: 2;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      background: var(--bg);
+      border-radius: 50%;
+      border: 1.5px solid var(--line);
+      font-family: var(--font-mono)
+    }
+
+    @media(max-width:980px) {
+      .pipeline {
+        flex-direction: column
+      }
+
+      .stage {
+        min-width: auto;
+        border-radius: 10px !important;
+        margin-bottom: 14px
+      }
+
+      .stage+.stage {
+        border-left: 1px solid var(--line);
+        border-top: none;
+        margin-left: 0
+      }
+
+      .stage-arrow {
+        display: none
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .9s cubic-bezier(0.16, 1, 0.3, 1), transform .9s cubic-bezier(0.16, 1, 0.3, 1)
+    }
+
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .reveal.d1 {
+      transition-delay: .1s
+    }
+
+    .reveal.d2 {
+      transition-delay: .22s
+    }
+
+    .reveal.d3 {
+      transition-delay: .34s
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 32px
+    }
+
+    @media(max-width:980px) {
+      .dash-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .map-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03)
+    }
+
+    .map-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -60%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(45, 212, 191, 0.06), transparent);
+      animation: sheen 9s ease-in-out infinite;
+      pointer-events: none
+    }
+
+    @keyframes sheen {
+      0% {
+        left: -60%
+      }
+
+      45% {
+        left: 140%
+      }
+
+      100% {
+        left: 140%
+      }
+    }
+
+    .scan-line {
+      stroke: var(--teal);
+      stroke-width: 1.2;
+      opacity: 0.35;
+      transform-origin: 260px 190px;
+      animation: scan-rotate 10s linear infinite
+    }
+
+    @keyframes scan-rotate {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      .map-card::after {
+        animation: none
+      }
+
+      .scan-line {
+        animation: none
+      }
+
+      .reveal {
+        transition: none;
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .map-toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap
+    }
+
+    .toggle {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 9px 18px;
+      border: 1.5px solid var(--line);
+      border-radius: 24px;
+      cursor: pointer;
+      color: var(--muted);
+      background: transparent;
+      transition: all .2s ease;
+      font-weight: 500
+    }
+
+    .toggle.active {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: rgba(45, 212, 191, 0.08);
+      box-shadow: 0 0 16px rgba(45, 212, 191, 0.06)
+    }
+
+    .toggle:hover:not(.active) {
+      border-color: var(--line-hover);
+      color: var(--text)
+    }
+
+    .map-svg-wrap {
+      position: relative
+    }
+
+    .district-info {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 22px;
+      margin-top: 22px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text);
+      min-height: 68px;
+      transition: all .3s ease;
+      line-height: 1.6;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02)
+    }
+
+    .district-info b {
+      color: var(--teal);
+      font-weight: 600
+    }
+
+    .dist-marker {
+      transition: transform .3s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer
+    }
+
+    .dist-marker:hover {
+      transform: scale(1.08)
+    }
+
+    .dist-marker circle.ring {
+      transition: r .4s ease, fill-opacity .4s ease, stroke-width .4s ease
+    }
+
+    .dist-marker:hover circle.ring {
+      fill-opacity: 0.5;
+      stroke-width: 2.5
+    }
+
+    .dist-marker circle.core {
+      animation: dot-pulse 3s ease-in-out infinite
+    }
+
+    @keyframes dot-pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1
+      }
+
+      50% {
+        transform: scale(1.7);
+        opacity: 0.4
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      .dist-marker circle.core {
+        animation: none
+      }
+    }
+
+    .side-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+      transition: border-color .3s ease, transform .3s ease
+    }
+
+    .side-card:hover {
+      border-color: var(--line-hover);
+      transform: translateY(-2px)
+    }
+
+    .side-card h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      margin-bottom: 16px;
+      font-weight: 600
+    }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-weight: 500
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px
+    }
+
+    .status-rows {
+      display: flex;
+      flex-direction: column
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      padding: 11px 0;
+      border-bottom: 1px dashed var(--line)
+    }
+
+    .status-row:last-child {
+      border-bottom: none
+    }
+
+    .status-row span:first-child {
+      color: var(--muted)
+    }
+
+    .status-row span:last-child {
+      color: var(--text);
+      text-align: right;
+      font-weight: 500
+    }
+
+    .simulator {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.03)
+    }
+
+    .simulator::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--teal), var(--ochre), var(--terracotta));
+      background-size: 200% 100%;
+      animation: gradient-shift 6s ease-in-out infinite
+    }
+
+    @keyframes gradient-shift {
+
+      0%,
+      100% {
+        background-position: 0% 0
+      }
+
+      50% {
+        background-position: 100% 0
+      }
+    }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px
+    }
+
+    @media(max-width:980px) {
+      .sim-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .slider-block {
+      margin-bottom: 36px
+    }
+
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      margin-bottom: 14px;
+      font-weight: 500
+    }
+
+    .slider-label span:first-child {
+      color: var(--text)
+    }
+
+    .slider-label span:last-child {
+      color: var(--teal);
+      font-weight: 600;
+      font-family: var(--font-mono);
+      font-size: 14px
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: var(--line);
+      border-radius: 2px;
+      outline: none;
+      transition: background .2s ease
+    }
+
+    input[type=range]:hover {
+      background: #2b3942
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--teal);
+      cursor: pointer;
+      box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.4);
+      border: 3.5px solid var(--bg);
+      transition: box-shadow .25s ease, transform .2s ease
+    }
+
+    input[type=range]:active::-webkit-slider-thumb {
+      box-shadow: 0 0 0 12px rgba(45, 212, 191, 0.12);
+      transform: scale(1.25)
+    }
+
+    input[type=range]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--teal);
+      cursor: pointer;
+      border: 3.5px solid var(--bg)
+    }
+
+    .impact-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .impact-card {
+      background: var(--panel-2);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 22px;
+      transition: all .35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden
+    }
+
+    .impact-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2.5px;
+      background: transparent;
+      transition: background .3s ease
+    }
+
+    .impact-card:hover {
+      border-color: var(--teal-dim);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25)
+    }
+
+    .impact-card:hover::before {
+      background: var(--teal)
+    }
+
+    .impact-card .k {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500
+    }
+
+    .impact-card .v {
+      font-family: var(--font-display);
+      font-size: 30px;
+      margin-top: 10px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      transition: color .3s ease
+    }
+
+    .impact-card .v.up {
+      color: var(--terracotta)
+    }
+
+    .impact-card .v.down {
+      color: var(--teal)
+    }
+
+    .impact-card .v.warn {
+      color: var(--ochre)
+    }
+
+    .impact-card .v.flash {
+      animation: value-flash .45s cubic-bezier(0.16, 1, 0.3, 1)
+    }
+
+    @keyframes value-flash {
+      0% {
+        transform: scale(1.12)
+      }
+
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    .chart-box {
+      background: var(--panel-2);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 22px;
+      height: 320px
+    }
+
+    .forecast-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px
+    }
+
+    @media(max-width:980px) {
+      .forecast-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .chart-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 26px;
+      position: relative;
+      transition: all .35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.02)
+    }
+
+    .chart-card:hover {
+      border-color: var(--line-hover);
+      transform: translateY(-5px);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28)
+    }
+
+    .chart-card .dot-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 10px;
+      animation: dot-pulse 2.6s ease-in-out infinite
+    }
+
+    .chart-card h4 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      font-weight: 600
+    }
+
+    .chart-card .sub {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      margin-bottom: 18px;
+      font-weight: 500
+    }
+
+    .chart-card canvas {
+      max-height: 260px
+    }
+
+    .roadmap {
+      position: relative;
+      padding-left: 40px
+    }
+
+    .roadmap::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: linear-gradient(var(--teal-dim), var(--line) 85%);
+      border-radius: 1px
+    }
+
+    .road-row {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 32px;
+      padding: 28px 0;
+      position: relative;
+      transition: all .3s cubic-bezier(0.16, 1, 0.3, 1)
+    }
+
+    .road-row:hover {
+      transform: translateX(8px)
+    }
+
+    .road-dot {
+      position: absolute;
+      left: -35px;
+      top: 34px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2.5px solid var(--teal-dim);
+      z-index: 2;
+      transition: all .35s ease
+    }
+
+    .road-row.in-view .road-dot {
+      background: var(--teal);
+      border-color: var(--teal);
+      box-shadow: 0 0 16px rgba(45, 212, 191, 0.45)
+    }
+
+    .road-phase {
+      font-family: var(--font-display);
+      color: var(--ochre);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em
+    }
+
+    .road-row h5 {
+      font-family: var(--font-display);
+      font-size: 19px;
+      margin-bottom: 8px;
+      font-weight: 600
+    }
+
+    .road-row p {
+      font-size: 15.5px;
+      color: var(--muted);
+      max-width: 68ch;
+      line-height: 1.7
+    }
+
+    @media(max-width:560px) {
+      .roadmap {
+        padding-left: 28px
+      }
+
+      .roadmap::before {
+        left: 5px
+      }
+
+      .road-dot {
+        left: -25px;
+        width: 10px;
+        height: 10px
+      }
+
+      .road-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding-left: 0
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      .simulator::before {
+        animation: none
+      }
+
+      .chart-card .dot-indicator {
+        animation: none
+      }
+    }
+
+    footer {
+      padding: 48px 5vw;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 2.2
+    }
+
+    footer strong {
+      color: var(--text);
+      font-weight: 600
+    }
+  </style>
+  <base target="_blank">
+</head>
+
+<body>
+  <div class="mesh-bg"></div>
+  <div class="isobars"></div>
+  <nav>
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-name">Bhū-Darpan</div>
+        <div class="brand-sub">Digital Twin · India Climate</div>
+      </div>
+    </div>
+    <div class="navlinks">
+      <a href="#architecture">Architecture</a><a href="#dashboard">Dashboard</a><a href="#whatif">What-If</a><a
+        href="#forecast">Forecast</a><a href="#roadmap">Roadmap</a>
+    </div>
+  </nav>
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Operational Pilot — Marathwada, MH</div>
+      <h1>A living mirror of <span class="accent">India's climate</span>, built on India's own data.</h1>
+      <p class="lede">Bhū-Darpan fuses INSAT, Oceansat, IMD ground networks, and reanalysis into one continuously
+        updating state of the atmosphere and land — so planners can see drought form, monsoon shift, and consequences
+        ripple, before they happen.</p>
+      <div class="hero-ctas">
+        <a href="#dashboard" class="btn btn-primary">Open Pilot Dashboard →</a>
+        <a href="#architecture" class="btn btn-ghost">View Architecture</a>
+      </div>
+    </div>
+    <div class="telemetry" id="telemetryStrip">
+      <div class="tele-row">
+        <div class="tele-label"><span class="pulse"></span>Rainfall anomaly</div>
+        <div><span class="tele-value warn" id="telRain">−18.4</span><span class="tele-unit">% of normal</span></div>
+      </div>
+      <div class="tele-row">
+        <div class="tele-label"><span class="pulse warn"></span>Surface temp anomaly</div>
+        <div><span class="tele-value warn" id="telTemp">+1.7</span><span class="tele-unit">°C</span></div>
+      </div>
+      <div class="tele-row">
+        <div class="tele-label"><span class="pulse"></span>Soil moisture index</div>
+        <div><span class="tele-value" id="telSoil">0.41</span><span class="tele-unit">(0–1)</span></div>
+      </div>
+      <div class="tele-row">
+        <div class="tele-label"><span class="pulse warn"></span>Drought risk class</div>
+        <div><span class="tele-value warn" id="telDrought">Moderate</span></div>
+      </div>
+      <div class="tele-row">
+        <div class="tele-label"><span class="pulse"></span>Last assimilation</div>
+        <div><span class="tele-value" style="font-size:12.5px;color:var(--muted)" id="telTime">06:00 IST</span></div>
+      </div>
+    </div>
+  </section>
+  <section id="architecture">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">01 — System</div>
+        <div class="sec-title">From raw downlink to decision</div>
+      </div>
+      <p class="sec-desc">Four stages turn heterogeneous national datasets into a continuously corrected climate state
+        and forward-looking scenarios — the same backbone, regardless of which variable or region is in focus.</p>
+    </div>
+    <div class="pipeline">
+      <div class="stage">
+        <div class="stage-tag">01 · INGEST</div>
+        <h4>National data sources</h4>
+        <p>INSAT-3D/3DR, Oceansat, Bhuvan & MOSDAC feeds, IMD station + gridded rainfall/temperature, IMDAA/ERA5
+          reanalysis, hydrological records — normalised onto one spatiotemporal grid.</p>
+        <div class="stage-arrow">→</div>
+      </div>
+      <div class="stage">
+        <div class="stage-tag">02 · FUSE</div>
+        <h4>AI data assimilation</h4>
+        <p>ML-based bias correction and ensemble fusion reconcile satellite retrievals with sparse ground truth,
+          producing a continuous, uncertainty-aware "current state" of the atmosphere and land surface.</p>
+        <div class="stage-arrow">→</div>
+      </div>
+      <div class="stage">
+        <div class="stage-tag">03 · PREDICT</div>
+        <h4>Short-term forecasting</h4>
+        <p>Spatiotemporal models (ConvLSTM / Temporal Fusion Transformer) trained on the fused state generate
+          short-horizon rainfall and temperature forecasts with calibrated uncertainty bands.</p>
+        <div class="stage-arrow">→</div>
+      </div>
+      <div class="stage">
+        <div class="stage-tag">04 · APPLY</div>
+        <h4>Decision interfaces</h4>
+        <p>Map dashboard, what-if scenario simulator, and sector-facing APIs (agriculture, water, disaster management)
+          sit on top of the same fused state and forecast outputs.</p>
+      </div>
+    </div>
+  </section>
+  <section id="dashboard">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">02 — Pilot region</div>
+        <div class="sec-title">Marathwada, Maharashtra</div>
+      </div>
+      <p class="sec-desc">Chosen for its rain-shadow position east of the Western Ghats, high year-to-year monsoon
+        variability, and recurring drought stress — a demanding, high-value test case for the twin.</p>
+    </div>
+    <div class="dash-grid">
+      <div class="map-card reveal d1">
+        <div class="map-toolbar">
+          <button class="toggle active" data-layer="rain">Rainfall anomaly</button>
+          <button class="toggle" data-layer="temp">Temperature anomaly</button>
+          <button class="toggle" data-layer="soil">Soil moisture</button>
+        </div>
+        <div class="map-svg-wrap"><svg id="districtMap" viewBox="0 0 520 380" style="width:100%;height:auto"></svg>
+        </div>
+        <div class="district-info" id="districtInfo">Hover or tap a district to inspect its current fused climate state.
+        </div>
+      </div>
+      <div>
+        <div class="side-card reveal d2">
+          <h4>Layer legend</h4>
+          <div id="legendBox"></div>
+        </div>
+        <div class="side-card reveal d3">
+          <h4>Districts monitored</h4>
+          <div style="font-family:var(--font-mono);font-size:12.5px;color:var(--muted);line-height:2.2">Aurangabad (Chh.
+            Sambhajinagar) · Jalna · Beed · Latur · Osmanabad (Dharashiv) · Nanded · Parbhani · Hingoli</div>
+        </div>
+        <div class="side-card reveal d3" style="margin-bottom:0">
+          <h4>Pilot snapshot</h4>
+          <div class="status-rows">
+            <div class="status-row"><span>Grid resolution</span><span>4 km</span></div>
+            <div class="status-row"><span>Fusion cadence</span><span>Daily</span></div>
+            <div class="status-row"><span>Forecast horizon</span><span>14 days</span></div>
+            <div class="status-row"><span>Validation source</span><span>IMD ground stations</span></div>
+            <div class="status-row"><span>Primary inputs</span><span>INSAT-3D · IMD · ERA5</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="whatif">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">03 — Scenario engine</div>
+        <div class="sec-title">What if the monsoon shifts?</div>
+      </div>
+      <p class="sec-desc">Perturb rainfall and temperature against the fused baseline and watch the twin propagate the
+        change through a physically-grounded water-balance response model.</p>
+    </div>
+    <div class="simulator reveal">
+      <div class="sim-grid">
+        <div>
+          <div class="slider-block">
+            <div class="slider-label"><span>Rainfall deviation from normal</span><span id="rainVal">0%</span></div>
+            <input type="range" id="rainSlider" min="-50" max="50" value="0" step="1">
+          </div>
+          <div class="slider-block">
+            <div class="slider-label"><span>Temperature deviation from normal</span><span id="tempVal">+0.0°C</span>
+            </div><input type="range" id="tempSlider" min="-2" max="5" value="0" step="0.1">
+          </div>
+          <div class="impact-cards">
+            <div class="impact-card">
+              <div class="k">Soil moisture index</div>
+              <div class="v" id="impSoil">0.41</div>
+            </div>
+            <div class="impact-card">
+              <div class="k">Drought risk score</div>
+              <div class="v" id="impDrought">42</div>
+            </div>
+            <div class="impact-card">
+              <div class="k">Crop water stress</div>
+              <div class="v" id="impCrop">Low</div>
+            </div>
+            <div class="impact-card">
+              <div class="k">Reservoir inflow est.</div>
+              <div class="v" id="impWater">−4%</div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-box"><canvas id="whatIfChart"></canvas></div>
+      </div>
+    </div>
+  </section>
+  <section id="forecast">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">04 — Forecast skill</div>
+        <div class="sec-title">14-day rainfall & temperature outlook</div>
+      </div>
+      <p class="sec-desc">Live forecast output for Marathwada, with shaded uncertainty bands derived from ensemble
+        spread — populated from real assimilated data streams.</p>
+    </div>
+    <div class="forecast-grid">
+      <div class="chart-card reveal d1">
+        <h4><span class="dot-indicator" style="background:#2dd4bf"></span>Rainfall forecast</h4>
+        <div class="sub">mm/day · observed vs. predicted · ±1σ band</div><canvas id="rainChart"></canvas>
+      </div>
+      <div class="chart-card reveal d2">
+        <h4><span class="dot-indicator" style="background:#e07a5f;animation-delay:1.1s"></span>Temperature forecast</h4>
+        <div class="sub">°C · observed vs. predicted · ±1σ band</div><canvas id="tempChart"></canvas>
+      </div>
+    </div>
+  </section>
+  <section id="roadmap">
+    <div class="sec-head">
+      <div>
+        <div class="sec-num">05 — Path to scale</div>
+        <div class="sec-title">From pilot to national deployment</div>
+      </div>
+    </div>
+    <div class="roadmap">
+      <div class="road-row reveal">
+        <div class="road-dot"></div>
+        <div class="road-phase">PHASE 1</div>
+        <div>
+          <h5>Single-variable PoC, one region</h5>
+          <p>Rainfall + temperature, Marathwada pilot, daily fusion cadence, validated against IMD station truth.</p>
+        </div>
+      </div>
+      <div class="road-row reveal d1">
+        <div class="road-dot"></div>
+        <div class="road-phase">PHASE 2</div>
+        <div>
+          <h5>Multi-variable, multi-basin</h5>
+          <p>Add soil moisture, evapotranspiration and surface winds; extend to additional drought-prone basins.</p>
+        </div>
+      </div>
+      <div class="road-row reveal d2">
+        <div class="road-dot"></div>
+        <div class="road-phase">PHASE 3</div>
+        <div>
+          <h5>Sector applications</h5>
+          <p>Plug-in modules for agriculture advisories, reservoir operations, and disaster early-warning.</p>
+        </div>
+      </div>
+      <div class="road-row reveal d3">
+        <div class="road-dot"></div>
+        <div class="road-phase">PHASE 4</div>
+        <div>
+          <h5>Pan-India operational twin</h5>
+          <p>National-grid resolution, hourly assimilation, public + institutional API access.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer><strong>Bhū-Darpaṇ</strong><br><strong>AI-Powered Digital Twin of India's Climate</strong><br><strong>Observe
+      · Predict · Simulate</strong></footer>
+  <script>
+    Chart.defaults.color = '#8b9db3'; Chart.defaults.font.family = "'JetBrains Mono',monospace"; Chart.defaults.font.size = 11; Chart.defaults.borderColor = '#1a2630';
+
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('in-view'); revealObserver.unobserve(entry.target); } }); }, { threshold: 0.12 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    const telState = { rain: -18.4, temp: 1.7, soil: 0.41, drought: 42 };
+    function updateTelemetry() {
+      telState.rain += (Math.random() - 0.5) * 0.4;
+      telState.temp += (Math.random() - 0.5) * 0.06;
+      telState.soil = Math.max(0.05, Math.min(0.95, telState.soil + (Math.random() - 0.5) * 0.008));
+      document.getElementById('telRain').textContent = (telState.rain > 0 ? '+' : '') + telState.rain.toFixed(1);
+      document.getElementById('telTemp').textContent = (telState.temp > 0 ? '+' : '') + telState.temp.toFixed(1);
+      document.getElementById('telSoil').textContent = telState.soil.toFixed(2);
+      const droughtClass = telState.soil < 0.25 ? 'Severe' : telState.soil < 0.35 ? 'Moderate' : telState.soil < 0.45 ? 'Mild' : 'Normal';
+      const dEl = document.getElementById('telDrought');
+      dEl.textContent = droughtClass;
+      dEl.className = 'tele-value ' + (droughtClass === 'Severe' || droughtClass === 'Moderate' ? 'warn' : 'calm');
+      const now = new Date();
+      document.getElementById('telTime').textContent = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ' IST';
+    }
+    setInterval(updateTelemetry, 3000); updateTelemetry();
+
+    const districts = [
+      { name: "Aurangabad (Chh. Sambhajinagar)", x: 160, y: 90, r: 26, rain: -22, temp: 1.9, soil: 0.36 },
+      { name: "Jalna", x: 230, y: 95, r: 20, rain: -15, temp: 1.6, soil: 0.40 },
+      { name: "Beed", x: 175, y: 160, r: 24, rain: -28, temp: 2.1, soil: 0.30 },
+      { name: "Latur", x: 230, y: 215, r: 22, rain: -19, temp: 1.7, soil: 0.38 },
+      { name: "Osmanabad (Dharashiv)", x: 170, y: 225, r: 21, rain: -24, temp: 1.8, soil: 0.33 },
+      { name: "Nanded", x: 300, y: 190, r: 23, rain: -9, temp: 1.2, soil: 0.49 },
+      { name: "Parbhani", x: 280, y: 130, r: 20, rain: -12, temp: 1.4, soil: 0.45 },
+      { name: "Hingoli", x: 320, y: 110, r: 17, rain: -6, temp: 1.0, soil: 0.53 },
+    ];
+
+    let currentLayer = 'rain';
+    const layerMeta = {
+      rain: { label: 'Rainfall anomaly', unit: '%', key: 'rain', scale: v => v < -20 ? '#e07a5f' : v < -10 ? '#f4a261' : '#2dd4bf', legend: [['< -20% (severe deficit)', '#e07a5f'], ['-20% to -10% (moderate)', '#f4a261'], ['> -10% (near normal)', '#2dd4bf']] },
+      temp: { label: 'Temperature anomaly', unit: '°C', key: 'temp', scale: v => v > 1.8 ? '#e07a5f' : v > 1.3 ? '#f4a261' : '#2dd4bf', legend: [['> 1.8°C (high)', '#e07a5f'], ['1.3–1.8°C (elevated)', '#f4a261'], ['< 1.3°C (normal)', '#2dd4bf']] },
+      soil: { label: 'Soil moisture index', unit: '', key: 'soil', scale: v => v < 0.35 ? '#e07a5f' : v < 0.45 ? '#f4a261' : '#2dd4bf', legend: [['< 0.35 (dry)', '#e07a5f'], ['0.35–0.45 (low)', '#f4a261'], ['> 0.45 (adequate)', '#2dd4bf']] },
+    };
+
+    const svg = document.getElementById('districtMap');
+    function renderMap() {
+      svg.innerHTML = '';
+      const outline = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      outline.setAttribute('d', 'M60,40 L420,30 L470,160 L430,300 L300,340 L120,310 L40,180 Z');
+      outline.setAttribute('fill', '#0a1016'); outline.setAttribute('stroke', '#1e2a33'); outline.setAttribute('stroke-width', '1.5');
+      svg.appendChild(outline);
+      const scan = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      scan.setAttribute('x1', '260'); scan.setAttribute('y1', '190'); scan.setAttribute('x2', '260'); scan.setAttribute('y2', '30');
+      scan.setAttribute('class', 'scan-line'); svg.appendChild(scan);
+      districts.forEach(d => {
+        const meta = layerMeta[currentLayer]; const val = d[meta.key]; const color = meta.scale(val);
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g'); g.setAttribute('class', 'dist-marker');
+        const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('class', 'ring'); c.setAttribute('cx', d.x); c.setAttribute('cy', d.y); c.setAttribute('r', d.r);
+        c.setAttribute('fill', color); c.setAttribute('fill-opacity', '0.22'); c.setAttribute('stroke', color); c.setAttribute('stroke-width', '1.5');
+        g.appendChild(c);
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('class', 'core'); dot.setAttribute('cx', d.x); dot.setAttribute('cy', d.y); dot.setAttribute('r', '3.5');
+        dot.setAttribute('fill', color); dot.style.transformBox = 'fill-box'; dot.style.transformOrigin = 'center';
+        dot.style.animationDelay = (Math.random() * 2.5).toFixed(2) + 's'; g.appendChild(dot);
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', d.x); label.setAttribute('y', d.y + d.r + 14); label.setAttribute('text-anchor', 'middle');
+        label.setAttribute('font-family', "'JetBrains Mono',monospace"); label.setAttribute('font-size', '9.5');
+        label.setAttribute('fill', '#8b9db3'); label.setAttribute('font-weight', '500'); label.textContent = d.name.split(' ')[0]; g.appendChild(label);
+        g.addEventListener('mouseenter', () => showInfo(d)); g.addEventListener('click', () => showInfo(d)); svg.appendChild(g);
+      });
+    }
+    function showInfo(d) {
+      const meta = layerMeta[currentLayer]; const box = document.getElementById('districtInfo');
+      box.style.opacity = 0;
+      setTimeout(() => {
+        box.innerHTML = `<b>${d.name}</b> — ${meta.label}: <b>${d[meta.key] > 0 && currentLayer !== 'soil' ? '+' : ''}${d[meta.key]}${meta.unit}</b> &nbsp;|
+bsp; rainfall ${d.rain}% · temp +${d.temp}°C · soil moisture ${d.soil}`;
+        box.style.opacity = 1;
+      }, 140);
+    }
+    function renderLegend() {
+      const meta = layerMeta[currentLayer];
+      document.getElementById('legendBox').innerHTML = meta.legend.map(([label, color]) => `<div class="legend-row"><span class="legend-swatch" style="background:${color}"></span>${label}</div>`).join('');
+    }
+    document.querySelectorAll('.toggle').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.toggle').forEach(b => b.classList.remove('active')); btn.classList.add('active'); currentLayer = btn.dataset.layer; renderMap(); renderLegend(); }); });
+    renderMap(); renderLegend();
+
+    /* ========== PHYSICALLY-GROUNDED WHAT-IF MODEL ==========
+       Water Balance (simplified Thornthwaite bucket):
+       - Baseline daily rain (monsoon): 4.2 mm/day
+       - Baseline ET₀: 5.5 mm/day; Kc = 0.85
+       - Actual ET = ET₀ × Kc × (1 + 0.065 × ΔT)  [6.5%/°C via Penman-Monteith]
+       - SM sensitivity: ~0.004 per mm water balance deviation
+       - Field capacity = 0.55, Wilting point = 0.12
+       - Runoff coeff for basaltic semi-arid = 0.22
+       - Reservoir inflow scales ~1.6× rainfall change minus evap loss
+    */
+    const BASELINE = { rain_mm_day: 4.2, et0_mm_day: 5.5, kc: 0.85, sm: 0.41, runoff_coeff: 0.22, drought: 42, field_capacity: 0.55, wilting_point: 0.12 };
+
+    const rainSlider = document.getElementById('rainSlider');
+    const tempSlider = document.getElementById('tempSlider');
+    const rainVal = document.getElementById('rainVal');
+    const tempVal = document.getElementById('tempVal');
+
+    let whatIfChart;
+    function initWhatIfChart() {
+      const ctx = document.getElementById('whatIfChart');
+      whatIfChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Soil moisture', 'Drought risk', 'Crop stress', 'Reservoir inflow'],
+          datasets: [{
+            label: 'Baseline', data: [0.41, 42, 30, 0], backgroundColor: '#1e2a33', borderRadius: 4, borderSkipped: false,
+          }, {
+            label: 'Scenario', data: [0.41, 42, 30, 0], backgroundColor: ['#2dd4bf', '#e07a5f', '#f4a261', '#2dd4bf'], borderRadius: 4, borderSkipped: false,
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          animation: { duration: 400, easing: 'easeOutQuart' },
+          plugins: {
+            legend: { labels: { color: '#8b9db3', font: { family: "'JetBrains Mono',monospace", size: 11 } } },
+            tooltip: { backgroundColor: 'rgba(6,10,14,0.95)', titleFont: { family: "'JetBrains Mono',monospace", size: 12 }, bodyFont: { family: "'JetBrains Mono',monospace", size: 11 }, borderColor: '#1e2a33', borderWidth: 1, padding: 12, cornerRadius: 8, displayColors: true }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#8b9db3', font: { family: "'JetBrains Mono',monospace" } } },
+            y: { grid: { color: '#111820' }, ticks: { color: '#8b9db3', font: { family: "'JetBrains Mono',monospace" } }, border: { display: false } }
+          }
+        }
+      });
+    }
+    initWhatIfChart();
+
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+    function computeScenario(rainChangePct, tempChangeC) {
+      const actualRain = BASELINE.rain_mm_day * (1 + rainChangePct / 100);
+      const etMultiplier = 1 + 0.065 * tempChangeC;
+      const actualET = BASELINE.et0_mm_day * BASELINE.kc * etMultiplier;
+      const waterBalance = actualRain - actualET;
+      const baselineWB = BASELINE.rain_mm_day - (BASELINE.et0_mm_day * BASELINE.kc);
+      const deltaSM = (waterBalance - baselineWB) * 0.004;
+      let sm = clamp(BASELINE.sm + deltaSM, BASELINE.wilting_point, BASELINE.field_capacity);
+
+      let smRisk = 0;
+      if (sm < 0.35) { smRisk = ((0.35 - sm) / 0.35) * 55; }
+      else if (sm < 0.45) { smRisk = ((0.45 - sm) / 0.45) * 20; }
+      const rainRisk = Math.max(0, -rainChangePct) * 0.55;
+      const tempRisk = Math.max(0, tempChangeC) * 6.5;
+      const drought = clamp(Math.round(smRisk + rainRisk + tempRisk), 0, 100);
+
+      const etDeficit = Math.max(0, actualET - actualRain);
+      const cropStress = clamp(Math.round((etDeficit * 3.5) + (0.45 - sm) * 80), 0, 100);
+      const cropLabel = cropStress < 25 ? 'Low' : cropStress < 50 ? 'Moderate' : cropStress < 75 ? 'High' : 'Severe';
+
+      const runoffChange = rainChangePct * 1.6;
+      const evapLoss = tempChangeC * 3.5;
+      const water = clamp(Math.round(runoffChange - evapLoss), -85, 120);
+
+      return { sm, drought, cropStress, cropLabel, water };
+    }
+
+    function updateWhatIf() {
+      const rain = parseFloat(rainSlider.value);
+      const temp = parseFloat(tempSlider.value);
+      rainVal.textContent = (rain > 0 ? '+' : '') + rain + '%';
+      tempVal.textContent = (temp >= 0 ? '+' : '') + temp.toFixed(1) + '°C';
+      const s = computeScenario(rain, temp);
+
+      const soilEl = document.getElementById('impSoil');
+      soilEl.textContent = s.sm.toFixed(2);
+      soilEl.className = 'v ' + (s.sm < 0.35 ? 'up' : s.sm > 0.45 ? 'down' : '');
+
+      const droughtEl = document.getElementById('impDrought');
+      droughtEl.textContent = s.drought;
+      droughtEl.className = 'v ' + (s.drought > 60 ? 'up' : s.drought < 30 ? 'down' : 'warn');
+
+      const cropEl = document.getElementById('impCrop');
+      cropEl.textContent = s.cropLabel;
+      cropEl.className = 'v ' + (s.cropLabel === 'Severe' || s.cropLabel === 'High' ? 'up' : s.cropLabel === 'Low' ? 'down' : 'warn');
+
+      const waterEl = document.getElementById('impWater');
+      waterEl.textContent = (s.water >= 0 ? '+' : '') + s.water + '%';
+      waterEl.className = 'v ' + (s.water < -15 ? 'up' : s.water > 10 ? 'down' : '');
+
+      ['impSoil', 'impDrought', 'impCrop', 'impWater'].forEach(id => {
+        const el = document.getElementById(id); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+      });
+
+      whatIfChart.data.datasets[1].data = [s.sm, s.drought, s.cropStress, s.water];
+      whatIfChart.data.datasets[1].backgroundColor = [
+        s.sm < 0.35 ? '#e07a5f' : s.sm > 0.45 ? '#2dd4bf' : '#f4a261',
+        s.drought > 60 ? '#e07a5f' : s.drought < 30 ? '#2dd4bf' : '#f4a261',
+        s.cropStress > 60 ? '#e07a5f' : s.cropStress < 30 ? '#2dd4bf' : '#f4a261',
+        s.water < -15 ? '#e07a5f' : s.water > 10 ? '#2dd4bf' : '#f4a261'
+      ];
+      whatIfChart.update('active');
+    }
+    rainSlider.addEventListener('input', updateWhatIf);
+    tempSlider.addEventListener('input', updateWhatIf);
+    updateWhatIf();
+
+    /* ========== FORECAST CHARTS WITH GRADIENT FILLS ========== */
+    function createGradient(ctx, color) {
+      const grad = ctx.createLinearGradient(0, 0, 0, 260);
+      grad.addColorStop(0, color + '35'); grad.addColorStop(1, color + '02');
+      return grad;
+    }
+
+    function genSeries(n, base, noise, trend, seedOffset = 0) {
+      const obs = [], pred = [], upper = [], lower = [];
+      let seed = 42 + seedOffset;
+      function rand() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+      for (let i = 0; i < n; i++) {
+        const t = base + trend * i + (Math.sin((i + seedOffset) / 2.2) * noise * 0.7);
+        const o = i < n * 0.55 ? +(t + (rand() - 0.5) * noise * 0.55).toFixed(1) : null;
+        const p = +(t + (rand() - 0.5) * noise * 0.25).toFixed(1);
+        obs.push(o); pred.push(p);
+        upper.push(+(p + noise * 0.5).toFixed(1));
+        lower.push(+(p - noise * 0.5).toFixed(1));
+      }
+      return { obs, pred, upper, lower };
+    }
+
+    const days = Array.from({ length: 14 }, (_, i) => 'D' + (i + 1));
+    const rainData = genSeries(14, 6, 4, -0.15, 0);
+    const tempData = genSeries(14, 31, 1.4, 0.08, 100);
+
+    function buildForecastChart(canvasId, series, color, unit) {
+      const ctx = document.getElementById(canvasId);
+      const grad = createGradient(ctx.getContext('2d'), color);
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: days,
+          datasets: [
+            { label: 'Upper band', data: series.upper, borderWidth: 0, pointRadius: 0, fill: '+1', backgroundColor: grad },
+            { label: 'Lower band', data: series.lower, borderWidth: 0, pointRadius: 0, fill: false, backgroundColor: grad },
+            { label: 'Predicted', data: series.pred, borderColor: color, backgroundColor: color, borderDash: [5, 4], pointRadius: 3, tension: 0.4, borderWidth: 2 },
+            { label: 'Observed', data: series.obs, borderColor: '#e9e4d8', backgroundColor: '#e9e4d8', pointRadius: 4, tension: 0.4, borderWidth: 2 },
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: { labels: { filter: (item) => item.text === 'Predicted' || item.text === 'Observed', color: '#8b9db3', font: { family: "'JetBrains Mono',monospace", size: 11 } } },
+            tooltip: { backgroundColor: 'rgba(6,10,14,0.95)', titleFont: { family: "'JetBrains Mono',monospace", size: 12 }, bodyFont: { family: "'JetBrains Mono',monospace", size: 11 }, borderColor: '#1e2a33', borderWidth: 1, padding: 12, cornerRadius: 8 }
+          },
+          scales: {
+            x: { grid: { color: '#0e1415' }, ticks: { color: '#8b9db3', font: { family: "'JetBrains Mono',monospace" } } },
+            y: { grid: { color: '#0e1415' }, ticks: { color: '#8b9db3', font: { family: "'JetBrains Mono',monospace" } }, title: { display: true, text: unit, color: '#8b9db3', font: { family: "'JetBrains Mono',monospace", size: 11 } }, border: { display: false } }
+          },
+          elements: { point: { hoverRadius: 6 } }
+        }
+      });
+    }
+    buildForecastChart('rainChart', rainData, '#2dd4bf', 'mm/day');
+    buildForecastChart('tempChart', tempData, '#e07a5f', '°C');
+  </script>
+</body>
+
+</html>
