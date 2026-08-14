@@ -133,10 +133,8 @@ This mini-project was developed by the Department of Computer Science & Engineer
 |------|----------|
 | Saksham Singh | 2402901540102 |
 | Sanjay Vishkarma | 2402901540103 |
-| Shubh Bhardwaj | 2402901540104 |
-| Satyam Kumar | 2402901540115 |
-| Satyam Kumar | 2402901540116 |
-
+| Shubh Bhardwaj | 2402901540115 |
+| Satyam Kumar | 2402901540106 |
 ---
 
 ## 📚 References & Acknowledgements
