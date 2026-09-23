@@ -1,0 +1,90 @@
+/* ==========================================================================
+   BHU DARPAN — DESIGN TOKENS
+   भू दर्पण — "Earth's Mirror"
+   A single source of truth for color, type and spacing so every page
+   (and every hand-written component) stays visually consistent.
+   ========================================================================== */
+
+:root {
+  /* ---- Surface & structure ------------------------------------------- */
+  --void:            #080B10;   /* page background, deepest layer */
+  --surface:         #0F151D;   /* sidebar / topbar */
+  --surface-raised:  #141C26;   /* cards, panels */
+  --surface-inset:   #0B1017;   /* wells: inputs, code, map frames */
+  --border-hair:     #212B38;   /* 1px hairlines */
+  --border-strong:   #2E3A4A;
+
+  /* ---- Text ------------------------------------------------------------ */
+  --ink-100:         #EEF2F6;   /* headings, primary text */
+  --ink-70:          #A9B4C2;   /* body text */
+  --ink-50:          #71808F;   /* secondary / meta */
+  --ink-30:          #4A5666;   /* disabled / placeholder */
+
+  /* ---- Brand accents ---------------------------------------------------
+     Monsoon teal reads as "water / atmosphere / signal".
+     Saffron is a deliberate, restrained nod to the subject (India) —
+     used sparingly, never as a background wash.                        */
+  --monsoon:         #2BD9C9;
+  --monsoon-dim:      rgba(43, 217, 201, 0.14);
+  --monsoon-line:      rgba(43, 217, 201, 0.35);
+  --saffron:         #FF9D42;
+  --saffron-dim:      rgba(255, 157, 66, 0.14);
+
+  /* ---- Status ----------------------------------------------------------*/
+  --danger:          #FF6161;
+  --danger-dim:      rgba(255, 97, 97, 0.14);
+  --warning:         #FFC65B;
+  --warning-dim:     rgba(255, 198, 91, 0.14);
+  --success:         #46D98C;
+  --success-dim:     rgba(70, 217, 140, 0.14);
+  --info:            #5FA8FF;
+  --info-dim:        rgba(95, 168, 255, 0.14);
+
+  /* ---- Heat-map scale (deficit -> surplus), used on India choropleths -- */
+  --heat-1: #C23B3B; /* severe deficit */
+  --heat-2: #E08A3E;
+  --heat-3: #E9C24A;
+  --heat-4: #8FCB63;
+  --heat-5: #2BD9C9; /* surplus */
+
+  /* ---- Typography -------------------------------------------------------
+     Display: Space Grotesk — geometric, technical, a little unusual.
+     Body/UI: Inter — quiet workhorse for dense interface text.
+     Data:    IBM Plex Mono — every measured number reads as an instrument
+              readout, not a marketing stat.                              */
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body:    'Inter', 'Segoe UI', sans-serif;
+  --font-data:    'IBM Plex Mono', 'Consolas', monospace;
+
+  --step--1: 0.8rem;
+  --step-0:  0.95rem;
+  --step-1:  1.15rem;
+  --step-2:  1.45rem;
+  --step-3:  1.9rem;
+  --step-4:  2.6rem;
+  --step-5:  3.6rem;
+  --step-6:  4.8rem;
+
+  /* ---- Spacing scale (4px base) ----------------------------------------*/
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 56px;
+  --sp-10: 80px;
+
+  /* ---- Shape & elevation -------------------------------------------------*/
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-panel: 0 1px 0 rgba(255,255,255,0.02) inset, 0 12px 24px -12px rgba(0,0,0,0.55);
+
+  /* ---- Layout -------------------------------------------------------------*/
+  --sidebar-w: 248px;
+  --topbar-h: 64px;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
