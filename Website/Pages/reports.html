@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reports & Alerts — Bhu Darpan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/animations.css">
+
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <svg class="brand__mark" viewBox="0 0 34 34" fill="none">
+        <circle cx="17" cy="17" r="15.5" stroke="#2BD9C9" stroke-width="1.4"/>
+        <path d="M17 8c-4 3-6 6-6 9.5S13 24 17 26c4-2 6-5 6-8.5S21 11 17 8Z" fill="#2BD9C9" opacity="0.85"/>
+      </svg>
+      <div>
+        <div class="brand__name">Bhu <span>Darpan</span></div>
+        <span class="brand__sub">भू दर्पण</span>
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-group__label">OVERVIEW</div>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a></li>
+        <li><a class="nav-link" href="live-climate.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 16a4 4 0 0 1 .5-8 5 5 0 0 1 9.6-1.5A4.5 4.5 0 0 1 17 16H7Z"/><path d="M9 19v1M13 19v2M17 19v1"/></svg>Live Climate</a></li>
+      </ul>
+      <div class="nav-group__label" style="margin-top: var(--sp-5);">ANALYSIS</div>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="forecast.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 17 5-6 4 3 5-7 4 4"/></svg>Forecast</a></li>
+        <li><a class="nav-link" href="whatif.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="1.8" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="7" cy="18" r="1.8" fill="currentColor" stroke="none"/></svg>What-if Simulation</a></li>
+        <li><a class="nav-link" href="sectoral.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 13l9 5 9-5"/></svg>Sectoral Impact</a></li>
+        <li><a class="nav-link" href="historical.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10m6 10V4m6 16v-7"/></svg>Historical Analysis</a></li>
+      </ul>
+      <div class="nav-group__label" style="margin-top: var(--sp-5);">DATA</div>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="explorer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>Data Explorer</a></li>
+        <li><a class="nav-link" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6V2Z"/><path d="M15 2v5h5"/></svg>Reports</a></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar__footer">v0.9.2 · digital-twin-core</div>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="topbar__crumbs"><strong>Reports</strong>&nbsp;/ Alerts & custom reports</div>
+      <div class="topbar__right">
+        <span class="live-pill"><span class="live-dot"></span> LIVE · <span data-live-clock>--</span></span>
+        <button class="icon-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        </button>
+        <div class="avatar">SK</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head reveal">
+        <div>
+          <h1>Reports &amp; alerts</h1>
+          <p>Standing alerts across India, plus custom reports for any region and time period.</p>
+        </div>
+      </div>
+
+      <div class="segmented reveal reveal-delay-1" style="margin-bottom: var(--sp-5);">
+        <button class="is-active">Alerts</button>
+        <button>Generated reports</button>
+        <button>Download centre</button>
+      </div>
+
+      <div class="grid reveal reveal-delay-2" style="grid-template-columns: 1.5fr 1fr; gap: var(--sp-5); align-items:start;">
+        <div class="panel">
+          <div class="panel__head"><span class="panel__title">Active alerts</span></div>
+          <div class="alert-row">
+            <span class="alert-row__dot alert-row__dot--danger"></span>
+            <div class="alert-row__body">
+              <p>Heavy rainfall likely in Assam — next 48 hours</p>
+              <span class="alert-row__time">2 hours ago</span>
+            </div>
+            <span class="badge badge--danger" style="align-self:center;">High</span>
+          </div>
+          <div class="alert-row">
+            <span class="alert-row__dot alert-row__dot--warning"></span>
+            <div class="alert-row__body">
+              <p>Heatwave alert in Rajasthan — high temperature anomaly</p>
+              <span class="alert-row__time">5 hours ago</span>
+            </div>
+            <span class="badge badge--warning" style="align-self:center;">Medium</span>
+          </div>
+          <div class="alert-row">
+            <span class="alert-row__dot alert-row__dot--info"></span>
+            <div class="alert-row__body">
+              <p>Above-normal rainfall predicted for Northeast India</p>
+              <span class="alert-row__time">1 day ago</span>
+            </div>
+            <span class="badge badge--warning" style="align-self:center;">Medium</span>
+          </div>
+          <div class="alert-row">
+            <span class="alert-row__dot alert-row__dot--info"></span>
+            <div class="alert-row__body">
+              <p>Possible drought conditions in parts of Maharashtra</p>
+              <span class="alert-row__time">1 day ago</span>
+            </div>
+            <span class="badge badge--success" style="align-self:center;">Low</span>
+          </div>
+
+          <div class="panel__head" style="margin-top: var(--sp-6);"><span class="panel__title">Alerts by category (last 30 days)</span></div>
+          <div style="height: 200px;"><canvas id="alertsChart"></canvas></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head"><span class="panel__title">Create custom report</span></div>
+          <div class="field">
+            <label for="reportRegion">Select region</label>
+            <select id="reportRegion"><option>India</option><option>Jammu &amp; Kashmir</option><option>Maharashtra</option></select>
+          </div>
+          <div class="field">
+            <label for="reportVariable">Variable</label>
+            <select id="reportVariable"><option>Rainfall &amp; temperature</option><option>Soil moisture</option><option>All variables</option></select>
+          </div>
+          <div class="field">
+            <label for="reportPeriod">Time period</label>
+            <select id="reportPeriod"><option>Last 1 year</option><option>Last 90 days</option><option>Last 30 days</option></select>
+          </div>
+          <div class="field">
+            <label>Format</label>
+            <div class="tag-row">
+              <label class="badge badge--info" style="cursor:pointer;"><input type="radio" name="fmt" checked style="margin-right:6px;">PDF</label>
+              <label class="badge badge--info" style="cursor:pointer;"><input type="radio" name="fmt" style="margin-right:6px;">CSV</label>
+            </div>
+          </div>
+          <button class="btn btn--primary btn--block">
+            Generate report
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/nav.js"></script>
+<script>document.addEventListener("DOMContentLoaded",function(){BhuDarpanCharts.buildAlertsChart("alertsChart");});</script>
+</body>
+</html>

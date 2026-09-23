@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Explorer — Bhu Darpan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/animations.css">
+
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <svg class="brand__mark" viewBox="0 0 34 34" fill="none">
+        <circle cx="17" cy="17" r="15.5" stroke="#2BD9C9" stroke-width="1.4"/>
+        <path d="M17 8c-4 3-6 6-6 9.5S13 24 17 26c4-2 6-5 6-8.5S21 11 17 8Z" fill="#2BD9C9" opacity="0.85"/>
+      </svg>
+      <div>
+        <div class="brand__name">Bhu <span>Darpan</span></div>
+        <span class="brand__sub">भू दर्पण</span>
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-group__label">OVERVIEW</div>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a></li>
+        <li><a class="nav-link" href="live-climate.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 16a4 4 0 0 1 .5-8 5 5 0 0 1 9.6-1.5A4.5 4.5 0 0 1 17 16H7Z"/><path d="M9 19v1M13 19v2M17 19v1"/></svg>Live Climate</a></li>
+      </ul>
+      <div class="nav-group__label" style="margin-top: var(--sp-5);">ANALYSIS</div>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="forecast.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 17 5-6 4 3 5-7 4 4"/></svg>Forecast</a></li>
+        <li><a class="nav-link" href="whatif.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="1.8" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="1.8" fill="currentColor" stroke="none"/><circle cx="7" cy="18" r="1.8" fill="currentColor" stroke="none"/></svg>What-if Simulation</a></li>
+        <li><a class="nav-link" href="sectoral.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 13l9 5 9-5"/></svg>Sectoral Impact</a></li>
+        <li><a class="nav-link" href="historical.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10m6 10V4m6 16v-7"/></svg>Historical Analysis</a></li>
+      </ul>
+      <div class="nav-group__label" style="margin-top: var(--sp-5);">DATA</div>
+      <ul class="nav-list">
+        <li><a class="nav-link" href="explorer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>Data Explorer</a></li>
+        <li><a class="nav-link" href="reports.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l5 5v15H6V2Z"/><path d="M15 2v5h5"/></svg>Reports</a></li>
+      </ul>
+    </nav>
+
+    <div class="sidebar__footer">v0.9.2 · digital-twin-core</div>
+  </aside>
+
+  <div>
+    <header class="topbar">
+      <button class="icon-btn menu-toggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="topbar__crumbs"><strong>Data Explorer</strong>&nbsp;/ Satellite data</div>
+      <div class="topbar__right">
+        <span class="live-pill"><span class="live-dot"></span> LIVE · <span data-live-clock>--</span></span>
+        <button class="icon-btn" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        </button>
+        <div class="avatar">SK</div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="page-head reveal">
+        <div>
+          <h1>Data explorer</h1>
+          <p>Access and visualise the national datasets used inside the digital twin.</p>
+        </div>
+      </div>
+
+      <div class="segmented reveal reveal-delay-1" style="margin-bottom: var(--sp-5);">
+        <button class="is-active">Satellite data</button>
+        <button>Meteorological (IMD)</button>
+        <button>Reanalysis</button>
+        <button>Hydrological</button>
+        <button>Derived products</button>
+      </div>
+
+      <div class="grid reveal reveal-delay-2" style="grid-template-columns: 0.8fr 1.2fr; gap: var(--sp-5);">
+        <div class="panel">
+          <div class="panel__head"><span class="panel__title">Query</span></div>
+          <div class="field">
+            <label for="dataset">Dataset</label>
+            <select id="dataset">
+              <option>INSAT-3D (Cloud / Rainfall)</option>
+              <option>MOSDAC land surface temperature</option>
+              <option>Bhuvan land-use / land-cover</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="variable">Variable</label>
+            <select id="variable">
+              <option>Cloud top temperature</option>
+              <option>Outgoing longwave radiation</option>
+              <option>Precipitation rate</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="obsDate">Date</label>
+            <input type="date" id="obsDate" value="2026-09-09">
+          </div>
+          <div class="tag-row" style="margin-top: var(--sp-2);">
+            <button class="btn btn--primary btn--sm">View on map →</button>
+            <button class="btn btn--ghost btn--sm">Download data</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel__head"><span class="panel__title">Preview — cloud top temperature</span><span class="panel__meta">09 Sep 2026</span></div>
+          <div class="map-frame" style="height: 360px; background: radial-gradient(...);">
+          <svg viewBox="0 0 400 460" style="opacity:0.85; height:92%; width:auto; max-width:96%;">
+              <polygon points="160,10 190,25 230,40 270,60 310,70 345,95 365,130 340,150 330,180 310,190 320,225 300,262 288,300 274,340 258,380 238,412 220,432 205,444 190,432 175,406 160,372 150,332 140,292 128,252 118,212 108,176 92,150 88,120 105,95 130,70 145,40" fill="rgba(15,21,29,0.35)" stroke="#EEF2F6" stroke-width="1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/nav.js"></script>
+</body>
+</html>
