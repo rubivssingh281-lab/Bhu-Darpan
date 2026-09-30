@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>Bhū-Darpan (भू-दर्पण) — ISRO AI Climate Twin</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error": "#690005", "inverse-on-surface": "#233143", "outline-variant": "#3c4a46", "primary-fixed": "#62fae3", "on-primary-fixed": "#00201c", "surface": "#051424", "on-tertiary-container": "#83331e", "on-secondary-fixed": "#2f1400", "on-primary": "#003731", "surface-container": "#122131", "on-primary-fixed-variant": "#005047", "on-tertiary": "#5d1805", "surface-dim": "#051424", "on-surface": "#d4e4fa", "surface-container-low": "#0d1c2d", "error-container": "#93000a", "on-error-container": "#ffdad6", "secondary-container": "#763c00", "inverse-primary": "#006b5f", "on-secondary-fixed-variant": "#6f3800", "surface-bright": "#2c3a4c", "secondary-fixed-dim": "#ffb780", "on-background": "#d4e4fa", "surface-container-highest": "#273647", "tertiary-fixed-dim": "#ffb4a1", "surface-container-high": "#1c2b3c", "outline": "#859490", "on-tertiary-fixed-variant": "#7c2e19", "background": "#051424", "primary-container": "#2dd4bf", "on-tertiary-fixed": "#3c0800", "primary-fixed-dim": "#3cddc7", "surface-tint": "#3cddc7", "secondary": "#ffb780", "on-secondary-container": "#fca967", "on-surface-variant": "#bacac5", "tertiary-container": "#ffa891", "inverse-surface": "#d4e4fa", "on-secondary": "#4e2600", "primary": "#57f1db", "tertiary-fixed": "#ffdbd2", "error": "#ffb4ab", "surface-variant": "#273647", "surface-container-lowest": "#010f1f", "on-primary-container": "#00574d", "secondary-fixed": "#ffdcc4", "tertiary": "#ffcfc3" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-lg": "1.5rem", "margin-lg": "2rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "space-2xl": "3rem", "space-sm": "0.5rem", "gutter": "1rem", "space-2xs": "0.125rem", "space-xl": "2rem", "margin": "1rem", "space-base": "1rem", "margin-md": "1.5rem", "space-md": "0.75rem" }, "fontFamily": { "display-lg-mobile": [ "Space Grotesk" ], "body-sm": [ "Inter" ], "telemetry-md": [ "JetBrains Mono" ], "headline-lg": [ "Space Grotesk" ], "telemetry-xl": [ "JetBrains Mono" ], "headline-md": [ "Space Grotesk" ], "telemetry-sm": [ "JetBrains Mono" ], "body-md": [ "Inter" ], "headline-xl": [ "Space Grotesk" ], "body-lg": [ "Inter" ], "display-lg": [ "Space Grotesk" ], "telemetry-micro": [ "JetBrains Mono" ] }, "fontSize": { "display-lg-mobile": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "body-sm": [ "12px", { "lineHeight": "16px", "fontWeight": "400" } ], "telemetry-md": [ "14px", { "lineHeight": "20px", "fontWeight": "500" } ], "headline-lg": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "telemetry-xl": [ "28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "headline-md": [ "20px", { "lineHeight": "28px", "fontWeight": "500" } ], "telemetry-sm": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" } ], "body-md": [ "14px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-xl": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "body-lg": [ "16px", { "lineHeight": "24px", "fontWeight": "400" } ], "display-lg": [ "48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "600" } ], "telemetry-micro": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" } ] } } } }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)]"><div class="h-16 w-full px-gutter-lg flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-base"><img alt="Minimalist geometric mission insignia badge for Bhū-Darpan (भू-दर्पण) ISRO climate digital twin. Stylized globe ring with satellite orbit trail, subtle topographic isobar contours, and an optical digital reflection prism motif, vector teal cyan #2DD4BF and copper terracotta accents on a transparent dark backdrop.. Design context: - Primary color: #2dd4bf
+- Font: spaceGrotesk
+- Mode: dark
+- Roundness: rounded-md
+. The logo should be visually consistent with these brand tokens." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1V63GNXBX39Ayf7nEuL57ZvKW3UU7r70q9ZqqirM8K2a074-31LWuJse1WNtPOhOhwlWvCRlzNiSR1L_yWjrkqKf6uxrYy-4iISM-_PvYJxR7D-1IfYO0L6qQIr5WvK7jmtbR-JE34RGQX98T8QWC9l0FlvTVX2I7Yl-h46LzUeRep4PmN9zthfCdz_-E6NHc0NkIJFL7kKt62osLrTnvcdK5uUCesiu74JJDAyxC1F6ldQNRp5dSJlYy8"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-md text-headline-md text-on-surface tracking-tight leading-none">Bhū-Darpan</span><span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container-high text-primary tracking-widest">भू-दर्पण</span></div><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase tracking-widest leading-none mt-space-2xs">ISRO AI Digital Twin • Subcontinent Matrix</span></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-medium">INSAT-3DR &amp; MOSDAC FUSED • 15m ASSIMILATION</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-medium rounded-lg"><a aria-current="page" class="px-space-sm py-space-xs transition-colors bg-primary-container text-on-primary-container font-medium rounded-lg" data-path="overview" href="#">Overview</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="climate-map" href="#">Climate Map</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="7-day-forecast" href="#">7-Day Forecast</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="what-if-simulator" href="#">What-If Simulator</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="data-and-models" href="#">Data &amp; Models</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="policy-reports" href="#">Policy Reports</a></nav><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-surface-container-low font-telemetry-micro text-telemetry-micro text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[14px]">satellite_alt</span><span>ISRO/IMD SYNC: <span class="text-primary font-medium">0.04s LCK</span></span></div><div class="hidden md:flex items-center bg-surface-container-low rounded-lg p-space-2xs"><button class="px-space-xs py-space-2xs rounded text-primary font-telemetry-micro text-telemetry-micro bg-surface-container-high" type="button">24H</button><button class="px-space-xs py-space-2xs rounded text-on-surface-variant hover:text-on-surface font-telemetry-micro text-telemetry-micro" type="button">7D</button><button class="px-space-xs py-space-2xs rounded text-on-surface-variant hover:text-on-surface font-telemetry-micro text-telemetry-micro" type="button">30D</button></div><button class="p-space-xs rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Theme Switcher (Space / Ivory)" type="button"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest/95 backdrop-blur-xl z-40 flex flex-col pt-20 pb-space-lg shadow-[1px_0_12px_rgba(0,0,0,0.4)]"><div class="px-space-base mb-space-md"><div class="flex items-center justify-between pb-space-xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase tracking-widest">OBSERVATORY DOCK</span><span class="font-telemetry-micro text-telemetry-micro text-primary">GRID #84-A</span></div><div class="h-px w-full bg-surface-container-high"></div></div><div class="flex-1 px-space-sm overflow-y-auto space-y-space-sm"><div class="px-space-sm py-space-2xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase font-semibold">MISSION WORKSPACES</span></div><nav class="space-y-space-2xs" data-active-classes="bg-primary-container text-on-primary-container font-medium rounded-lg"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs transition-all bg-primary-container text-on-primary-container font-medium rounded-lg" data-path="overview" href="#"><span class="material-symbols-outlined text-[18px]">space_dashboard</span><span>Mission Overview</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="climate-map" href="#"><span class="material-symbols-outlined text-[18px]">public</span><span>Synoptic Climate GIS</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="7-day-forecast" href="#"><span class="material-symbols-outlined text-[18px]">air</span><span>7-Day Predictor Array</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="what-if-simulator" href="#"><span class="material-symbols-outlined text-[18px]">biotech</span><span>What-If Geo Simulator</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="data-and-models" href="#"><span class="material-symbols-outlined text-[18px]">dataset</span><span>Physics &amp; AI Kernels</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="policy-reports" href="#"><span class="material-symbols-outlined text-[18px]">description</span><span>Policy Strategy Desk</span></a></nav><div class="pt-space-md px-space-sm py-space-2xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase font-semibold">ORBITAL RETICLE STATUS</span></div><div class="p-space-sm rounded-lg bg-surface-container-low space-y-space-xs"><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">SATELLITE EPHEMERIS</span><span class="text-primary">NOMINAL</span></div><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">GRID LAT/LON</span><span class="text-on-surface font-telemetry-sm text-telemetry-sm">20.59°N 78.96°E</span></div><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">SURFACE BAROMETRIC</span><span class="text-secondary font-telemetry-sm text-telemetry-sm">1012.8 hPa</span></div></div></div><div class="px-space-base pt-space-sm"><div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between"><div class="flex flex-col"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase">STATION ID</span><span class="font-telemetry-micro text-telemetry-micro text-primary font-semibold">SHAR-SDSC // ISRO</span></div><span class="material-symbols-outlined text-primary text-[18px]">radar</span></div></div></aside><div class="pl-72"><main class="relative pt-16 w-full px-gutter-lg min-h-screen bg-surface"><div class="flex flex-col w-full space-y-space-xl pb-space-2xl">
+<!-- Architectural Header & HPC Mission Status Strip -->
+<section class="flex flex-col gap-space-md">
+<div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md">
+<div class="space-y-space-2xs">
+<div class="flex items-center gap-space-xs font-telemetry-micro text-telemetry-micro text-primary uppercase tracking-widest">
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+<span>SYSTEM ARCHITECTURE &amp; HPC BENCHMARKS // PINO-DIFFUSION CORE v2.4</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Data Ingestion &amp; AI Model Registry</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+          Multi-spectral satellite telemetry ingestion, physics-informed neural operator kernels, and autonomous model governance synchronizing ISRO MOSDAC, IMD radar meshes, and PARAM supercomputing nodes.
+        </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs font-telemetry-sm text-telemetry-sm">
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-high hover:bg-surface-bright text-on-surface transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">download</span>
+<span>Whitepaper (PDF)</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-high hover:bg-surface-bright text-on-surface transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">memory</span>
+<span>Inspect Artifacts</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-space-xs rounded bg-primary text-on-primary font-headline-md text-body-sm hover:opacity-90 transition-all shadow-md" type="button">
+<span class="material-symbols-outlined text-[16px]">sync_saved_locally</span>
+<span>[ TRIGGER_RETRAINING_CYCLE ]</span>
+</button>
+</div>
+</div>
+<!-- Telemetry Status Bar -->
+<div class="rounded-xl bg-surface-container-lowest p-space-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm shadow-md">
+<div class="flex items-center gap-space-sm">
+<div class="flex h-2.5 w-2.5 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-semibold">INGESTION PIPELINE: OPERATIONAL (48/48 STREAMS)</span>
+</div>
+<div class="flex flex-wrap items-center gap-x-space-lg gap-y-space-xs font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div>AGGREGATE BANDWIDTH: <span class="text-on-surface font-telemetry-sm text-telemetry-sm font-medium">3.8 GB/S</span></div>
+<div>H100 PARAM CLUSTER: <span class="text-primary font-telemetry-sm text-telemetry-sm font-medium">94.2% UTILIZATION</span></div>
+<div>LOSS CLOSURE: <span class="text-secondary font-telemetry-sm text-telemetry-sm font-medium">NAVIER-STOKES BOUNDARY CONSTRAINED</span></div>
+<div class="text-on-surface-variant">SYNC DRIFT: <span class="text-on-surface font-mono">±12ms</span></div>
+</div>
+</div>
+</section>
+<!-- Multi-Sensor Ingestion Layer (4 Rich Data Source Cards) -->
+<section class="space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase tracking-widest">LAYER 01 // INPUT MATRICES</span>
+<span class="font-headline-md text-headline-md text-on-surface">Multi-Sensor Ingestion &amp; Assimilation Feeds</span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">SYNC FREQUENCY: 15-MIN ISOCHRONOUS</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1: INSAT-3DR / 3DS -->
+<div class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-base shadow-md transition-all hover:bg-surface-container">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest font-telemetry-micro text-telemetry-micro text-primary">GEOSTATIONARY</span>
+<div class="flex items-center gap-space-2xs font-telemetry-micro text-telemetry-micro text-primary">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary"></span>
+              ONLINE
+            </div>
+</div>
+<div>
+<h2 class="font-headline-md text-body-lg text-on-surface font-medium leading-snug">INSAT-3DR / 3DS Radiance</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ISRO SAC / MOSDAC Payload Feed</p>
+</div>
+<div class="space-y-space-xs font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div class="flex justify-between py-space-2xs">
+<span>CHANNELS</span>
+<span class="text-on-surface">TIR-1, TIR-2, MIR, WV (6.7µm)</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>CADENCE / RES</span>
+<span class="text-on-surface">15-min / 4.0 km grid</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>ACTIVE STREAMS</span>
+<span class="text-primary">LST, SST, Hydro-Estimator</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>INGESTION PROTOCOL</span>
+<span class="text-on-surface">MOSDAC HDF5 / NetCDF4</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex items-center justify-between font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div>LATENCY: <span class="text-on-surface font-mono">8.4m</span></div>
+<div>DAILY VOL: <span class="text-primary font-mono font-medium">1.4 TB</span></div>
+</div>
+</div>
+<!-- Card 2: IMD High-Resolution Observations -->
+<div class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-base shadow-md transition-all hover:bg-surface-container">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest font-telemetry-micro text-telemetry-micro text-secondary">GROUND IN-SITU</span>
+<div class="flex items-center gap-space-2xs font-telemetry-micro text-telemetry-micro text-primary">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary"></span>
+              ONLINE
+            </div>
+</div>
+<div>
+<h2 class="font-headline-md text-body-lg text-on-surface font-medium leading-snug">IMD Gridded Obs</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">India Meteorological Department</p>
+</div>
+<div class="space-y-space-xs font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div class="flex justify-between py-space-2xs">
+<span>GRID PARAMETERS</span>
+<span class="text-on-surface">0.25° Precip / 0.50° Max-Min T</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>GROUND NETWORK</span>
+<span class="text-on-surface">3,840 AWS + 52 Agro-Met Towers</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>HISTORICAL DEPTH</span>
+<span class="text-secondary">1901 – Present Continuous</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>FORMAT STACK</span>
+<span class="text-on-surface">GRIB2 / NetCDF Mesh</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex items-center justify-between font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div>LATENCY: <span class="text-on-surface font-mono">42m</span></div>
+<div>DAILY VOL: <span class="text-primary font-mono font-medium">240 GB</span></div>
+</div>
+</div>
+<!-- Card 3: Reanalysis & Boundary Forcings -->
+<div class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-base shadow-md transition-all hover:bg-surface-container">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest font-telemetry-micro text-telemetry-micro text-primary-fixed">NWP ASSIMILATION</span>
+<div class="flex items-center gap-space-2xs font-telemetry-micro text-telemetry-micro text-primary">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary"></span>
+              SYNCHRONIZED
+            </div>
+</div>
+<div>
+<h2 class="font-headline-md text-body-lg text-on-surface font-medium leading-snug">Synoptic Boundary Forcings</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ECMWF ERA5 + NCMRWF Unified Model</p>
+</div>
+<div class="space-y-space-xs font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div class="flex justify-between py-space-2xs">
+<span>VERTICAL LEVELS</span>
+<span class="text-on-surface">37 Pressure Layers (1000-1 hPa)</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>VECTOR FIELDS</span>
+<span class="text-on-surface">U/V Wind, Geopotential, q, Pmsl</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>DOWNSCALING</span>
+<span class="text-primary-fixed">0.25° Global → 0.10° Regional</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>REPRESENTATION</span>
+<span class="text-on-surface">Zarr Chunked Tensor Shards</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex items-center justify-between font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div>LATENCY: <span class="text-on-surface font-mono">2.1h</span></div>
+<div>DAILY VOL: <span class="text-primary font-mono font-medium">850 GB</span></div>
+</div>
+</div>
+<!-- Card 4: Oceanic & Cryospheric Radiance -->
+<div class="flex flex-col justify-between rounded-xl bg-surface-container-low p-space-base shadow-md transition-all hover:bg-surface-container">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest font-telemetry-micro text-telemetry-micro text-tertiary">SCATTEROMETRY</span>
+<div class="flex items-center gap-space-2xs font-telemetry-micro text-telemetry-micro text-primary">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary"></span>
+              ONLINE
+            </div>
+</div>
+<div>
+<h2 class="font-headline-md text-body-lg text-on-surface font-medium leading-snug">Oceanic &amp; Cryo Radiance</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Oceansat-3 OSCAT + Cartosat-Cryo</p>
+</div>
+<div class="space-y-space-xs font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div class="flex justify-between py-space-2xs">
+<span>SEA WIND VECTORS</span>
+<span class="text-on-surface">25 km Wind Vector Cells (WVC)</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>CYCLOGENESIS FOCUS</span>
+<span class="text-tertiary">Arabian Sea &amp; Bay of Bengal</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>CRYO COVERAGE</span>
+<span class="text-on-surface">Himalayan SWE &amp; Albedo Depths</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span>TELEMETRY STREAM</span>
+<span class="text-on-surface">Raw Ku-Band L1B / L2C Slices</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex items-center justify-between font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<div>LATENCY: <span class="text-on-surface font-mono">1.2h</span></div>
+<div>DAILY VOL: <span class="text-primary font-mono font-medium">420 GB</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- End-to-End Scientific Data-Flow Architecture Diagram -->
+<section class="space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase tracking-widest">LAYER 02 // NEURAL PIPELINE</span>
+<span class="font-headline-md text-headline-md text-on-surface">Scientific Data-Flow &amp; Operator Topology</span>
+</div>
+<div class="flex items-center gap-space-xs font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span>CONSTRAINTS: DIVERGENCE-FREE VELOCITY FIELDS ∇·u = 0</span>
+</div>
+</div>
+<div class="rounded-xl bg-surface-container-low p-space-base shadow-xl overflow-x-auto">
+<div class="min-w-[1020px] flex items-stretch gap-space-xs">
+<!-- STAGE 1 -->
+<div class="flex-1 flex flex-col justify-between p-space-sm rounded-lg bg-surface-container-lowest space-y-space-sm">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-bold">STAGE 01</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">sensors</span>
+</div>
+<h3 class="font-headline-md text-body-sm font-semibold text-on-surface">Raw Ingestion</h3>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight">
+              ISRO MOSDAC HDF5, IMD AWS radar telemetry, Oceansat-3 scatterometer, Bhuvan GIS vector parcels.
+            </p>
+</div>
+<div class="p-space-2xs rounded bg-surface-container font-telemetry-micro text-[9px] text-primary">
+            THROUGHPUT: 48 STREAMS / 2.9 TB DAILY
+          </div>
+</div>
+<div class="flex items-center text-on-surface-variant px-space-2xs">
+<span class="material-symbols-outlined text-[18px] text-primary">chevron_right</span>
+</div>
+<!-- STAGE 2 -->
+<div class="flex-1 flex flex-col justify-between p-space-sm rounded-lg bg-surface-container-lowest space-y-space-sm">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-bold">STAGE 02</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">filter_drama</span>
+</div>
+<h3 class="font-headline-md text-body-sm font-semibold text-on-surface">QC &amp; Neural Regrid</h3>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight">
+              Cloud-clearing algorithms, spatial regridding to 1.25 km subcontinental tensor mesh, Kalman sanity checks.
+            </p>
+</div>
+<div class="p-space-2xs rounded bg-surface-container font-telemetry-micro text-[9px] text-secondary">
+            IMPUTATION ACCURACY: 99.4%
+          </div>
+</div>
+<div class="flex items-center text-on-surface-variant px-space-2xs">
+<span class="material-symbols-outlined text-[18px] text-primary">chevron_right</span>
+</div>
+<!-- STAGE 3 -->
+<div class="flex-1 flex flex-col justify-between p-space-sm rounded-lg bg-surface-container-highest space-y-space-sm">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-bold">STAGE 03</span>
+<span class="material-symbols-outlined text-[14px] text-primary">neurology</span>
+</div>
+<h3 class="font-headline-md text-body-sm font-semibold text-on-surface">PINO + Diffusion</h3>
+<p class="font-body-sm text-[11px] text-on-surface leading-tight">
+              Physics-Informed Neural Operators encoding Navier-Stokes conservation, 3D U-Net diffusion surrogate core.
+            </p>
+</div>
+<div class="p-space-2xs rounded bg-surface-container-lowest font-telemetry-micro text-[9px] text-primary">
+            H100 SXM5 PARAM TENSOR ENGINE
+          </div>
+</div>
+<div class="flex items-center text-on-surface-variant px-space-2xs">
+<span class="material-symbols-outlined text-[18px] text-primary">chevron_right</span>
+</div>
+<!-- STAGE 4 -->
+<div class="flex-1 flex flex-col justify-between p-space-sm rounded-lg bg-surface-container-lowest space-y-space-sm">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-bold">STAGE 04</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">grain</span>
+</div>
+<h3 class="font-headline-md text-body-sm font-semibold text-on-surface">Digital Twin Engine</h3>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight">
+              100-member perturbation ensembles, vadose hydrologic coupling, convective cloudburst trigger emulation.
+            </p>
+</div>
+<div class="p-space-2xs rounded bg-surface-container font-telemetry-micro text-[9px] text-on-surface-variant">
+            ENSEMBLE DISPERSION: ±4.2%
+          </div>
+</div>
+<div class="flex items-center text-on-surface-variant px-space-2xs">
+<span class="material-symbols-outlined text-[18px] text-primary">chevron_right</span>
+</div>
+<!-- STAGE 5 -->
+<div class="flex-1 flex flex-col justify-between p-space-sm rounded-lg bg-surface-container-lowest space-y-space-sm">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-bold">STAGE 05</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">verified</span>
+</div>
+<h3 class="font-headline-md text-body-sm font-semibold text-on-surface">Skill Verification</h3>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight">
+              Continuous benchmark against ECMWF IFS, NCMRWF, and AWS stations; automated RMSE, ACC, CRPS verification.
+            </p>
+</div>
+<div class="p-space-2xs rounded bg-surface-container font-telemetry-micro text-[9px] text-primary">
+            ANOMALY CORRELATION: 0.942
+          </div>
+</div>
+<div class="flex items-center text-on-surface-variant px-space-2xs">
+<span class="material-symbols-outlined text-[18px] text-primary">chevron_right</span>
+</div>
+<!-- STAGE 6 -->
+<div class="flex-1 flex flex-col justify-between p-space-sm rounded-lg bg-surface-container-lowest space-y-space-sm">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-bold">STAGE 06</span>
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">satellite</span>
+</div>
+<h3 class="font-headline-md text-body-sm font-semibold text-on-surface">Actuation &amp; GIS</h3>
+<p class="font-body-sm text-[11px] text-on-surface-variant leading-tight">
+              1.25 km Interactive GIS Choropleth, NDMA/SDMA Early Warnings, Dam reservoir release advisories, NetCDF API.
+            </p>
+</div>
+<div class="p-space-2xs rounded bg-surface-container font-telemetry-micro text-[9px] text-secondary">
+            LATENCY TO SDMA: 320ms
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Model Registry & Governance Matrix -->
+<section class="space-y-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase tracking-widest">LAYER 03 // SURROGATE INVENTORY</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Model Status &amp; Governance Registry</h2>
+</div>
+<div class="flex items-center gap-space-sm font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span>REGISTERED MODELS: <strong class="text-on-surface">6 OPERATIONAL</strong></span>
+<span>•</span>
+<span>BENCHMARK NWP: <strong class="text-primary">ECMWF IFS 9km</strong></span>
+</div>
+</div>
+<!-- Table Responsive Wrap -->
+<div class="rounded-xl bg-surface-container-lowest shadow-xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase tracking-wider">
+<th class="py-space-sm px-space-base">Variable / Product</th>
+<th class="py-space-sm px-space-base">Model Architecture</th>
+<th class="py-space-sm px-space-base">Res / Cadence</th>
+<th class="py-space-sm px-space-base">Training Corpus</th>
+<th class="py-space-sm px-space-base">Epoch / Age</th>
+<th class="py-space-sm px-space-base">Latency</th>
+<th class="py-space-sm px-space-base">Validation Benchmark</th>
+<th class="py-space-sm px-space-base text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high font-body-sm text-body-sm text-on-surface">
+<!-- Row 1: Rain -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-space-base px-space-base">
+<div class="font-medium text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[16px]">rainy</span>
+                  Precipitation Trajectory
+                </div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">QPE / Multi-step forecast</div>
+</td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">PINO-Rain v2.4</div>
+<div class="font-telemetry-micro text-telemetry-micro text-primary">Navier-Stokes Constrained</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-on-surface-variant">
+                1.25 km / 15-min
+              </td>
+<td class="py-space-base px-space-base font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+                42 yrs IMD 0.25° + INSAT-3DR (1982-2024)
+              </td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm">
+<div>Epoch 380</div>
+<div class="text-on-surface-variant font-telemetry-micro text-telemetry-micro">14h ago</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-primary">
+                84ms
+              </td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">RMSE: 2.84 mm/d</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">ECMWF ref 3.42 mm/d (+17%)</div>
+</td>
+<td class="py-space-base px-space-base text-right">
+<span class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container font-telemetry-micro text-telemetry-micro text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  PRODUCTION ACTIVE
+                </span>
+</td>
+</tr>
+<!-- Row 2: LST -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-space-base px-space-base">
+<div class="font-medium text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[16px]">thermostat</span>
+                  Land Surface Temp (LST)
+                </div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Urban heat &amp; canopy flux</div>
+</td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">FNO-Thermal-Net</div>
+<div class="font-telemetry-micro text-telemetry-micro text-secondary">Fourier Neural Operator</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-on-surface-variant">
+                1.0 km / 1-hr
+              </td>
+<td class="py-space-base px-space-base font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+                INSAT-3DR TIR + ERA5 Skin Temp
+              </td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm">
+<div>Epoch 450</div>
+<div class="text-on-surface-variant font-telemetry-micro text-telemetry-micro">2d ago</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-primary">
+                42ms
+              </td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">RMSE: 0.68°C</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">IMD AWS NWP 0.95°C</div>
+</td>
+<td class="py-space-base px-space-base text-right">
+<span class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container font-telemetry-micro text-telemetry-micro text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  PRODUCTION ACTIVE
+                </span>
+</td>
+</tr>
+<!-- Row 3: Soil Moisture -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-space-base px-space-base">
+<div class="font-medium text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-fixed text-[16px]">water_ec</span>
+                  Root-Zone Soil Moisture
+                </div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">0-100cm Vadose column</div>
+</td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">GNN-Hydro V3</div>
+<div class="font-telemetry-micro text-telemetry-micro text-primary-fixed">Spatiotemporal Graph Net</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-on-surface-variant">
+                2.5 km / 3-hr
+              </td>
+<td class="py-space-base px-space-base font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+                SMAP L4 + Bhuvan neutron probes
+              </td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm">
+<div>Epoch 290</div>
+<div class="text-on-surface-variant font-telemetry-micro text-telemetry-micro">5d ago</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-primary">
+                110ms
+              </td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">R²: 0.912</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">In-situ probe ground verification</div>
+</td>
+<td class="py-space-base px-space-base text-right">
+<span class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container font-telemetry-micro text-telemetry-micro text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  PRODUCTION ACTIVE
+                </span>
+</td>
+</tr>
+<!-- Row 4: Drought Risk -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-space-base px-space-base">
+<div class="font-medium text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[16px]">grass</span>
+                  Drought &amp; Evapotranspiration
+                </div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">SPEI index multi-scale</div>
+</td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">SPEI-Former</div>
+<div class="font-telemetry-micro text-telemetry-micro text-secondary">Multi-Task Transformer</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-on-surface-variant">
+                District / Daily
+              </td>
+<td class="py-space-base px-space-base font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+                50-yr met drought + MODIS/Cartosat NDVI
+              </td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm">
+<div>Epoch 310</div>
+<div class="text-on-surface-variant font-telemetry-micro text-telemetry-micro">18h ago</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-primary">
+                65ms
+              </td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">ACC: 0.880</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Lead D+7 prediction accuracy</div>
+</td>
+<td class="py-space-base px-space-base text-right">
+<span class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container font-telemetry-micro text-telemetry-micro text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  PRODUCTION ACTIVE
+                </span>
+</td>
+</tr>
+<!-- Row 5: Reservoir Inflow -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-space-base px-space-base">
+<div class="font-medium text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[16px]">tsunami</span>
+                  Reservoir Inflow Predictor
+                </div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Godavari, Krishna, Cauvery</div>
+</td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">Hydro-LSTM Constrained</div>
+<div class="font-telemetry-micro text-telemetry-micro text-primary">Mass-Balance Runoff</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-on-surface-variant">
+                Catchment / 1-hr
+              </td>
+<td class="py-space-base px-space-base font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+                CWC gauge discharge data (1990-2024)
+              </td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm">
+<div>Epoch 520</div>
+<div class="text-on-surface-variant font-telemetry-micro text-telemetry-micro">1d ago</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-primary">
+                35ms
+              </td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">NSE: 0.894</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Nash-Sutcliffe Efficiency Index</div>
+</td>
+<td class="py-space-base px-space-base text-right">
+<span class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-surface-container font-telemetry-micro text-telemetry-micro text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                  PRODUCTION ACTIVE
+                </span>
+</td>
+</tr>
+<!-- Row 6: Severe Cloudburst (Retraining) -->
+<tr class="hover:bg-surface-container-low transition-colors bg-secondary-container/10">
+<td class="py-space-base px-space-base">
+<div class="font-medium text-on-surface flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[16px]">thunderstorm</span>
+                  Severe Cloudburst Precursor
+                </div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Himalayan orographic triggers</div>
+</td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">Surge-Diff v1.8</div>
+<div class="font-telemetry-micro text-telemetry-micro text-secondary">Fourier Latent Diffusion</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-on-surface-variant">
+                500m / 10-min lead
+              </td>
+<td class="py-space-base px-space-base font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+                Doppler DWR array + INSAT rapid convection
+              </td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm">
+<div class="text-secondary font-medium">Epoch 120 / 500</div>
+<div class="text-on-surface-variant font-telemetry-micro text-telemetry-micro">Active Retraining Cycle</div>
+</td>
+<td class="py-space-base px-space-base font-telemetry-sm text-telemetry-sm text-secondary">
+                140ms
+              </td>
+<td class="py-space-base px-space-base">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface">CSI: 0.780</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Critical Success Index (+0.12 target)</div>
+</td>
+<td class="py-space-base px-space-base text-right">
+<span class="inline-flex items-center gap-space-2xs px-space-sm py-space-2xs rounded bg-secondary-container text-on-secondary-container font-telemetry-micro text-telemetry-micro animate-pulse">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  RETRAINING [120/500]
+                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- HPC Compute Footprint & Reproducibility Footer -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-space-md">
+<!-- Supercomputing Telemetry Card -->
+<div class="rounded-xl bg-surface-container-low p-space-base shadow-md flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase">HPC FABRIC TELEMETRY</span>
+<span class="material-symbols-outlined text-[16px] text-primary">developer_board</span>
+</div>
+<h3 class="font-headline-md text-body-lg text-on-surface font-medium">PARAM Brahma &amp; PARAM Ananta</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          National Supercomputing Mission (NSM) partition dedicated to Bhū-Darpan continuous data assimilation.
+        </p>
+</div>
+<div class="space-y-space-xs font-telemetry-micro text-telemetry-micro">
+<div class="flex justify-between py-space-2xs">
+<span class="text-on-surface-variant">ACTIVE ACCELERATORS</span>
+<span class="text-on-surface font-mono">64x NVIDIA H100 SXM5 80GB</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span class="text-on-surface-variant">INTERCONNECT MESH</span>
+<span class="text-on-surface font-mono">Quantum-2 InfiniBand 800 Gbps</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span class="text-on-surface-variant">FLOATING POINT THROUGHPUT</span>
+<span class="text-primary font-mono font-medium">194.5 PFLOPS (FP8 Tensor)</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden mt-space-xs">
+<div class="bg-primary h-full rounded-full" style="width: 94.2%"></div>
+</div>
+</div>
+</div>
+<!-- Reproducibility & ML Governance Manifest -->
+<div class="rounded-xl bg-surface-container-low p-space-base shadow-md flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-secondary uppercase">GOVERNANCE &amp; LINEAGE</span>
+<span class="material-symbols-outlined text-[16px] text-secondary">verified_user</span>
+</div>
+<h3 class="font-headline-md text-body-lg text-on-surface font-medium">Reproducibility Manifest</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Tamper-evident MLflow experiment run tracking with immutable cryptographic weights hash.
+        </p>
+</div>
+<div class="space-y-space-xs font-telemetry-micro text-telemetry-micro">
+<div class="flex justify-between py-space-2xs">
+<span class="text-on-surface-variant">MLFLOW RUN ID</span>
+<span class="text-secondary font-mono">#ISRO-BHU-2025-089A</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span class="text-on-surface-variant">GIT REPO SHA</span>
+<span class="text-on-surface font-mono">7f8c92a (main@sac-isro)</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span class="text-on-surface-variant">SOFTWARE RUNTIME</span>
+<span class="text-on-surface font-mono">PyTorch 2.4 + CUDA 12.4 + TensorRT</span>
+</div>
+<div class="flex justify-between py-space-2xs">
+<span class="text-on-surface-variant">DATA LICENSING</span>
+<span class="text-primary font-mono">ISRO Open-Data Directives (Level 2)</span>
+</div>
+</div>
+</div>
+<!-- Artifact Export & Diagnostics Actions -->
+<div class="rounded-xl bg-surface-container-low p-space-base shadow-md flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase">DEPLOYMENT TOOLS</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">terminal</span>
+</div>
+<h3 class="font-headline-md text-body-lg text-on-surface font-medium">Artifact Handshake &amp; APIs</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Export optimized ONNX runtime weights, inspect TensorBoard loss traces, or pull sample validation NetCDF payloads.
+        </p>
+</div>
+<div class="flex flex-col gap-space-xs font-telemetry-sm text-telemetry-sm">
+<button class="w-full flex items-center justify-between px-space-md py-space-xs rounded bg-surface-container-highest hover:bg-surface-bright text-on-surface transition-all" type="button">
+<span class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary">data_object</span>
+<span>Export ONNX TensorRT Weights</span>
+</span>
+<span class="font-telemetry-micro text-telemetry-micro text-primary">v2.4.1</span>
+</button>
+<button class="w-full flex items-center justify-between px-space-md py-space-xs rounded bg-surface-container-highest hover:bg-surface-bright text-on-surface transition-all" type="button">
+<span class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-secondary">monitoring</span>
+<span>View TensorBoard Scalars</span>
+</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">LIVE PORT :6006</span>
+</button>
+<button class="w-full flex items-center justify-between px-space-md py-space-xs rounded bg-surface-container-highest hover:bg-surface-bright text-on-surface transition-all" type="button">
+<span class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">cloud_download</span>
+<span>Download Validation NetCDF</span>
+</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">320 MB</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<script>
+  (function() {
+    // Subtle interactivity for terminal action buttons
+    const triggerBtn = document.querySelector('button:has(.material-symbols-outlined)');
+    if (triggerBtn) {
+      triggerBtn.addEventListener('click', function() {
+        console.info('[Bhū-Darpan] Operator manual sync check initiated for all 48 ingestion channels.');
+      });
+    }
+  })();
+</script></main></div></body></html>

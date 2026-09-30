@@ -1,0 +1,761 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><title>Bhū-Darpan (भू-दर्पण) — ISRO AI Climate Twin</title><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error": "#690005", "inverse-on-surface": "#233143", "outline-variant": "#3c4a46", "primary-fixed": "#62fae3", "on-primary-fixed": "#00201c", "surface": "#051424", "on-tertiary-container": "#83331e", "on-secondary-fixed": "#2f1400", "on-primary": "#003731", "surface-container": "#122131", "on-primary-fixed-variant": "#005047", "on-tertiary": "#5d1805", "surface-dim": "#051424", "on-surface": "#d4e4fa", "surface-container-low": "#0d1c2d", "error-container": "#93000a", "on-error-container": "#ffdad6", "secondary-container": "#763c00", "inverse-primary": "#006b5f", "on-secondary-fixed-variant": "#6f3800", "surface-bright": "#2c3a4c", "secondary-fixed-dim": "#ffb780", "on-background": "#d4e4fa", "surface-container-highest": "#273647", "tertiary-fixed-dim": "#ffb4a1", "surface-container-high": "#1c2b3c", "outline": "#859490", "on-tertiary-fixed-variant": "#7c2e19", "background": "#051424", "primary-container": "#2dd4bf", "on-tertiary-fixed": "#3c0800", "primary-fixed-dim": "#3cddc7", "surface-tint": "#3cddc7", "secondary": "#ffb780", "on-secondary-container": "#fca967", "on-surface-variant": "#bacac5", "tertiary-container": "#ffa891", "inverse-surface": "#d4e4fa", "on-secondary": "#4e2600", "primary": "#57f1db", "tertiary-fixed": "#ffdbd2", "error": "#ffb4ab", "surface-variant": "#273647", "surface-container-lowest": "#010f1f", "on-primary-container": "#00574d", "secondary-fixed": "#ffdcc4", "tertiary": "#ffcfc3" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-lg": "1.5rem", "margin-lg": "2rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "space-2xl": "3rem", "space-sm": "0.5rem", "gutter": "1rem", "space-2xs": "0.125rem", "space-xl": "2rem", "margin": "1rem", "space-base": "1rem", "margin-md": "1.5rem", "space-md": "0.75rem" }, "fontFamily": { "display-lg-mobile": [ "Space Grotesk" ], "body-sm": [ "Inter" ], "telemetry-md": [ "JetBrains Mono" ], "headline-lg": [ "Space Grotesk" ], "telemetry-xl": [ "JetBrains Mono" ], "headline-md": [ "Space Grotesk" ], "telemetry-sm": [ "JetBrains Mono" ], "body-md": [ "Inter" ], "headline-xl": [ "Space Grotesk" ], "body-lg": [ "Inter" ], "display-lg": [ "Space Grotesk" ], "telemetry-micro": [ "JetBrains Mono" ] }, "fontSize": { "display-lg-mobile": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "body-sm": [ "12px", { "lineHeight": "16px", "fontWeight": "400" } ], "telemetry-md": [ "14px", { "lineHeight": "20px", "fontWeight": "500" } ], "headline-lg": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "telemetry-xl": [ "28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "headline-md": [ "20px", { "lineHeight": "28px", "fontWeight": "500" } ], "telemetry-sm": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" } ], "body-md": [ "14px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-xl": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "body-lg": [ "16px", { "lineHeight": "24px", "fontWeight": "400" } ], "display-lg": [ "48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "600" } ], "telemetry-micro": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" } ] } } } }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)]"><div class="h-16 w-full px-gutter-lg flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-base"><img alt="Minimalist geometric mission insignia badge for Bhū-Darpan (भू-दर्पण) ISRO climate digital twin. Stylized globe ring with satellite orbit trail, subtle topographic isobar contours, and an optical digital reflection prism motif, vector teal cyan #2DD4BF and copper terracotta accents on a transparent dark backdrop.. Design context: - Primary color: #2dd4bf
+- Font: spaceGrotesk
+- Mode: dark
+- Roundness: rounded-md
+. The logo should be visually consistent with these brand tokens." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1V63GNXBX39Ayf7nEuL57ZvKW3UU7r70q9ZqqirM8K2a074-31LWuJse1WNtPOhOhwlWvCRlzNiSR1L_yWjrkqKf6uxrYy-4iISM-_PvYJxR7D-1IfYO0L6qQIr5WvK7jmtbR-JE34RGQX98T8QWC9l0FlvTVX2I7Yl-h46LzUeRep4PmN9zthfCdz_-E6NHc0NkIJFL7kKt62osLrTnvcdK5uUCesiu74JJDAyxC1F6ldQNRp5dSJlYy8"><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-md text-headline-md text-on-surface tracking-tight leading-none">Bhū-Darpan</span><span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container-high text-primary tracking-widest">भू-दर्पण</span></div><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase tracking-widest leading-none mt-space-2xs">ISRO AI Digital Twin • Subcontinent Matrix</span></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-medium">INSAT-3DR &amp; MOSDAC FUSED • 15m ASSIMILATION</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-medium rounded-lg"><a aria-current="page" class="px-space-sm py-space-xs transition-colors bg-primary-container text-on-primary-container font-medium rounded-lg" data-path="overview" href="#">Overview</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="climate-map" href="#">Climate Map</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="7-day-forecast" href="#">7-Day Forecast</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="what-if-simulator" href="#">What-If Simulator</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="data-and-models" href="#">Data &amp; Models</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="policy-reports" href="#">Policy Reports</a></nav><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-surface-container-low font-telemetry-micro text-telemetry-micro text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[14px]">satellite_alt</span><span>ISRO/IMD SYNC: <span class="text-primary font-medium">0.04s LCK</span></span></div><div class="hidden md:flex items-center bg-surface-container-low rounded-lg p-space-2xs"><button class="px-space-xs py-space-2xs rounded text-primary font-telemetry-micro text-telemetry-micro bg-surface-container-high" type="button">24H</button><button class="px-space-xs py-space-2xs rounded text-on-surface-variant hover:text-on-surface font-telemetry-micro text-telemetry-micro" type="button">7D</button><button class="px-space-xs py-space-2xs rounded text-on-surface-variant hover:text-on-surface font-telemetry-micro text-telemetry-micro" type="button">30D</button></div><button class="p-space-xs rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Theme Switcher (Space / Ivory)" type="button"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest/95 backdrop-blur-xl z-40 flex flex-col pt-20 pb-space-lg shadow-[1px_0_12px_rgba(0,0,0,0.4)]"><div class="px-space-base mb-space-md"><div class="flex items-center justify-between pb-space-xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase tracking-widest">OBSERVATORY DOCK</span><span class="font-telemetry-micro text-telemetry-micro text-primary">GRID #84-A</span></div><div class="h-px w-full bg-surface-container-high"></div></div><div class="flex-1 px-space-sm overflow-y-auto space-y-space-sm"><div class="px-space-sm py-space-2xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase font-semibold">MISSION WORKSPACES</span></div><nav class="space-y-space-2xs" data-active-classes="bg-primary-container text-on-primary-container font-medium rounded-lg"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs transition-all bg-primary-container text-on-primary-container font-medium rounded-lg" data-path="overview" href="#"><span class="material-symbols-outlined text-[18px]">space_dashboard</span><span>Mission Overview</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="climate-map" href="#"><span class="material-symbols-outlined text-[18px]">public</span><span>Synoptic Climate GIS</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="7-day-forecast" href="#"><span class="material-symbols-outlined text-[18px]">air</span><span>7-Day Predictor Array</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="what-if-simulator" href="#"><span class="material-symbols-outlined text-[18px]">biotech</span><span>What-If Geo Simulator</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="data-and-models" href="#"><span class="material-symbols-outlined text-[18px]">dataset</span><span>Physics &amp; AI Kernels</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="policy-reports" href="#"><span class="material-symbols-outlined text-[18px]">description</span><span>Policy Strategy Desk</span></a></nav><div class="pt-space-md px-space-sm py-space-2xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase font-semibold">ORBITAL RETICLE STATUS</span></div><div class="p-space-sm rounded-lg bg-surface-container-low space-y-space-xs"><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">SATELLITE EPHEMERIS</span><span class="text-primary">NOMINAL</span></div><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">GRID LAT/LON</span><span class="text-on-surface font-telemetry-sm text-telemetry-sm">20.59°N 78.96°E</span></div><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">SURFACE BAROMETRIC</span><span class="text-secondary font-telemetry-sm text-telemetry-sm">1012.8 hPa</span></div></div></div><div class="px-space-base pt-space-sm"><div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between"><div class="flex flex-col"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase">STATION ID</span><span class="font-telemetry-micro text-telemetry-micro text-primary font-semibold">SHAR-SDSC // ISRO</span></div><span class="material-symbols-outlined text-primary text-[18px]">radar</span></div></div></aside><div class="pl-72"><main class="relative pt-16 w-full px-gutter-lg min-h-screen bg-surface"><div class="flex flex-col w-full">
+<!-- Interactive Navigation State Updater for Parent Shell -->
+<script>
+    (function syncParentShell() {
+      try {
+        const currentPath = 'what-if-simulator';
+        const activeNavClass = ['bg-primary-container', 'text-on-primary-container', 'font-medium', 'rounded-lg'];
+        const idleNavClass = ['text-on-surface-variant', 'hover:text-on-surface', 'hover:bg-surface-container-high'];
+
+        document.querySelectorAll('nav a[data-path]').forEach(link => {
+          const path = link.getAttribute('data-path');
+          if (path === currentPath) {
+            link.classList.add(...activeNavClass);
+            link.classList.remove(...idleNavClass);
+          } else {
+            link.classList.remove(...activeNavClass);
+            link.classList.add(...idleNavClass);
+          }
+        });
+      } catch (e) {
+        console.warn('Navigation sync bypassed', e);
+      }
+    })();
+  </script>
+<!-- Physics Engine Accent Status Ribbon -->
+<div class="relative w-full overflow-hidden rounded-lg bg-surface-container-lowest shadow-xl mb-space-base">
+<div class="h-[3px] w-full bg-gradient-to-r from-primary via-secondary to-tertiary shadow-[0_0_12px_rgba(45,212,191,0.5)]"></div>
+<div class="px-space-base py-space-sm flex flex-wrap items-center justify-between gap-space-md bg-surface-container-low/95 backdrop-blur-md">
+<div class="flex items-center gap-space-sm">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+</span>
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-semibold tracking-wider">
+          LIVE PHYSICS-AI RE-SIMULATION CORE ACTIVE // PINO-EMULATOR CYCLE #42
+        </span>
+<span class="hidden md:inline-block font-telemetry-micro text-telemetry-micro text-outline px-space-xs py-space-2xs bg-surface-container rounded">
+          FOURIER SURROGATE INFERENCE: 84ms
+        </span>
+</div>
+<div class="flex items-center gap-space-base font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span>MASS RESIDUAL: <span class="text-primary">1.4 × 10⁻⁴ kg/m²s</span></span>
+<span class="hidden sm:inline">ENERGY CLOSURE: <span class="text-secondary font-medium">99.88%</span></span>
+<span class="text-primary font-medium px-space-xs py-space-2xs rounded bg-surface-container-high">NAVIER-STOKES BOUNDARY: PASS</span>
+</div>
+</div>
+</div>
+<!-- Regional Context Header & Quick Scenario Benchmarks -->
+<section class="grid grid-cols-1 xl:grid-cols-12 gap-space-md mb-space-lg">
+<div class="xl:col-span-7 bg-surface-container-low rounded-xl p-space-base shadow-md flex flex-col justify-between">
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">layers</span>
+<span class="font-headline-md text-headline-md text-on-surface tracking-tight">Synoptic Scenario Synthesizer</span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro px-space-sm py-space-2xs rounded-full bg-surface-container-highest text-secondary uppercase tracking-widest font-semibold">
+          ZONE 04 // SEMI-ARID MARATHWADA
+        </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-space-md">
+        Couple geostationary INSAT-3DR surface skin diagnostics with 30-year IMD climatology to forecast multi-trophic agro-hydrological shifts under anthropogenic perturbations.
+      </p>
+<div class="flex flex-wrap items-center gap-space-md pt-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase">Pilot Region:</span>
+<select class="bg-surface-container text-primary font-telemetry-sm text-telemetry-sm px-space-sm py-space-xs rounded-lg focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer" id="region-selector">
+<option selected="">Marathwada &amp; Vidarbha (Zone 04)</option>
+<option>All-India Synoptic Mode (Continental Grid)</option>
+<option>Indo-Gangetic Basin (Alluvial Belt)</option>
+<option>Cauvery Delta System (Zone 11)</option>
+</select>
+</div>
+<div class="flex items-center gap-space-xs font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span class="text-outline uppercase">Baseline Epoch:</span>
+<span class="font-telemetry-sm text-telemetry-sm text-on-surface font-medium">1991–2020 IMD Normals</span>
+</div>
+</div>
+</div>
+<!-- Scenario Presets Panel -->
+<div class="xl:col-span-5 bg-surface-container-low rounded-xl p-space-base shadow-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase tracking-widest">RAPID SCENARIO PRESETS</span>
+<span class="material-symbols-outlined text-outline text-[16px]">tune</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-xs mt-space-xs">
+<button class="preset-btn text-left p-space-xs rounded-lg bg-surface-container hover:bg-surface-container-high transition-all group" id="preset-elnino" type="button">
+<div class="font-telemetry-sm text-telemetry-sm text-secondary font-medium group-hover:text-primary">Severe El Niño Drought</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">-35% Precip, +3.2°C Anomaly</div>
+</button>
+<button class="preset-btn text-left p-space-xs rounded-lg bg-surface-container hover:bg-surface-container-high transition-all group" id="preset-cloudburst" type="button">
+<div class="font-telemetry-sm text-telemetry-sm text-primary font-medium">Monsoon Cloudburst Surge</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">+45% Precip, -0.8°C Anomaly</div>
+</button>
+<button class="preset-btn text-left p-space-xs rounded-lg bg-surface-container hover:bg-surface-container-high transition-all group" id="preset-heatwave" type="button">
+<div class="font-telemetry-sm text-telemetry-sm text-tertiary-container font-medium">Prolonged Loo Heatwave</div>
+<div class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">-15% Precip, +4.5°C Anomaly</div>
+</button>
+<button class="preset-btn text-left p-space-xs rounded-lg bg-surface-container hover:bg-surface-container-high transition-all group" id="preset-reset" type="button">
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface font-medium">Reset to Climatology</div>
+<div class="font-telemetry-micro text-telemetry-micro text-outline">0.0% Precip, 0.0°C Baseline</div>
+</button>
+</div>
+</div>
+</section>
+<!-- Core Simulator Split Interface (12-Column Responsive Layout) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT PANEL: Telemetry Sliders & Four Live Reactive Impact Cards (7 Cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-lg min-w-0">
+<!-- Interactive Sliders Control Deck -->
+<div class="bg-surface-container-low rounded-xl p-space-lg shadow-xl relative overflow-hidden">
+<div class="flex items-center justify-between pb-space-sm mb-space-base">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">dialpad</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Atmospheric Forcing Parameters</h3>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-primary px-space-sm py-space-2xs rounded bg-surface-container">
+            PHYSICS-INFORMED NEURAL OPERATOR (PINO)
+          </span>
+</div>
+<!-- Slider 1: Rainfall Deviation -->
+<div class="mb-space-lg bg-surface-container-lowest/80 p-space-md rounded-xl">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">rainy</span>
+<label class="font-body-md text-body-md text-on-surface font-medium" for="rain-slider">Rainfall Deviation from Normal (LPA)</label>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-telemetry-md text-telemetry-md px-space-sm py-space-2xs rounded bg-surface-container-high text-secondary font-semibold tracking-wider" id="rain-val-badge">
+                -28.0% LPA
+              </span>
+</div>
+</div>
+<div class="flex justify-between font-telemetry-micro text-telemetry-micro text-outline mb-space-xs">
+<span>DEFICIT (-50%)</span>
+<span class="text-on-surface">CLIMATOLOGY (0%)</span>
+<span>SURPLUS (+50%)</span>
+</div>
+<div class="relative py-space-xs">
+<input class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gradient-to-r from-tertiary-container via-primary-container to-primary accent-primary" id="rain-slider" max="50" min="-50" step="1" type="range" value="-28">
+</div>
+<div class="flex items-center justify-between mt-space-2xs text-on-surface-variant font-telemetry-micro text-telemetry-micro">
+<span class="text-secondary" id="rain-flux">-2.4 mm/day areal precipitation flux equivalent</span>
+<div class="flex gap-space-xs">
+<button class="quick-adjust-btn px-space-xs py-space-2xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-telemetry-micro" data-delta="-10" data-param="rain" type="button">-10%</button>
+<button class="quick-adjust-btn px-space-xs py-space-2xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-telemetry-micro" data-delta="+10" data-param="rain" type="button">+10%</button>
+</div>
+</div>
+</div>
+<!-- Slider 2: Temperature Deviation -->
+<div class="mb-space-md bg-surface-container-lowest/80 p-space-md rounded-xl">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">thermostat</span>
+<label class="font-body-md text-body-md text-on-surface font-medium" for="temp-slider">Mean Surface Temperature Deviation (ΔT)</label>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="font-telemetry-md text-telemetry-md px-space-sm py-space-2xs rounded bg-surface-container-high text-secondary font-semibold tracking-wider" id="temp-val-badge">
+                +2.40 °C
+              </span>
+</div>
+</div>
+<div class="flex justify-between font-telemetry-micro text-telemetry-micro text-outline mb-space-xs">
+<span>COOLING (-2.0°C)</span>
+<span class="text-on-surface">NOMINAL (0.0°C)</span>
+<span>SEVERE ANOMALY (+5.0°C)</span>
+</div>
+<div class="relative py-space-xs">
+<input class="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gradient-to-r from-primary via-secondary to-tertiary-container accent-secondary" id="temp-slider" max="5" min="-2" step="0.1" type="range" value="2.4">
+</div>
+<div class="flex items-center justify-between mt-space-2xs text-on-surface-variant font-telemetry-micro text-telemetry-micro">
+<span class="text-secondary" id="temp-flux">+18.6 W/m² sensible heat surface forcing</span>
+<div class="flex gap-space-xs">
+<button class="quick-adjust-btn px-space-xs py-space-2xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-telemetry-micro" data-delta="-0.5" data-param="temp" type="button">-0.5°C</button>
+<button class="quick-adjust-btn px-space-xs py-space-2xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface text-telemetry-micro" data-delta="+0.5" data-param="temp" type="button">+0.5°C</button>
+</div>
+</div>
+</div>
+<!-- Feedback Coupled Switch -->
+<div class="flex items-center justify-between pt-space-xs px-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">schema</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Couple Dynamic Hydrologic Feedback Loop (GNN-Hydro)</span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">Simulates non-linear vadose zone soil desiccations and convective vapor recycling</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="hydro-couple-toggle" type="checkbox">
+<div class="w-11 h-6 bg-surface-container peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-surface-container peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary-fixed after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+</label>
+</div>
+</div>
+<!-- 4 Live Reactive Impact Cards (2x2 Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Impact Card 1: Soil Moisture Index -->
+<div class="bg-surface-container-low rounded-xl p-space-base shadow-lg flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">grain</span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase tracking-wider font-semibold">SOIL-MOISTURE INDEX (SMI)</span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-error-container text-on-error-container font-semibold" id="smi-delta">
+              -50.0% DEPLETION
+            </span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-telemetry-xl text-telemetry-xl text-on-surface font-semibold tracking-tight" id="smi-val">0.34</span>
+<span class="font-telemetry-sm text-telemetry-sm text-outline">/ 1.00</span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline ml-auto">Baseline: 0.68</span>
+</div>
+<!-- Custom Volumetric Moisture Bar -->
+<div class="w-full bg-surface-container h-2 rounded-full mt-space-xs overflow-hidden">
+<div class="h-full bg-gradient-to-r from-secondary to-tertiary transition-all duration-300" id="smi-bar" style="width: 34%;"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-telemetry-micro text-telemetry-micro">
+<span class="text-outline">ROOT-ZONE STATUS:</span>
+<span class="text-secondary font-medium px-space-xs py-space-2xs rounded bg-surface-container" id="smi-status">Severe Root-Zone Stress</span>
+</div>
+</div>
+<!-- Impact Card 2: Drought-Risk Score -->
+<div class="bg-surface-container-low rounded-xl p-space-base shadow-lg flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">warning</span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase tracking-wider font-semibold">DROUGHT-RISK SCORE (SPEI)</span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-error-container text-on-error-container font-semibold" id="drought-delta">
+              +164% ESCALATION
+            </span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-telemetry-xl text-telemetry-xl text-on-surface font-semibold tracking-tight" id="drought-val">0.82</span>
+<span class="font-telemetry-sm text-telemetry-sm text-outline">/ 1.00</span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline ml-auto">Baseline: 0.31</span>
+</div>
+<!-- Severity Gauge Multi-Segment Indicator -->
+<div class="grid grid-cols-4 gap-1 h-2 mt-space-xs">
+<div class="rounded-l-full bg-primary/40"></div>
+<div class="bg-secondary/40"></div>
+<div class="bg-secondary"></div>
+<div class="rounded-r-full bg-tertiary-container shadow-[0_0_8px_rgba(255,168,145,0.4)]" id="gauge-crit"></div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-telemetry-micro text-telemetry-micro">
+<span class="text-outline">CLASSIFICATION:</span>
+<span class="text-tertiary font-medium px-space-xs py-space-2xs rounded bg-surface-container" id="drought-status">D3 EXTREME DROUGHT RISK</span>
+</div>
+</div>
+<!-- Impact Card 3: Crop Water Stress -->
+<div class="bg-surface-container-low rounded-xl p-space-base shadow-lg flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">agriculture</span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase tracking-wider font-semibold">CROP WATER STRESS INDEX (CWSI)</span>
+</div>
+<div class="flex items-center gap-space-2xs">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+</span>
+<span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container text-tertiary font-semibold" id="crop-badge">HIGH STRESS</span>
+</div>
+</div>
+<div class="my-space-sm space-y-space-xs font-telemetry-micro text-telemetry-micro">
+<div class="flex justify-between">
+<span class="text-outline">ATMOSPHERIC DEMAND (ET₀):</span>
+<span class="text-on-surface font-telemetry-sm text-telemetry-sm" id="crop-et">6.2 mm/day</span>
+</div>
+<div class="flex justify-between">
+<span class="text-outline">ROOT-ZONE WATER SUPPLY:</span>
+<span class="text-secondary font-telemetry-sm text-telemetry-sm" id="crop-supply">2.1 mm/day</span>
+</div>
+<div class="flex justify-between">
+<span class="text-outline">WILTING POINT PROXIMITY:</span>
+<span class="text-tertiary font-semibold" id="crop-wilting">78% (CRITICAL)</span>
+</div>
+</div>
+<div class="pt-space-xs font-telemetry-micro text-telemetry-micro text-outline">
+            VULNERABLE CROPS: <span class="text-on-surface font-medium">Kharif Cotton, Soybean &amp; Tur Dal</span>
+</div>
+</div>
+<!-- Impact Card 4: Reservoir Inflow Estimate -->
+<div class="bg-surface-container-low rounded-xl p-space-base shadow-lg flex flex-col justify-between relative overflow-hidden">
+<div class="flex items-center justify-between mb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">water</span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase tracking-wider font-semibold">RESERVOIR INFLOW ESTIMATE</span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-error-container text-on-error-container font-semibold" id="reservoir-delta">
+              -65.8% INFLOW DEFICIT
+            </span>
+</div>
+<div class="my-space-sm">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-telemetry-xl text-telemetry-xl text-on-surface font-semibold tracking-tight" id="reservoir-pct">34.2%</span>
+<span class="font-telemetry-sm text-telemetry-sm text-outline">of Historical Mean</span>
+</div>
+<div class="flex justify-between mt-space-xs font-telemetry-micro text-telemetry-micro">
+<span class="text-outline">CURRENT FLUX: <span class="text-secondary font-medium" id="reservoir-flux">4,820 cusecs</span></span>
+<span class="text-outline">BASELINE: 14,100 cusecs</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs font-telemetry-micro text-telemetry-micro">
+<span class="text-outline">ADVISORY:</span>
+<span class="text-tertiary font-semibold" id="reservoir-advisory">STORAGE THRESHOLD BREACH D+30</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: Comparative Grouped Bar Matrix & Mitigation Directives (5 Cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-lg min-w-0">
+<!-- Comparative Grouped Bar Chart Card -->
+<div class="bg-surface-container-low rounded-xl p-space-lg shadow-xl relative overflow-hidden">
+<div class="flex items-center justify-between pb-space-sm mb-space-base">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">bar_chart</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Comparative Impact Matrix</h3>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">NORMALIZED INDEX [0-100%]</span>
+</div>
+<!-- Legend -->
+<div class="flex items-center gap-space-md mb-space-base pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<div class="w-3 h-3 rounded-sm bg-primary/40"></div>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">IMD 30-Yr Climatological Normal</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<div class="w-3 h-3 rounded-sm bg-secondary"></div>
+<span class="font-telemetry-micro text-telemetry-micro text-secondary font-medium">PINO AI-Simulated Scenario</span>
+</div>
+</div>
+<!-- SVG Grouped Bar Visualization -->
+<div class="w-full bg-surface-container-lowest/80 rounded-xl p-space-md mb-space-base">
+<svg class="w-full h-auto text-on-surface-variant select-none" style="overflow: visible;" viewBox="0 0 520 280">
+<!-- Subtle Gridlines -->
+<line stroke="rgba(255,255,255,0.06)" stroke-dasharray="2 2" x1="40" x2="500" y1="30" y2="30"></line>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="end" x="32" y="34">100%</text>
+<line stroke="rgba(255,255,255,0.06)" stroke-dasharray="2 2" x1="40" x2="500" y1="85" y2="85"></line>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="end" x="32" y="89">75%</text>
+<line stroke="rgba(255,255,255,0.06)" stroke-dasharray="2 2" x1="40" x2="500" y1="140" y2="140"></line>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="end" x="32" y="144">50%</text>
+<line stroke="rgba(255,255,255,0.06)" stroke-dasharray="2 2" x1="40" x2="500" y1="195" y2="195"></line>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="end" x="32" y="199">25%</text>
+<line stroke="rgba(255,255,255,0.15)" x1="40" x2="500" y1="240" y2="240"></line>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="end" x="32" y="244">0%</text>
+<!-- GROUP 1: Soil-Moisture Index (SMI) -->
+<!-- Baseline: 68% -> y=240 - (0.68 * 210) = 97.2, h=142.8 -->
+<rect class="fill-primary/35 hover:opacity-80 transition-all" height="142.8" rx="3" width="28" x="65" y="97.2"></rect>
+<text class="fill-on-surface-variant font-telemetry-micro text-[10px]" text-anchor="middle" x="79" y="91">68%</text>
+<!-- Scenario: 34% -> y=240 - (0.34 * 210) = 168.6, h=71.4 -->
+<rect class="fill-secondary transition-all duration-500" height="71.4" id="svg-bar-smi" rx="3" width="28" x="97" y="168.6"></rect>
+<text class="fill-secondary font-telemetry-micro text-[10px] font-semibold" id="svg-txt-smi" text-anchor="middle" x="111" y="162.6">34%</text>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="middle" x="95" y="260">Soil Moisture</text>
+<text class="fill-tertiary font-telemetry-micro text-[9px] font-semibold" id="svg-delta-smi" text-anchor="middle" x="95" y="274">[-34%]</text>
+<!-- GROUP 2: Drought-Risk Vulnerability -->
+<!-- Baseline: 31% -> y=240 - (0.31 * 210) = 174.9, h=65.1 -->
+<rect class="fill-primary/35 hover:opacity-80 transition-all" height="65.1" rx="3" width="28" x="180" y="174.9"></rect>
+<text class="fill-on-surface-variant font-telemetry-micro text-[10px]" text-anchor="middle" x="194" y="168.9">31%</text>
+<!-- Scenario: 82% -> y=240 - (0.82 * 210) = 67.8, h=172.2 -->
+<rect class="fill-tertiary-container transition-all duration-500" height="172.2" id="svg-bar-drought" rx="3" width="28" x="212" y="67.8"></rect>
+<text class="fill-tertiary-container font-telemetry-micro text-[10px] font-semibold" id="svg-txt-drought" text-anchor="middle" x="226" y="61.8">82%</text>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="middle" x="210" y="260">Drought Vulnerability</text>
+<text class="fill-secondary font-telemetry-micro text-[9px] font-semibold" id="svg-delta-drought" text-anchor="middle" x="210" y="274">[+51%]</text>
+<!-- GROUP 3: Crop-Water-Stress Index -->
+<!-- Baseline: 28% -> y=240 - (0.28 * 210) = 181.2, h=58.8 -->
+<rect class="fill-primary/35 hover:opacity-80 transition-all" height="58.8" rx="3" width="28" x="295" y="181.2"></rect>
+<text class="fill-on-surface-variant font-telemetry-micro text-[10px]" text-anchor="middle" x="309" y="175.2">28%</text>
+<!-- Scenario: 86% -> y=240 - (0.86 * 210) = 59.4, h=180.6 -->
+<rect class="fill-tertiary transition-all duration-500" height="180.6" id="svg-bar-cwsi" rx="3" width="28" x="327" y="59.4"></rect>
+<text class="fill-tertiary font-telemetry-micro text-[10px] font-semibold" id="svg-txt-cwsi" text-anchor="middle" x="341" y="53.4">86%</text>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="middle" x="325" y="260">Crop Water Stress</text>
+<text class="fill-tertiary font-telemetry-micro text-[9px] font-semibold" id="svg-delta-cwsi" text-anchor="middle" x="325" y="274">[+58%]</text>
+<!-- GROUP 4: Reservoir Inflow Storage % -->
+<!-- Baseline: 100% -> y=240 - (1.00 * 210) = 30, h=210 -->
+<rect class="fill-primary/35 hover:opacity-80 transition-all" height="210" rx="3" width="28" x="410" y="30"></rect>
+<text class="fill-on-surface-variant font-telemetry-micro text-[10px]" text-anchor="middle" x="424" y="24">100%</text>
+<!-- Scenario: 34% -> y=240 - (0.34 * 210) = 168.6, h=71.4 -->
+<rect class="fill-secondary transition-all duration-500" height="71.4" id="svg-bar-res" rx="3" width="28" x="442" y="168.6"></rect>
+<text class="fill-secondary font-telemetry-micro text-[10px] font-semibold" id="svg-txt-res" text-anchor="middle" x="456" y="162.6">34%</text>
+<text class="fill-outline font-telemetry-micro text-[10px]" text-anchor="middle" x="440" y="260">Reservoir Storage</text>
+<text class="fill-tertiary font-telemetry-micro text-[9px] font-semibold" id="svg-delta-res" text-anchor="middle" x="440" y="274">[-66%]</text>
+</svg>
+</div>
+<!-- Dynamic Contextual Insight -->
+<div class="p-space-sm rounded-lg bg-surface-container-lowest flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[18px] mt-0.5">insights</span>
+<div class="flex flex-col font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span class="text-on-surface font-medium">Neural Divergence Summary</span>
+<span id="divergence-summary">Simulated anomaly triggers non-linear compounding: evapotranspiration surges while topsoil percolation drops 48%, threatening Kharif terminal yields across 1.84M hectares.</span>
+</div>
+</div>
+</div>
+<!-- Policy & Disaster Mitigation Directives (SDMA / Agriculture Desk) -->
+<div class="bg-surface-container-low rounded-xl p-space-lg shadow-xl">
+<div class="flex items-center justify-between pb-space-xs mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]">verified_user</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">SDMA &amp; Agronomic Directives</h3>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container text-primary uppercase">ACTION PROTOCOL // LEVEL 3</span>
+</div>
+<div class="space-y-space-xs mb-space-base">
+<!-- Directive 1 -->
+<div class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex items-start gap-space-sm">
+<span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container-high text-primary font-bold">01</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Activate Contingent Sowing Protocol</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Mandate immediate shift from moisture-intensive BT cotton to drought-tolerant Pearl Millet (Bajra) &amp; Pigeon Pea in rainfed blocks.</span>
+</div>
+</div>
+<!-- Directive 2 -->
+<div class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex items-start gap-space-sm">
+<span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container-high text-secondary font-bold">02</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Canal Water Allocation Curtailment</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Ration Jayakwadi &amp; Ujjani Left-Bank irrigation outflow by 40% to preserve municipal drinking supply through Q2 next year.</span>
+</div>
+</div>
+<!-- Directive 3 -->
+<div class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors flex items-start gap-space-sm">
+<span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container-high text-tertiary font-bold">03</span>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Groundwater Extraction Moratorium</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">District collectorates in Beed, Jalna, and Osmanabad to restrict deep borewell drilling (&gt;60m) under Section 144 of Maharashtra Ground Water Act.</span>
+</div>
+</div>
+</div>
+<!-- Action Export Buttons -->
+<div class="flex flex-wrap gap-space-sm pt-space-xs">
+<button class="flex-1 min-w-[140px] px-space-sm py-space-xs rounded-lg bg-primary-container text-on-primary-container font-headline-md text-telemetry-sm font-semibold hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-space-xs shadow-[0_0_12px_rgba(45,212,191,0.2)]" id="btn-export-json" type="button">
+<span class="material-symbols-outlined text-[16px]">download</span>
+<span>Export NetCDF/JSON</span>
+</button>
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high font-telemetry-sm text-telemetry-sm transition-colors flex items-center gap-space-xs" id="btn-ndma-brief" type="button">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span>Generate NDMA Brief</span>
+</button>
+<button class="p-space-xs rounded-lg bg-surface-container text-outline hover:text-primary hover:bg-surface-container-high transition-colors" id="btn-save-log" title="Save Simulation Snapshot to Mission Log" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Visual Verification Ribbon & Mission Context -->
+<section class="mt-space-lg mb-space-2xl bg-surface-container-low rounded-xl p-space-base shadow-md">
+<div class="flex flex-wrap items-center justify-between gap-space-base">
+<div class="flex items-center gap-space-base">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[24px]">satellite</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-on-surface">ISRO MOSDAC / SAC Telemetry Coupling</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+            Data Assimilation: Kalpana-1 &amp; INSAT-3DR Sounder Soundings | Boundary Kernel: 0.05° High-Resolution Gridded Reanalysis
+          </span>
+</div>
+</div>
+<div class="flex items-center gap-space-base font-telemetry-micro text-telemetry-micro">
+<div class="flex flex-col text-right">
+<span class="text-outline">COMPUTE CLUSTER</span>
+<span class="text-primary font-semibold">PARAM ANANTA // IIT GN</span>
+</div>
+<div class="h-6 w-px bg-surface-container-highest"></div>
+<div class="flex flex-col text-right">
+<span class="text-outline">SURROGATE FIDELITY</span>
+<span class="text-secondary font-semibold">R² = 0.964 against WRF</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Simulation Engine Client Script -->
+<script>
+    (function initScenarioSimulator() {
+      const rainSlider = document.getElementById('rain-slider');
+      const tempSlider = document.getElementById('temp-slider');
+      const hydroToggle = document.getElementById('hydro-couple-toggle');
+
+      const rainValBadge = document.getElementById('rain-val-badge');
+      const rainFlux = document.getElementById('rain-flux');
+      const tempValBadge = document.getElementById('temp-val-badge');
+      const tempFlux = document.getElementById('temp-flux');
+
+      // Reactive Impact Card Elements
+      const smiVal = document.getElementById('smi-val');
+      const smiDelta = document.getElementById('smi-delta');
+      const smiBar = document.getElementById('smi-bar');
+      const smiStatus = document.getElementById('smi-status');
+
+      const droughtVal = document.getElementById('drought-val');
+      const droughtDelta = document.getElementById('drought-delta');
+      const droughtStatus = document.getElementById('drought-status');
+
+      const cropBadge = document.getElementById('crop-badge');
+      const cropEt = document.getElementById('crop-et');
+      const cropSupply = document.getElementById('crop-supply');
+      const cropWilting = document.getElementById('crop-wilting');
+
+      const reservoirPct = document.getElementById('reservoir-pct');
+      const reservoirDelta = document.getElementById('reservoir-delta');
+      const reservoirFlux = document.getElementById('reservoir-flux');
+      const reservoirAdvisory = document.getElementById('reservoir-advisory');
+
+      // SVG Elements
+      const svgBarSmi = document.getElementById('svg-bar-smi');
+      const svgTxtSmi = document.getElementById('svg-txt-smi');
+      const svgDeltaSmi = document.getElementById('svg-delta-smi');
+
+      const svgBarDrought = document.getElementById('svg-bar-drought');
+      const svgTxtDrought = document.getElementById('svg-txt-drought');
+      const svgDeltaDrought = document.getElementById('svg-delta-drought');
+
+      const svgBarCwsi = document.getElementById('svg-bar-cwsi');
+      const svgTxtCwsi = document.getElementById('svg-txt-cwsi');
+      const svgDeltaCwsi = document.getElementById('svg-delta-cwsi');
+
+      const svgBarRes = document.getElementById('svg-bar-res');
+      const svgTxtRes = document.getElementById('svg-txt-res');
+      const svgDeltaRes = document.getElementById('svg-delta-res');
+
+      const divergenceSummary = document.getElementById('divergence-summary');
+
+      // Model computation surrogate function
+      function recompute() {
+        const rain = parseFloat(rainSlider.value);
+        const temp = parseFloat(tempSlider.value);
+        const hydroCoupled = hydroToggle.checked ? 1.0 : 0.65;
+
+        // Visual Slider Badges
+        const rainSign = rain > 0 ? '+' : '';
+        rainValBadge.textContent = `${rainSign}${rain.toFixed(1)}% LPA`;
+        const fluxEquiv = (rain * 0.085).toFixed(1);
+        const fluxSign = rain > 0 ? '+' : '';
+        rainFlux.textContent = `${fluxSign}${fluxEquiv} mm/day areal precipitation flux equivalent`;
+
+        const tempSign = temp > 0 ? '+' : '';
+        tempValBadge.textContent = `${tempSign}${temp.toFixed(2)} °C`;
+        const heatEquiv = (temp * 7.75).toFixed(1);
+        const heatSign = temp > 0 ? '+' : '';
+        tempFlux.textContent = `${heatSign}${heatEquiv} W/m² sensible heat surface forcing`;
+
+        // Baseline reference values (30yr normal)
+        const baseSmi = 0.68;
+        const baseDrought = 0.31;
+        const baseCwsi = 0.28;
+        const baseRes = 100.0;
+
+        // Non-linear PINO response approximations
+        let simSmi = baseSmi + (rain * 0.007) - (temp * 0.055 * hydroCoupled);
+        simSmi = Math.max(0.08, Math.min(0.98, simSmi));
+
+        let simDrought = baseDrought - (rain * 0.009) + (temp * 0.11 * hydroCoupled);
+        simDrought = Math.max(0.05, Math.min(0.98, simDrought));
+
+        let simCwsi = baseCwsi - (rain * 0.008) + (temp * 0.125 * hydroCoupled);
+        simCwsi = Math.max(0.10, Math.min(0.99, simCwsi));
+
+        let simRes = baseRes + (rain * 1.35) - (temp * 4.2 * hydroCoupled);
+        simRes = Math.max(10.0, Math.min(185.0, simRes));
+
+        // Update SMI Card
+        smiVal.textContent = simSmi.toFixed(2);
+        const smiPctDelta = (((simSmi - baseSmi) / baseSmi) * 100).toFixed(1);
+        smiDelta.textContent = `${smiPctDelta > 0 ? '+' : ''}${smiPctDelta}% ${simSmi < baseSmi ? 'DEPLETION' : 'RECHARGE'}`;
+        smiBar.style.width = `${Math.round(simSmi * 100)}%`;
+        if (simSmi < 0.38) {
+          smiStatus.textContent = 'Severe Root-Zone Stress';
+          smiStatus.className = 'text-tertiary font-medium px-space-xs py-space-2xs rounded bg-surface-container';
+        } else if (simSmi < 0.55) {
+          smiStatus.textContent = 'Moderate Moisture Deficit';
+          smiStatus.className = 'text-secondary font-medium px-space-xs py-space-2xs rounded bg-surface-container';
+        } else {
+          smiStatus.textContent = 'Optimal Field Capacity';
+          smiStatus.className = 'text-primary font-medium px-space-xs py-space-2xs rounded bg-surface-container';
+        }
+
+        // Update Drought Card
+        droughtVal.textContent = simDrought.toFixed(2);
+        const droughtPctDelta = (((simDrought - baseDrought) / baseDrought) * 100).toFixed(0);
+        droughtDelta.textContent = `${droughtPctDelta > 0 ? '+' : ''}${droughtPctDelta}% ${simDrought > baseDrought ? 'ESCALATION' : 'ALLEVIATION'}`;
+        if (simDrought >= 0.75) {
+          droughtStatus.textContent = 'D3 EXTREME DROUGHT RISK';
+          droughtStatus.className = 'text-tertiary font-medium px-space-xs py-space-2xs rounded bg-surface-container';
+        } else if (simDrought >= 0.50) {
+          droughtStatus.textContent = 'D2 SEVERE ARIDITY ALERT';
+          droughtStatus.className = 'text-secondary font-medium px-space-xs py-space-2xs rounded bg-surface-container';
+        } else {
+          droughtStatus.textContent = 'D0 NORMAL HYDROLOGY';
+          droughtStatus.className = 'text-primary font-medium px-space-xs py-space-2xs rounded bg-surface-container';
+        }
+
+        // Update CWSI Card
+        const etDemand = (4.4 + temp * 0.75).toFixed(1);
+        const waterSupply = Math.max(0.8, (4.2 + (rain * 0.06) - (temp * 0.35))).toFixed(1);
+        cropEt.textContent = `${etDemand} mm/day`;
+        cropSupply.textContent = `${waterSupply} mm/day`;
+        const wiltingPct = Math.min(99, Math.round(simCwsi * 92));
+        cropWilting.textContent = `${wiltingPct}% (${wiltingPct > 70 ? 'CRITICAL' : wiltingPct > 45 ? 'ELEVATED' : 'NOMINAL'})`;
+        
+        if (simCwsi > 0.65) {
+          cropBadge.textContent = 'HIGH STRESS';
+          cropBadge.className = 'font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container text-tertiary font-semibold';
+        } else if (simCwsi > 0.40) {
+          cropBadge.textContent = 'MODERATE STRESS';
+          cropBadge.className = 'font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container text-secondary font-semibold';
+        } else {
+          cropBadge.textContent = 'LOW STRESS';
+          cropBadge.className = 'font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container text-primary font-semibold';
+        }
+
+        // Update Reservoir Card
+        reservoirPct.textContent = `${simRes.toFixed(1)}%`;
+        const resDeltaVal = (simRes - baseRes).toFixed(1);
+        reservoirDelta.textContent = `${resDeltaVal > 0 ? '+' : ''}${resDeltaVal}% ${simRes < 100 ? 'INFLOW DEFICIT' : 'SURPLUS ACCUMULATION'}`;
+        const estFlux = Math.round(14100 * (simRes / 100));
+        reservoirFlux.textContent = `${estFlux.toLocaleString()} cusecs`;
+
+        if (simRes < 40) {
+          reservoirAdvisory.textContent = 'STORAGE THRESHOLD BREACH D+30';
+          reservoirAdvisory.className = 'text-tertiary font-semibold';
+        } else if (simRes < 70) {
+          reservoirAdvisory.textContent = 'WATCHLIST: LEVEL 2 PRE-ALLOCATION';
+          reservoirAdvisory.className = 'text-secondary font-semibold';
+        } else {
+          reservoirAdvisory.textContent = 'SUSTAINED NORMAL CARRYOVER';
+          reservoirAdvisory.className = 'text-primary font-semibold';
+        }
+
+        // Update SVG Chart Geometry (Plot area height = 210, yBase = 240)
+        function updateBar(barEl, textEl, deltaEl, valPct, baseValPct) {
+          const clamped = Math.max(5, Math.min(100, valPct));
+          const h = (clamped / 100) * 210;
+          const y = 240 - h;
+          barEl.setAttribute('y', y.toFixed(1));
+          barEl.setAttribute('height', h.toFixed(1));
+          textEl.setAttribute('y', (y - 6).toFixed(1));
+          textEl.textContent = `${Math.round(clamped)}%`;
+
+          const diff = Math.round(clamped - baseValPct);
+          const diffSign = diff > 0 ? '+' : '';
+          deltaEl.textContent = `[${diffSign}${diff}%]`;
+        }
+
+        updateBar(svgBarSmi, svgTxtSmi, svgDeltaSmi, simSmi * 100, 68);
+        updateBar(svgBarDrought, svgTxtDrought, svgDeltaDrought, simDrought * 100, 31);
+        updateBar(svgBarCwsi, svgTxtCwsi, svgDeltaCwsi, simCwsi * 100, 28);
+        updateBar(svgBarRes, svgTxtRes, svgDeltaRes, simRes, 100);
+
+        // Update Neural Divergence Summary Text dynamically
+        if (rain < -20 && temp > 1.5) {
+          divergenceSummary.textContent = 'Compounding climate hazard: vadose desiccations drop soil percolation by 52%, driving critical soil moisture stress across Marathwada Kharif cotton and soybean belts.';
+        } else if (rain > 20 && temp < 0.5) {
+          divergenceSummary.textContent = 'Flash-flood & runoff surge scenario: reservoir inflow exceeds 140% normal capacity; soil waterlogging risk triggers fungal pathogen advisory for pulse clusters.';
+        } else if (temp > 3.0) {
+          divergenceSummary.textContent = 'Thermal shock regime: sensible heat flux triggers excessive atmospheric evaporative thirst, escalating wilting points even with modest rain support.';
+        } else {
+          divergenceSummary.textContent = 'Near-climatological stability: surrogate dynamics maintain energy-mass closure within 0.04% baseline tolerance envelope.';
+        }
+      }
+
+      // Slider listeners
+      rainSlider.addEventListener('input', recompute);
+      tempSlider.addEventListener('input', recompute);
+      hydroToggle.addEventListener('change', recompute);
+
+      // Quick delta step buttons
+      document.querySelectorAll('.quick-adjust-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const param = btn.getAttribute('data-param');
+          const delta = parseFloat(btn.getAttribute('data-delta'));
+          if (param === 'rain') {
+            rainSlider.value = Math.min(50, Math.max(-50, parseFloat(rainSlider.value) + delta));
+          } else if (param === 'temp') {
+            tempSlider.value = Math.min(5, Math.max(-2, (parseFloat(tempSlider.value) + delta).toFixed(1)));
+          }
+          recompute();
+        });
+      });
+
+      // Preset Buttons
+      document.getElementById('preset-elnino').addEventListener('click', () => {
+        rainSlider.value = -35;
+        tempSlider.value = 3.2;
+        recompute();
+      });
+
+      document.getElementById('preset-cloudburst').addEventListener('click', () => {
+        rainSlider.value = 45;
+        tempSlider.value = -0.8;
+        recompute();
+      });
+
+      document.getElementById('preset-heatwave').addEventListener('click', () => {
+        rainSlider.value = -15;
+        tempSlider.value = 4.5;
+        recompute();
+      });
+
+      document.getElementById('preset-reset').addEventListener('click', () => {
+        rainSlider.value = 0;
+        tempSlider.value = 0.0;
+        recompute();
+      });
+
+      // Export Micro-interactions
+      document.getElementById('btn-export-json').addEventListener('click', () => {
+        const payload = {
+          mission: 'Bhu-Darpan What-If Twin',
+          zone: 'Zone-04 (Marathwada)',
+          parameters: {
+            rainfall_delta_pct: parseFloat(rainSlider.value),
+            temperature_delta_celsius: parseFloat(tempSlider.value),
+            gnn_hydro_coupled: hydroToggle.checked
+          },
+          computed_indices: {
+            smi: smiVal.textContent,
+            drought_risk: droughtVal.textContent,
+            cwsi: cropWilting.textContent,
+            reservoir_inflow_pct: reservoirPct.textContent
+          },
+          timestamp_utc: new Date().toISOString()
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ISRO_BhuDarpan_Scenario_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      document.getElementById('btn-ndma-brief').addEventListener('click', () => {
+        const originalText = document.getElementById('btn-ndma-brief').innerHTML;
+        document.getElementById('btn-ndma-brief').innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span><span>Synthesizing...</span>';
+        setTimeout(() => {
+          document.getElementById('btn-ndma-brief').innerHTML = '<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span><span>Brief Queued (PDF)</span>';
+          setTimeout(() => {
+            document.getElementById('btn-ndma-brief').innerHTML = originalText;
+          }, 2400);
+        }, 600);
+      });
+
+      document.getElementById('btn-save-log').addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        btn.classList.add('text-primary');
+        setTimeout(() => btn.classList.remove('text-primary'), 1200);
+      });
+
+      // Initial calculation run
+      recompute();
+    })();
+  </script>
+</div></main></div></body></html>

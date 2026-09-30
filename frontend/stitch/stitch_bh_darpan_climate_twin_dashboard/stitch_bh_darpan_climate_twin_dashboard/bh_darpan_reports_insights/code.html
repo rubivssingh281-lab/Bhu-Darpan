@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>Bhū-Darpan (भू-दर्पण) — ISRO AI Climate Twin</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error": "#690005", "inverse-on-surface": "#233143", "outline-variant": "#3c4a46", "primary-fixed": "#62fae3", "on-primary-fixed": "#00201c", "surface": "#051424", "on-tertiary-container": "#83331e", "on-secondary-fixed": "#2f1400", "on-primary": "#003731", "surface-container": "#122131", "on-primary-fixed-variant": "#005047", "on-tertiary": "#5d1805", "surface-dim": "#051424", "on-surface": "#d4e4fa", "surface-container-low": "#0d1c2d", "error-container": "#93000a", "on-error-container": "#ffdad6", "secondary-container": "#763c00", "inverse-primary": "#006b5f", "on-secondary-fixed-variant": "#6f3800", "surface-bright": "#2c3a4c", "secondary-fixed-dim": "#ffb780", "on-background": "#d4e4fa", "surface-container-highest": "#273647", "tertiary-fixed-dim": "#ffb4a1", "surface-container-high": "#1c2b3c", "outline": "#859490", "on-tertiary-fixed-variant": "#7c2e19", "background": "#051424", "primary-container": "#2dd4bf", "on-tertiary-fixed": "#3c0800", "primary-fixed-dim": "#3cddc7", "surface-tint": "#3cddc7", "secondary": "#ffb780", "on-secondary-container": "#fca967", "on-surface-variant": "#bacac5", "tertiary-container": "#ffa891", "inverse-surface": "#d4e4fa", "on-secondary": "#4e2600", "primary": "#57f1db", "tertiary-fixed": "#ffdbd2", "error": "#ffb4ab", "surface-variant": "#273647", "surface-container-lowest": "#010f1f", "on-primary-container": "#00574d", "secondary-fixed": "#ffdcc4", "tertiary": "#ffcfc3" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-lg": "1.5rem", "margin-lg": "2rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "space-2xl": "3rem", "space-sm": "0.5rem", "gutter": "1rem", "space-2xs": "0.125rem", "space-xl": "2rem", "margin": "1rem", "space-base": "1rem", "margin-md": "1.5rem", "space-md": "0.75rem" }, "fontFamily": { "display-lg-mobile": [ "Space Grotesk" ], "body-sm": [ "Inter" ], "telemetry-md": [ "JetBrains Mono" ], "headline-lg": [ "Space Grotesk" ], "telemetry-xl": [ "JetBrains Mono" ], "headline-md": [ "Space Grotesk" ], "telemetry-sm": [ "JetBrains Mono" ], "body-md": [ "Inter" ], "headline-xl": [ "Space Grotesk" ], "body-lg": [ "Inter" ], "display-lg": [ "Space Grotesk" ], "telemetry-micro": [ "JetBrains Mono" ] }, "fontSize": { "display-lg-mobile": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "body-sm": [ "12px", { "lineHeight": "16px", "fontWeight": "400" } ], "telemetry-md": [ "14px", { "lineHeight": "20px", "fontWeight": "500" } ], "headline-lg": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "telemetry-xl": [ "28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "500" } ], "headline-md": [ "20px", { "lineHeight": "28px", "fontWeight": "500" } ], "telemetry-sm": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "400" } ], "body-md": [ "14px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-xl": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "500" } ], "body-lg": [ "16px", { "lineHeight": "24px", "fontWeight": "400" } ], "display-lg": [ "48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "600" } ], "telemetry-micro": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "500" } ] } } } }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)]"><div class="h-16 w-full px-gutter-lg flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-base"><img alt="Minimalist geometric mission insignia badge for Bhū-Darpan (भू-दर्पण) ISRO climate digital twin. Stylized globe ring with satellite orbit trail, subtle topographic isobar contours, and an optical digital reflection prism motif, vector teal cyan #2DD4BF and copper terracotta accents on a transparent dark backdrop.. Design context: - Primary color: #2dd4bf
+- Font: spaceGrotesk
+- Mode: dark
+- Roundness: rounded-md
+. The logo should be visually consistent with these brand tokens." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1V63GNXBX39Ayf7nEuL57ZvKW3UU7r70q9ZqqirM8K2a074-31LWuJse1WNtPOhOhwlWvCRlzNiSR1L_yWjrkqKf6uxrYy-4iISM-_PvYJxR7D-1IfYO0L6qQIr5WvK7jmtbR-JE34RGQX98T8QWC9l0FlvTVX2I7Yl-h46LzUeRep4PmN9zthfCdz_-E6NHc0NkIJFL7kKt62osLrTnvcdK5uUCesiu74JJDAyxC1F6ldQNRp5dSJlYy8"/><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-md text-headline-md text-on-surface tracking-tight leading-none">Bhū-Darpan</span><span class="font-telemetry-micro text-telemetry-micro px-space-xs py-space-2xs rounded bg-surface-container-high text-primary tracking-widest">भू-दर्पण</span></div><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase tracking-widest leading-none mt-space-2xs">ISRO AI Digital Twin • Subcontinent Matrix</span></div><div class="hidden xl:flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-surface-container-low"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span></span><span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-medium">INSAT-3DR &amp; MOSDAC FUSED • 15m ASSIMILATION</span></div></div><nav class="hidden lg:flex items-center gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-medium rounded-lg"><a aria-current="page" class="px-space-sm py-space-xs transition-colors bg-primary-container text-on-primary-container font-medium rounded-lg" data-path="overview" href="#">Overview</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="climate-map" href="#">Climate Map</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="7-day-forecast" href="#">7-Day Forecast</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="what-if-simulator" href="#">What-If Simulator</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="data-and-models" href="#">Data &amp; Models</a><a class="px-space-sm py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high font-body-sm text-body-sm rounded-lg transition-colors" data-path="policy-reports" href="#">Policy Reports</a></nav><div class="flex items-center gap-space-md"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs rounded bg-surface-container-low font-telemetry-micro text-telemetry-micro text-on-surface-variant"><span class="material-symbols-outlined text-primary text-[14px]">satellite_alt</span><span>ISRO/IMD SYNC: <span class="text-primary font-medium">0.04s LCK</span></span></div><div class="hidden md:flex items-center bg-surface-container-low rounded-lg p-space-2xs"><button class="px-space-xs py-space-2xs rounded text-primary font-telemetry-micro text-telemetry-micro bg-surface-container-high" type="button">24H</button><button class="px-space-xs py-space-2xs rounded text-on-surface-variant hover:text-on-surface font-telemetry-micro text-telemetry-micro" type="button">7D</button><button class="px-space-xs py-space-2xs rounded text-on-surface-variant hover:text-on-surface font-telemetry-micro text-telemetry-micro" type="button">30D</button></div><button class="p-space-xs rounded-lg bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" title="Theme Switcher (Space / Ivory)" type="button"><span class="material-symbols-outlined text-[18px]">dark_mode</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest/95 backdrop-blur-xl z-40 flex flex-col pt-20 pb-space-lg shadow-[1px_0_12px_rgba(0,0,0,0.4)]"><div class="px-space-base mb-space-md"><div class="flex items-center justify-between pb-space-xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase tracking-widest">OBSERVATORY DOCK</span><span class="font-telemetry-micro text-telemetry-micro text-primary">GRID #84-A</span></div><div class="h-px w-full bg-surface-container-high"></div></div><div class="flex-1 px-space-sm overflow-y-auto space-y-space-sm"><div class="px-space-sm py-space-2xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase font-semibold">MISSION WORKSPACES</span></div><nav class="space-y-space-2xs" data-active-classes="bg-primary-container text-on-primary-container font-medium rounded-lg"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-xs transition-all bg-primary-container text-on-primary-container font-medium rounded-lg" data-path="overview" href="#"><span class="material-symbols-outlined text-[18px]">space_dashboard</span><span>Mission Overview</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="climate-map" href="#"><span class="material-symbols-outlined text-[18px]">public</span><span>Synoptic Climate GIS</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="7-day-forecast" href="#"><span class="material-symbols-outlined text-[18px]">air</span><span>7-Day Predictor Array</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="what-if-simulator" href="#"><span class="material-symbols-outlined text-[18px]">biotech</span><span>What-If Geo Simulator</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="data-and-models" href="#"><span class="material-symbols-outlined text-[18px]">dataset</span><span>Physics &amp; AI Kernels</span></a><a class="flex items-center gap-space-sm px-space-sm py-space-xs rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface font-body-sm text-body-sm transition-all" data-path="policy-reports" href="#"><span class="material-symbols-outlined text-[18px]">description</span><span>Policy Strategy Desk</span></a></nav><div class="pt-space-md px-space-sm py-space-2xs"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase font-semibold">ORBITAL RETICLE STATUS</span></div><div class="p-space-sm rounded-lg bg-surface-container-low space-y-space-xs"><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">SATELLITE EPHEMERIS</span><span class="text-primary">NOMINAL</span></div><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">GRID LAT/LON</span><span class="text-on-surface font-telemetry-sm text-telemetry-sm">20.59°N 78.96°E</span></div><div class="flex justify-between items-center font-telemetry-micro text-telemetry-micro"><span class="text-on-surface-variant">SURFACE BAROMETRIC</span><span class="text-secondary font-telemetry-sm text-telemetry-sm">1012.8 hPa</span></div></div></div><div class="px-space-base pt-space-sm"><div class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between"><div class="flex flex-col"><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase">STATION ID</span><span class="font-telemetry-micro text-telemetry-micro text-primary font-semibold">SHAR-SDSC // ISRO</span></div><span class="material-symbols-outlined text-primary text-[18px]">radar</span></div></div></aside><div class="pl-72"><main class="relative pt-16 w-full px-gutter-lg min-h-screen bg-surface"><div class="flex flex-col w-full pb-space-2xl space-y-space-lg text-on-surface">
+<!-- TOP HEADER & CONTROLS -->
+<div class="flex flex-col gap-space-md pt-space-xs">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-base pb-space-xs">
+<div class="space-y-space-xs max-w-4xl">
+<div class="flex items-center gap-space-xs font-telemetry-micro text-telemetry-micro text-primary">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="tracking-widest uppercase">DISASTER RISK REDUCTION // OPERATIONAL INTELLIGENCE // BULLETIN ARCHIVE v2.4</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface font-semibold tracking-tight">
+          Climate Reports &amp; Advisory Dossiers
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Automated synthesis of multi-sensor ISRO earth observation telemetry, physics-informed neural operator forecasts, and NDMA/CWC policy trigger matrices across 732 districts.
+        </p>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="px-space-md py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright transition-colors font-telemetry-sm text-telemetry-sm flex items-center gap-space-xs shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">history</span>
+<span>SYNC LOGS</span>
+</button>
+<button class="px-space-base py-space-xs rounded-lg bg-primary-container text-on-primary-container font-headline-md text-body-md font-semibold tracking-wide hover:brightness-110 shadow-[0_0_16px_rgba(45,212,191,0.25)] flex items-center gap-space-xs transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>[+ GENERATE AD-HOC ADVISORY]</span>
+</button>
+</div>
+</div>
+<!-- FILTER & SEARCH HUD STRIP -->
+<div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-2xs overflow-x-auto pb-space-2xs xl:pb-0 scrollbar-none">
+<button class="px-space-sm py-space-xs rounded-lg bg-primary text-on-primary font-telemetry-sm text-telemetry-sm font-semibold tracking-wide whitespace-nowrap shadow-[0_0_12px_rgba(87,241,219,0.3)]" type="button">
+          ALL BULLETINS (84)
+        </button>
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface font-telemetry-sm text-telemetry-sm whitespace-nowrap transition-colors" type="button">
+          DROUGHT WATCH (19)
+        </button>
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface font-telemetry-sm text-telemetry-sm whitespace-nowrap transition-colors" type="button">
+          MONSOON TRAJECTORY (31)
+        </button>
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface font-telemetry-sm text-telemetry-sm whitespace-nowrap transition-colors flex items-center gap-space-2xs" type="button">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+<span>EXTREME WEATHER (18)</span>
+</button>
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-on-surface font-telemetry-sm text-telemetry-sm whitespace-nowrap transition-colors" type="button">
+          AGRONOMIC DIRECTIVES (16)
+        </button>
+</div>
+<div class="flex items-center gap-space-xs flex-wrap sm:flex-nowrap">
+<div class="relative flex-1 sm:w-64 bg-surface-container-lowest rounded-lg">
+<span class="material-symbols-outlined absolute left-space-sm top-1/2 -translate-y-1/2 text-[18px] text-on-surface-variant">search</span>
+<input class="w-full pl-9 pr-space-sm py-space-xs bg-transparent rounded-lg font-telemetry-sm text-telemetry-sm text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-high/60" placeholder="Search District, State, Basin ID..." type="text"/>
+</div>
+<div class="flex items-center gap-space-2xs bg-surface-container-lowest rounded-lg px-space-sm py-space-xs text-on-surface-variant font-telemetry-sm text-telemetry-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">calendar_month</span>
+<span class="text-on-surface font-telemetry-micro">07 OCT - 14 OCT 2024</span>
+</div>
+<div class="flex items-center bg-surface-container-lowest rounded-lg p-space-2xs">
+<button class="p-space-2xs rounded bg-surface-container-high text-primary" title="Grid View" type="button">
+<span class="material-symbols-outlined text-[18px] block">grid_view</span>
+</button>
+<button class="p-space-2xs rounded text-on-surface-variant hover:text-on-surface" title="Table View" type="button">
+<span class="material-symbols-outlined text-[18px] block">table_rows</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- PROMINENT ARCHITECTURAL BANNER: SCALABLE TO NATIONAL DEPLOYMENT -->
+<div class="relative overflow-hidden rounded-xl bg-surface-container-low shadow-xl">
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest via-surface-container-low to-surface-container pointer-events-none"></div>
+<div class="absolute -right-24 -top-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute inset-0 bg-[radial-gradient(#2dd4bf_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none"></div>
+<div class="relative z-10 p-space-lg flex flex-col xl:flex-row gap-space-lg items-start xl:items-center justify-between">
+<div class="space-y-space-sm max-w-3xl">
+<div class="flex items-center gap-space-xs">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest text-primary font-telemetry-micro text-telemetry-micro uppercase tracking-widest font-semibold flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-[13px]">hub</span>
+            PARAM-RUDRA CLUSTER 80 PFLOPS
+          </span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant uppercase tracking-wider">FEDERATED SPATIAL INFERENCE</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">
+          Scalable Subcontinental Architecture // Pan-India Operational Deployment
+        </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          Engineered on PARAM supercomputing infrastructure with automated district-level downscaling (1.25 km²). Currently active in 5 pilot river basins and semi-arid agro-ecological zones, ready for zero-downtime federated rollout across all 28 States &amp; 8 Union Territories in partnership with NDMA, MoES, and State Disaster Management Authorities.
+        </p>
+<div class="flex items-center gap-space-sm pt-space-2xs flex-wrap">
+<span class="font-telemetry-micro text-telemetry-micro text-outline uppercase tracking-wider">AFFILIATE NODES:</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest text-on-surface font-telemetry-micro text-telemetry-micro">ISRO SAC / MOSDAC</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest text-on-surface font-telemetry-micro text-telemetry-micro">IMD NEW DELHI</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest text-on-surface font-telemetry-micro text-telemetry-micro">NDMA EMERGENCY DESK</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest text-on-surface font-telemetry-micro text-telemetry-micro">CWC HYDROLOGY WING</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest text-on-surface font-telemetry-micro text-telemetry-micro">ICAR AGROMET</span>
+</div>
+</div>
+<!-- Telemetry Micro-Stat Matrix -->
+<div class="grid grid-cols-2 sm:grid-cols-2 gap-space-xs w-full xl:w-auto shrink-0 font-telemetry-micro text-telemetry-micro">
+<div class="p-space-sm rounded-lg bg-surface-container-lowest/80 flex flex-col justify-between">
+<span class="text-on-surface-variant uppercase text-[10px]">NWP DOWNSCALE CADENCE</span>
+<div class="flex items-baseline gap-space-2xs pt-space-xs">
+<span class="font-telemetry-xl text-telemetry-xl font-semibold text-primary">15</span>
+<span class="text-primary-fixed-dim font-telemetry-sm">min</span>
+</div>
+<span class="text-[10px] text-outline pt-space-2xs">Sub-kilometer physics kernel</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-lowest/80 flex flex-col justify-between">
+<span class="text-on-surface-variant uppercase text-[10px]">SUBCONTINENTAL COVERAGE</span>
+<div class="flex items-baseline gap-space-2xs pt-space-xs">
+<span class="font-telemetry-xl text-telemetry-xl font-semibold text-secondary">3.287</span>
+<span class="text-secondary-fixed-dim font-telemetry-sm">M km²</span>
+</div>
+<span class="text-[10px] text-outline pt-space-2xs">Full Indian EEZ &amp; Catchments</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-lowest/80 flex flex-col justify-between">
+<span class="text-on-surface-variant uppercase text-[10px]">DISTRICT VIRTUAL TWINS</span>
+<div class="flex items-baseline gap-space-2xs pt-space-xs">
+<span class="font-telemetry-xl text-telemetry-xl font-semibold text-on-surface">732</span>
+<span class="text-primary font-telemetry-sm">NODES</span>
+</div>
+<span class="text-[10px] text-primary pt-space-2xs">100% In-Flight Topology</span>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-lowest/80 flex flex-col justify-between">
+<span class="text-on-surface-variant uppercase text-[10px]">DISSEMINATION LATENCY</span>
+<div class="flex items-baseline gap-space-2xs pt-space-xs">
+<span class="font-telemetry-xl text-telemetry-xl font-semibold text-primary-fixed">&lt;180</span>
+<span class="text-primary font-telemetry-sm">sec</span>
+</div>
+<span class="text-[10px] text-outline pt-space-2xs">Direct to SDMA Incident Hub</span>
+</div>
+</div>
+</div>
+</div>
+<!-- LIVE CRITICAL ALERTS & EARLY WARNING FEED (PRIORITY WARNING STRIP) -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-error"></span>
+</span>
+<span class="font-telemetry-micro text-telemetry-micro uppercase tracking-widest font-semibold text-error">
+          ACTIVE PRIORITY DIRECTIVES // IMMEDIATE RESPONSE PROTOCOL
+        </span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">AUTO-REFRESH: 60s</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md">
+<!-- RED ALERT / CRITICAL -->
+<div class="p-space-md rounded-xl bg-error-container/20 text-on-surface relative overflow-hidden shadow-lg flex flex-col justify-between group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-error"></div>
+<div class="space-y-space-xs pl-space-xs">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-space-2xs rounded bg-error text-on-error font-telemetry-micro text-telemetry-micro font-bold tracking-wider flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-[12px] animate-bounce">warning</span>
+              RED ALERT // FLASH FLOOD &amp; CLOUDBURST
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-error font-semibold">T-MINUS 6.5 HRS</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold leading-snug">
+            Upper Teesta &amp; Brahmaputra Tributaries
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Projected precipitation: <span class="text-error font-semibold">185 mm / 12h</span>. Saturated regolith index 0.94. High risk of debris flow &amp; glacial flash surge.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest/80 font-telemetry-micro text-telemetry-micro text-on-surface-variant space-y-1">
+<div class="flex justify-between">
+<span>TARGET REGIONS:</span>
+<span class="text-on-surface font-medium">Sikkim (Mangan, Pakyong), Jalpaiguri</span>
+</div>
+<div class="flex justify-between">
+<span>ESTIMATED EXPOSURE:</span>
+<span class="text-error font-medium">142,000 Habitants // NH-10 Corridor</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md pl-space-xs flex items-center gap-space-xs">
+<button class="flex-1 py-space-xs rounded bg-error text-on-error font-telemetry-micro text-telemetry-micro font-semibold hover:brightness-110 flex items-center justify-center gap-space-2xs shadow-[0_0_12px_rgba(239,68,68,0.35)]" type="button">
+<span class="material-symbols-outlined text-[14px]">send</span>
+            DISPATCH SMS TO SDMA
+          </button>
+<button class="px-space-sm py-space-xs rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-micro text-telemetry-micro flex items-center gap-space-2xs" type="button">
+<span class="material-symbols-outlined text-[14px]">download</span>
+            PDF
+          </button>
+</div>
+</div>
+<!-- ORANGE ALERT / SEVERE -->
+<div class="p-space-md rounded-xl bg-secondary-container/20 text-on-surface relative overflow-hidden shadow-lg flex flex-col justify-between group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-secondary"></div>
+<div class="space-y-space-xs pl-space-xs">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-space-2xs rounded bg-secondary text-on-secondary font-telemetry-micro text-telemetry-micro font-bold tracking-wider flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-[12px]">water_loss</span>
+              ORANGE ALERT // HYDRAULIC DEFICIT
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-secondary font-semibold">14-DAY ANOMALY</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold leading-snug">
+            Vadose Soil Moisture Collapse — Marathwada
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Standardized Precipitation Evapotranspiration Index (<span class="text-secondary font-semibold">SPEI: -1.82</span>). Zero vadose recharge across top 40cm root zone.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest/80 font-telemetry-micro text-telemetry-micro text-on-surface-variant space-y-1">
+<div class="flex justify-between">
+<span>AFFECTED DISTRICTS:</span>
+<span class="text-on-surface font-medium">Beed, Jalna, Kalaburagi, Osmanabad</span>
+</div>
+<div class="flex justify-between">
+<span>CROPPING HAZARD:</span>
+<span class="text-secondary font-medium">Cotton &amp; Pulses Pod-Setting Failure</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md pl-space-xs flex items-center gap-space-xs">
+<button class="flex-1 py-space-xs rounded bg-secondary text-on-secondary font-telemetry-micro text-telemetry-micro font-semibold hover:brightness-110 flex items-center justify-center gap-space-2xs" type="button">
+<span class="material-symbols-outlined text-[14px]">shield_with_heart</span>
+            CONTINGENCY ADVISORY
+          </button>
+<button class="px-space-sm py-space-xs rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-micro text-telemetry-micro flex items-center gap-space-2xs" type="button">
+<span class="material-symbols-outlined text-[14px]">download</span>
+            PDF
+          </button>
+</div>
+</div>
+<!-- AMBER WATCH: HEAT DOME -->
+<div class="p-space-md rounded-xl bg-surface-container-low text-on-surface relative overflow-hidden shadow-lg flex flex-col justify-between group">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-secondary-fixed-dim"></div>
+<div class="space-y-space-xs pl-space-xs">
+<div class="flex items-center justify-between">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-high text-secondary font-telemetry-micro text-telemetry-micro font-bold tracking-wider flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-[12px]">wb_sunny</span>
+              AMBER WATCH // CANOPY THERMAL STRESS
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-secondary font-semibold">PEAK DIURNAL</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold leading-snug">
+            Diurnal Heat Dome — S. Punjab &amp; W. Haryana
+          </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Land Surface Temperature (<span class="text-secondary font-semibold">LST &gt;43.8°C</span>) persisting 4.2°C above seasonal mean. Crop Water Stress Index: 0.78.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest/80 font-telemetry-micro text-telemetry-micro text-on-surface-variant space-y-1">
+<div class="flex justify-between">
+<span>TARGET REGIONS:</span>
+<span class="text-on-surface font-medium">Bathinda, Fazilka, Sirsa, Hisar</span>
+</div>
+<div class="flex justify-between">
+<span>RECOMMENDATION:</span>
+<span class="text-on-surface font-medium">Pumping Schedule Inversion (Night Only)</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md pl-space-xs flex items-center gap-space-xs">
+<button class="flex-1 py-space-xs rounded bg-surface-container-highest text-on-surface font-telemetry-micro text-telemetry-micro font-semibold hover:bg-surface-bright flex items-center justify-center gap-space-2xs" type="button">
+<span class="material-symbols-outlined text-[14px]">notifications_active</span>
+            PUSH TO KRISHI VIGYAN
+          </button>
+<button class="px-space-sm py-space-xs rounded bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-micro text-telemetry-micro flex items-center gap-space-2xs" type="button">
+<span class="material-symbols-outlined text-[14px]">download</span>
+            PDF
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- REPORTS CATALOGUE (CARDS & HIGH-FIDELITY TELEMETRY DOSSIERS) -->
+<div class="space-y-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-headline-md font-semibold text-on-surface">Mission Dossier Catalogue</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-high font-telemetry-micro text-telemetry-micro text-primary">6 ACTIVE FEEDS</span>
+</div>
+<div class="flex items-center gap-space-sm font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span>SORT:</span>
+<button class="text-primary font-semibold hover:underline" type="button">NEWEST FIRST</button>
+<span>•</span>
+<button class="hover:text-on-surface" type="button">SEVERITY</button>
+<span>•</span>
+<button class="hover:text-on-surface" type="button">BASIN CODE</button>
+<span>•</span>
+<button class="hover:text-on-surface" type="button">DOWNLOAD COUNT</button>
+</div>
+</div>
+<!-- 6-Card Multi-Column Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- CARD 1: MISO Phase IV Assessment -->
+<div class="p-space-base rounded-xl bg-surface-container-low shadow-md hover:shadow-xl transition-all flex flex-col justify-between relative group">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="px-space-xs py-space-2xs rounded bg-primary-container/20 text-primary font-telemetry-micro text-telemetry-micro font-semibold uppercase tracking-wider flex items-center gap-space-2xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              MODERATE WATCH
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">14 OCT, 06:00 IST // CYC #48</span>
+</div>
+<div>
+<div class="font-telemetry-micro text-telemetry-micro text-primary uppercase">SEASONAL MONSOON TRAJECTORY</div>
+<h4 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight mt-space-2xs">
+              Subcontinental Monsoon Intraseasonal Oscillation (MISO) Phase IV Assessment
+            </h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+            Zonal propagation of active convective bands shifting north-eastward towards Central India Catchments with deep moisture convergence.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest font-telemetry-micro text-telemetry-micro space-y-space-2xs">
+<div class="text-outline">GEOGRAPHICAL FOOTPRINT (42 DISTRICTS):</div>
+<div class="text-on-surface truncate font-medium">Godavari Catchment, Konkan Coast, N. Telangana</div>
+</div>
+<!-- Mini Sparkline / Metric Bar -->
+<div class="grid grid-cols-3 gap-space-2xs pt-space-2xs">
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">PRECIP ANOMALY</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-primary">+18.4%</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">CONVECTIVE IDX</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-on-surface">0.74</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">SURGE PROB</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-secondary">68%</div>
+</div>
+</div>
+<!-- SVG Visual isobar / telemetry graph -->
+<div class="w-full h-16 rounded bg-surface-container-lowest/60 p-space-xs flex flex-col justify-end">
+<div class="flex justify-between font-telemetry-micro text-[9px] text-outline pb-1">
+<span>72-HR ENSEMBLE SPREAD</span>
+<span class="text-primary font-mono">σ = ±4.2 mm</span>
+</div>
+<svg class="w-full h-8 overflow-visible" viewbox="0 0 300 40">
+<path d="M0,35 Q40,30 80,18 T160,25 T240,8 T300,12" fill="none" stroke="#2dd4bf" stroke-width="2"></path>
+<path d="M0,35 Q40,30 80,18 T160,25 T240,8 T300,12 L300,40 L0,40 Z" fill="rgba(45, 212, 191, 0.08)"></path>
+<circle cx="240" cy="8" fill="#2dd4bf" r="3"></circle>
+</svg>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-between gap-space-xs">
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-sm text-telemetry-sm flex items-center gap-space-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">download</span>
+<span>PDF (4.2 MB)</span>
+</button>
+<div class="flex items-center gap-space-2xs">
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors" title="Inspect Telemetry" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors" title="Export NetCDF" type="button">
+<span class="material-symbols-outlined text-[16px]">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 2: Ground Water Depletion Vulnerability Brief -->
+<div class="p-space-base rounded-xl bg-surface-container-low shadow-md hover:shadow-xl transition-all flex flex-col justify-between relative group">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="px-space-xs py-space-2xs rounded bg-secondary-container text-on-secondary-container font-telemetry-micro text-telemetry-micro font-semibold uppercase tracking-wider flex items-center gap-space-2xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              SEVERE WARNING
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">13 OCT, 18:30 IST // CYC #41</span>
+</div>
+<div>
+<div class="font-telemetry-micro text-telemetry-micro text-secondary uppercase">DROUGHT WATCH &amp; VADOSE ASSESSMENT</div>
+<h4 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight mt-space-2xs">
+              Sub-Surface Hydrological Drought &amp; Vadose Depletion Brief
+            </h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+            GRACE-FO combined with RISAT-1A SAR shows deep unconfined aquifer deficits in rainshadow plateaus with zero storage buffer.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest font-telemetry-micro text-telemetry-micro space-y-space-2xs">
+<div class="text-outline">GEOGRAPHICAL FOOTPRINT (28 DISTRICTS):</div>
+<div class="text-on-surface truncate font-medium">Vidarbha, Rayalaseema, Saurashtra (Osmanabad, Latur)</div>
+</div>
+<!-- Mini Sparkline / Metric Bar -->
+<div class="grid grid-cols-3 gap-space-2xs pt-space-2xs">
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">SOIL MOISTURE</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-error">0.28 <span class="text-xs">/1.0</span></div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">RESERVOIR DEF.</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-secondary">-42.0%</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">CROP STRESS</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-error">CRITICAL</div>
+</div>
+</div>
+<!-- SVG Depletion Bar Visualization -->
+<div class="w-full h-16 rounded bg-surface-container-lowest/60 p-space-xs flex flex-col justify-end">
+<div class="flex justify-between font-telemetry-micro text-[9px] text-outline pb-1">
+<span>90-DAY ROOT DEPLETION CURVE</span>
+<span class="text-secondary font-mono">-1.82 σ</span>
+</div>
+<svg class="w-full h-8 overflow-visible" viewbox="0 0 300 40">
+<path d="M0,5 Q75,10 150,22 T300,38" fill="none" stroke="#ffb780" stroke-width="2"></path>
+<path d="M0,5 Q75,10 150,22 T300,38 L300,40 L0,40 Z" fill="rgba(255, 183, 128, 0.08)"></path>
+<circle cx="300" cy="38" fill="#ffb780" r="3"></circle>
+</svg>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-between gap-space-xs">
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-sm text-telemetry-sm flex items-center gap-space-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">download</span>
+<span>PDF (3.8 MB)</span>
+</button>
+<div class="flex items-center gap-space-2xs">
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-secondary transition-colors" title="Agronomic Playbook" type="button">
+<span class="material-symbols-outlined text-[16px]">menu_book</span>
+</button>
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-secondary transition-colors" title="Export NetCDF" type="button">
+<span class="material-symbols-outlined text-[16px]">share</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 3: Urban Pluvial Inundation Precursor — Mumbai MMR -->
+<div class="p-space-base rounded-xl bg-surface-container-low shadow-md hover:shadow-xl transition-all flex flex-col justify-between relative group">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="px-space-xs py-space-2xs rounded bg-error/20 text-error font-telemetry-micro text-telemetry-micro font-bold uppercase tracking-wider flex items-center gap-space-2xs animate-pulse">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+              CRITICAL ALERT
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-error font-mono">14 OCT, 11:15 IST</span>
+</div>
+<div>
+<div class="font-telemetry-micro text-telemetry-micro text-error uppercase">EXTREME-EVENT EARLY WARNING</div>
+<h4 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight mt-space-2xs">
+              Synoptic Extreme Rainfall &amp; Pluvial Inundation — Mumbai MMR &amp; Konkan
+            </h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+            Doppler DWR Veraval-Mumbai indicates mesoscale vortex convergence aligned with spring astronomical high tide of 4.42 meters.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest font-telemetry-micro text-telemetry-micro space-y-space-2xs">
+<div class="text-outline">GEOGRAPHICAL FOOTPRINT (4 DISTRICTS):</div>
+<div class="text-on-surface truncate font-medium">Mumbai City, Mumbai Suburban, Thane, Raigad</div>
+</div>
+<!-- Mini Sparkline / Metric Bar -->
+<div class="grid grid-cols-3 gap-space-2xs pt-space-2xs">
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">24H PROJECTION</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-error">210–260 mm</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">RADAR REFLECT.</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-on-surface">&gt;52 dBZ</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">SPRING TIDE</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-error">4.42 m</div>
+</div>
+</div>
+<!-- Radar Surge Visualization -->
+<div class="w-full h-16 rounded bg-surface-container-lowest/60 p-space-xs flex flex-col justify-end">
+<div class="flex justify-between font-telemetry-micro text-[9px] text-outline pb-1">
+<span>PEAK INUNDATION WINDOW: 14:00 - 16:30 IST</span>
+<span class="text-error font-mono">PEAK TIDE 14:20</span>
+</div>
+<svg class="w-full h-8 overflow-visible" viewbox="0 0 300 40">
+<path d="M0,35 Q60,35 120,28 T200,4 T240,25 T300,32" fill="none" stroke="#ffb4ab" stroke-width="2"></path>
+<path d="M0,35 Q60,35 120,28 T200,4 T240,25 T300,32 L300,40 L0,40 Z" fill="rgba(255, 180, 171, 0.12)"></path>
+<circle cx="200" cy="4" fill="#ffb4ab" r="3.5"></circle>
+</svg>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-between gap-space-xs">
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-sm text-telemetry-sm flex items-center gap-space-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-error">download</span>
+<span>PDF (6.1 MB)</span>
+</button>
+<div class="flex items-center gap-space-2xs">
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-error transition-colors" title="NDMA Automated Brief" type="button">
+<span class="material-symbols-outlined text-[16px]">priority_high</span>
+</button>
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-error transition-colors" title="Live API Stream" type="button">
+<span class="material-symbols-outlined text-[16px]">sensors</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 4: Kharif Harvest Agrometeorological Advisory -->
+<div class="p-space-base rounded-xl bg-surface-container-low shadow-md hover:shadow-xl transition-all flex flex-col justify-between relative group">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="px-space-xs py-space-2xs rounded bg-primary-container/20 text-primary font-telemetry-micro text-telemetry-micro font-semibold uppercase tracking-wider flex items-center gap-space-2xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              ADVISORY / NOMINAL
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">12 OCT, 09:00 IST // CYC #39</span>
+</div>
+<div>
+<div class="font-telemetry-micro text-telemetry-micro text-primary font-medium uppercase">AGRONOMIC DECISIONAL ADVISORY</div>
+<h4 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight mt-space-2xs">
+              Post-Monsoon Kharif Harvest Agromet &amp; Desiccation Vector
+            </h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+            Optimal micro-climate windows for combined harvesting across wheat-paddy rotation plains with reduced risk of dew condensation.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest font-telemetry-micro text-telemetry-micro space-y-space-2xs">
+<div class="text-outline">GEOGRAPHICAL FOOTPRINT (64 DISTRICTS):</div>
+<div class="text-on-surface truncate font-medium">Indo-Gangetic Plains (Punjab, Haryana, W. Uttar Pradesh)</div>
+</div>
+<!-- Mini Sparkline / Metric Bar -->
+<div class="grid grid-cols-3 gap-space-2xs pt-space-2xs">
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">SOIL HEADROOM</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-primary">78%</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">STUBBLE MOIST.</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-on-surface">OPTIMAL</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">DEWPOINT TEMP</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-primary">19°C</div>
+</div>
+</div>
+<!-- SVG Visual isobar -->
+<div class="w-full h-16 rounded bg-surface-container-lowest/60 p-space-xs flex flex-col justify-end">
+<div class="flex justify-between font-telemetry-micro text-[9px] text-outline pb-1">
+<span>HARVEST EFFICIENCY WINDOW (5-DAY)</span>
+<span class="text-primary font-mono">HIGH FIDELITY</span>
+</div>
+<svg class="w-full h-8 overflow-visible" viewbox="0 0 300 40">
+<path d="M0,25 Q70,22 140,15 T220,10 T300,8" fill="none" stroke="#57f1db" stroke-width="2"></path>
+<path d="M0,25 Q70,22 140,15 T220,10 T300,8 L300,40 L0,40 Z" fill="rgba(87, 241, 219, 0.08)"></path>
+<circle cx="300" cy="8" fill="#57f1db" r="3"></circle>
+</svg>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-between gap-space-xs">
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-sm text-telemetry-sm flex items-center gap-space-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">download</span>
+<span>PDF (2.4 MB)</span>
+</button>
+<div class="flex items-center gap-space-2xs">
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors" title="KVK Broadcast Protocol" type="button">
+<span class="material-symbols-outlined text-[16px]">cell_tower</span>
+</button>
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors" title="Export GeoJSON" type="button">
+<span class="material-symbols-outlined text-[16px]">data_object</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 5: Glacial Lake Outburst Flood (GLOF) Bulletin -->
+<div class="p-space-base rounded-xl bg-surface-container-low shadow-md hover:shadow-xl transition-all flex flex-col justify-between relative group">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-highest text-secondary font-telemetry-micro text-telemetry-micro font-bold uppercase tracking-wider flex items-center gap-space-2xs">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              HIGH VIGILANCE
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">11 OCT, 16:45 IST // CRY-92</span>
+</div>
+<div>
+<div class="font-telemetry-micro text-telemetry-micro text-secondary uppercase">CRYOSPHERE &amp; HIGH-MOUNTAIN HAZARD</div>
+<h4 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight mt-space-2xs">
+              Glacial Lake Outburst Flood (GLOF) &amp; Mass Balance Sentinel
+            </h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+            Cartosat-3 high-resolution stereo pair indicates lateral moraine instability on South Lhonak and Shako Cho glacial lakes.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest font-telemetry-micro text-telemetry-micro space-y-space-2xs">
+<div class="text-outline">GEOGRAPHICAL FOOTPRINT (12 DISTRICTS):</div>
+<div class="text-on-surface truncate font-medium">Himachal (Kinnaur, Lahaul-Spiti), Uttarakhand (Chamoli)</div>
+</div>
+<!-- Mini Sparkline / Metric Bar -->
+<div class="grid grid-cols-3 gap-space-2xs pt-space-2xs">
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">ALBEDO DROP</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-secondary">-14.2%</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">DAM FREEBOARD</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-error">4.2 m</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">TEMP ANOMALY</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-secondary">+2.8°C</div>
+</div>
+</div>
+<!-- Visual Albedo Graph -->
+<div class="w-full h-16 rounded bg-surface-container-lowest/60 p-space-xs flex flex-col justify-end">
+<div class="flex justify-between font-telemetry-micro text-[9px] text-outline pb-1">
+<span>MORAINE RETREAT VELOCITY</span>
+<span class="text-secondary font-mono">0.42 m/week</span>
+</div>
+<svg class="w-full h-8 overflow-visible" viewbox="0 0 300 40">
+<path d="M0,15 Q80,18 160,26 T240,32 T300,36" fill="none" stroke="#ffb780" stroke-width="2"></path>
+<path d="M0,15 Q80,18 160,26 T240,32 T300,36 L300,40 L0,40 Z" fill="rgba(255, 183, 128, 0.08)"></path>
+<circle cx="240" cy="32" fill="#ffb780" r="3"></circle>
+</svg>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-between gap-space-xs">
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-sm text-telemetry-sm flex items-center gap-space-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary">download</span>
+<span>PDF (5.5 MB)</span>
+</button>
+<div class="flex items-center gap-space-2xs">
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-secondary transition-colors" title="CWC Sentinel Alert" type="button">
+<span class="material-symbols-outlined text-[16px]">landslide</span>
+</button>
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-secondary transition-colors" title="Multi-Temporal Slices" type="button">
+<span class="material-symbols-outlined text-[16px]">satellite</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 6: Reservoir Storage & Inflow Optimization Matrix -->
+<div class="p-space-base rounded-xl bg-surface-container-low shadow-md hover:shadow-xl transition-all flex flex-col justify-between relative group">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-high text-primary font-telemetry-micro text-telemetry-micro font-semibold uppercase tracking-wider flex items-center gap-space-2xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              BALANCED INFLOW
+            </span>
+<span class="font-telemetry-micro text-telemetry-micro text-outline">10 OCT, 14:00 IST // HYD-55</span>
+</div>
+<div>
+<div class="font-telemetry-micro text-telemetry-micro text-primary uppercase">WATER RESOURCES &amp; HYDRO-POWER</div>
+<h4 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight mt-space-2xs">
+              Sub-Basin Reservoir Storage &amp; Inflow Optimization Matrix
+            </h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+            Integrated reservoir rule curve adjustments for Krishna &amp; Cauvery cascade systems balancing flood buffering and summer storage.
+          </p>
+<div class="p-space-xs rounded bg-surface-container-lowest font-telemetry-micro text-telemetry-micro space-y-space-2xs">
+<div class="text-outline">GEOGRAPHICAL FOOTPRINT (31 DISTRICTS):</div>
+<div class="text-on-surface truncate font-medium">Karnataka, Andhra Pradesh, Tamil Nadu (Almatti, KRS, Mettur)</div>
+</div>
+<!-- Mini Sparkline / Metric Bar -->
+<div class="grid grid-cols-3 gap-space-2xs pt-space-2xs">
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">LIVE CAPACITY</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-primary">74.2%</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">7D INFLOW EST.</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-on-surface">+8.4k cusecs</div>
+</div>
+<div class="p-space-xs rounded bg-surface-container-high">
+<div class="font-telemetry-micro text-telemetry-micro text-outline">GATE READINESS</div>
+<div class="font-telemetry-md text-telemetry-md font-semibold text-primary">READY</div>
+</div>
+</div>
+<!-- SVG Visual Storage Fill Gauge -->
+<div class="w-full h-16 rounded bg-surface-container-lowest/60 p-space-xs flex flex-col justify-end">
+<div class="flex justify-between font-telemetry-micro text-[9px] text-outline pb-1">
+<span>CASCADE DISCHARGE BUFFER LEVEL</span>
+<span class="text-primary font-mono">NOMINAL SPREAD</span>
+</div>
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden flex">
+<div class="bg-primary h-full w-[74%] rounded-full shadow-[0_0_8px_rgba(87,241,219,0.5)]"></div>
+</div>
+<div class="flex justify-between font-telemetry-micro text-[9px] text-outline pt-1">
+<span>DEAD STORAGE: 12%</span>
+<span>RULE-CURVE LIMIT: 85%</span>
+</div>
+</div>
+</div>
+<div class="pt-space-md flex items-center justify-between gap-space-xs">
+<button class="px-space-sm py-space-xs rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-bright font-telemetry-sm text-telemetry-sm flex items-center gap-space-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">download</span>
+<span>PDF (3.1 MB)</span>
+</button>
+<div class="flex items-center gap-space-2xs">
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors" title="Dam Gate Operation Protocol" type="button">
+<span class="material-symbols-outlined text-[16px]">water_damage</span>
+</button>
+<button class="p-space-xs rounded-lg bg-surface-container-high text-on-surface-variant hover:text-primary transition-colors" title="NetCDF Hydro Model" type="button">
+<span class="material-symbols-outlined text-[16px]">share</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MULTI-SENSOR FUSION FOOTER & AUTOMATED API DISSEMINATION HUB -->
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-base shadow-lg">
+<div class="flex flex-col sm:flex-row sm:items-center gap-space-md">
+<div class="p-space-xs rounded-lg bg-surface-container-highest text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[28px]">rss_feed</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-md text-headline-md font-semibold text-on-surface">Direct Push Dissemination Hub</span>
+<span class="px-space-xs py-space-2xs rounded bg-surface-container-high text-primary font-telemetry-micro text-telemetry-micro">REST / MQTT / CAP-CP</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          Automatic broadcast pipeline targeting State EOCs, KVK Agro-SMS networks, and NDMA Common Alerting Protocol endpoints within 180 seconds of generation.
+        </p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0 flex-wrap">
+<span class="font-telemetry-micro text-telemetry-micro text-outline">SHOWING 1–6 OF 84 BULLETINS</span>
+<button class="px-space-base py-space-xs rounded-lg bg-surface-container-high hover:bg-surface-bright text-on-surface font-telemetry-sm text-telemetry-sm flex items-center gap-space-xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">folder_zip</span>
+<span>DOWNLOAD ALL (ZIP - 24.8 MB)</span>
+</button>
+<div class="flex items-center bg-surface-container-lowest rounded-lg p-space-2xs">
+<button class="p-space-2xs text-on-surface-variant hover:text-on-surface disabled:opacity-40" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px] block">chevron_left</span>
+</button>
+<span class="px-space-sm font-telemetry-micro text-telemetry-micro text-primary font-semibold">1 / 14</span>
+<button class="p-space-2xs text-on-surface-variant hover:text-on-surface" type="button">
+<span class="material-symbols-outlined text-[18px] block">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

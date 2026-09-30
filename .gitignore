@@ -1,0 +1,43 @@
+# --- Secrets / local config (never commit) ---
+.env
+**/.env
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+**/.venv/
+*.egg-info/
+
+# --- App storage / local DB / caches ---
+Backend/storage/
+# extracted EuroSAT images (27k files); the EuroSAT.zip archive IS committed
+Backend/data/eurosat/2750/
+Backend/data/gridded/_imd_raw/
+
+# --- Large model artefacts ---
+# model_inflow.pkl is 125 MB (over GitHub's 100 MB limit) so the RAW file is
+# ignored and its <100 MB archive model_inflow.pkl.zip is committed instead.
+# Unzip it in place to restore: (cd Backend/models && unzip model_inflow.pkl.zip)
+# All other model .pkl / .pt / .csv files are committed as-is.
+Backend/models/model_inflow.pkl
+# training by-products: unpromoted candidates and the pre-promotion backup
+Backend/models/*_candidate.*
+Backend/models/*_prev.*
+
+# --- Teammate hand-off bundles (redundant zipped copies of this repo) ---
+team_zips/
+
+# --- Node (optional frontend) ---
+node_modules/
+frontend/dist/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+Backend/models/model_inflow.pkl
+Backend/data/eurosat/EuroSAT.zip

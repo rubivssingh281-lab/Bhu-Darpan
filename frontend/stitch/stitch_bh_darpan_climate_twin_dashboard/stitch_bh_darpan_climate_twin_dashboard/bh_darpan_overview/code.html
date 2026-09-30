@@ -1,0 +1,463 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{width:100vw;margin:0;padding:0;background-color:#051424;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}*{-ms-overflow-style:none;scrollbar-width:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-error-container":"#ffdad6","surface-container-highest":"#273647","primary":"#57f1db","error":"#ffb4ab","on-background":"#d4e4fa","on-tertiary":"#5d1805","on-primary":"#003731","surface-container":"#122131","surface-tint":"#3cddc7","on-tertiary-container":"#83331e","surface-dim":"#051424","secondary-fixed":"#ffdcc4","surface-container-high":"#1c2b3c","on-primary-fixed-variant":"#005047","background":"#051424","on-tertiary-fixed-variant":"#7c2e19","on-surface-variant":"#bacac5","surface-container-low":"#0d1c2d","surface-bright":"#2c3a4c","outline-variant":"#3c4a46","error-container":"#93000a","on-primary-container":"#00574d","on-surface":"#d4e4fa","secondary-fixed-dim":"#ffb780","inverse-surface":"#d4e4fa","inverse-primary":"#006b5f","inverse-on-surface":"#233143","primary-fixed":"#62fae3","tertiary-fixed-dim":"#ffb4a1","secondary-container":"#763c00","on-secondary-fixed-variant":"#6f3800","on-secondary-container":"#fca967","surface":"#051424","outline":"#859490","on-primary-fixed":"#00201c","tertiary-fixed":"#ffdbd2","tertiary-container":"#ffa891","primary-fixed-dim":"#3cddc7","on-secondary-fixed":"#2f1400","surface-variant":"#273647","on-secondary":"#4e2600","on-error":"#690005","tertiary":"#ffcfc3","secondary":"#ffb780","primary-container":"#2dd4bf","on-tertiary-fixed":"#3c0800","surface-container-lowest":"#010f1f"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin":"1rem","space-md":"0.75rem","margin-lg":"2rem","space-lg":"1.5rem","space-2xl":"3rem","space-base":"1rem","gutter":"1rem","space-xl":"2rem","margin-md":"1.5rem","gutter-lg":"1.5rem","space-xs":"0.25rem","space-sm":"0.5rem","space-2xs":"0.125rem"},"fontFamily":{"headline-md":["Space Grotesk"],"body-md":["Inter"],"telemetry-sm":["JetBrains Mono"],"telemetry-xl":["JetBrains Mono"],"telemetry-micro":["JetBrains Mono"],"display-lg-mobile":["Space Grotesk"],"headline-xl":["Space Grotesk"],"body-sm":["Inter"],"body-lg":["Inter"],"headline-lg":["Space Grotesk"],"telemetry-md":["JetBrains Mono"],"display-lg":["Space Grotesk"]},"fontSize":{"headline-md":["20px",{"lineHeight":"28px","fontWeight":"500"}],"body-md":["14px",{"lineHeight":"20px","fontWeight":"400"}],"telemetry-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"400"}],"telemetry-xl":["28px",{"lineHeight":"36px","letterSpacing":"-0.01em","fontWeight":"500"}],"telemetry-micro":["10px",{"lineHeight":"14px","letterSpacing":"0.05em","fontWeight":"500"}],"display-lg-mobile":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"600"}],"headline-xl":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"500"}],"body-sm":["12px",{"lineHeight":"16px","fontWeight":"400"}],"body-lg":["16px",{"lineHeight":"24px","fontWeight":"400"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.01em","fontWeight":"500"}],"telemetry-md":["14px",{"lineHeight":"20px","fontWeight":"500"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.03em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface text-on-surface flex flex-col antialiased selection:bg-primary selection:text-on-primary min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.3)]"><div class="h-20 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm min-w-0"><div class="flex flex-col min-w-0"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-primary text-[20px]">radar</span><span class="font-headline-md text-headline-md tracking-tight text-on-surface uppercase truncate">भू-दर्पण</span></div><div class="flex items-center gap-space-xs mt-space-2xs"><span class="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span><span class="font-telemetry-micro text-telemetry-micro text-primary tracking-widest uppercase">INSAT-3DR LIVE</span><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant/60">•</span><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant font-medium">MOSDAC / IMD SYNC</span></div></div></div><div class="flex items-center gap-space-xs shrink-0"><div class="hidden xs:flex flex-col items-end pr-space-xs"><span class="font-telemetry-micro text-telemetry-micro text-primary-container font-medium uppercase tracking-wider">05:30:12 IST</span><span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">00:00:12 UTC</span></div><button aria-label="Toggle Observatory Lighting" class="w-11 h-11 flex items-center justify-center rounded-lg bg-surface-container-high/60 text-on-surface-variant hover:text-primary transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">contrast</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-[0_0_12px_rgba(87,241,219,0.2)]"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex flex-col relative w-full pt-20 pb-20 bg-surface flex-1 min-h-screen"><div class="flex flex-col w-full px-margin space-y-space-md pb-space-2xl">
+<!-- Mission Command Card -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-lg relative overflow-hidden">
+<div class="absolute -right-6 -top-6 w-36 h-36 bg-primary/5 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-start gap-space-md relative z-10">
+<div class="w-14 h-14 shrink-0 rounded-lg bg-surface-container-high p-1 shadow-md flex items-center justify-center">
+<img alt="ISRO Bhū-Darpan Insignia" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8FvQz2c8RL4T0Iml7r8pj6u-KJ04LmqNDMaLRWaRvOLBH7_3JV0-i7kHh48pqlc1_lvQAGH9GYYKD2UVgu-56E9ih3awI3RrAkrniownH2Hq6k_jOwSbD5B9nweq6zIFvNbdGZFOVPXFfyR8Z5ufY5WAjJRKNfWfCTBoETcQ481yIW4FzA_VvFXM8dIH3qBzyesS_RYcCzxpkx04XqQUyPKf32Ds4K0FNS53_WGTOCrpagrDqiv1r">
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase tracking-wider font-semibold">ISRO CLIMATE TWIN // BAH-2024</span>
+<div class="flex items-center gap-space-2xs bg-surface-container-high/80 px-2 py-0.5 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface uppercase">Live Fused</span>
+</div>
+</div>
+<h1 class="font-headline-md text-headline-md text-on-surface truncate mt-space-2xs tracking-tight">AI-Powered Digital Twin</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Subcontinental Reanalysis &amp; Deep Forecasting Engine</p>
+</div>
+</div>
+<!-- Telemetry Geodetic Bar -->
+<div class="mt-space-md pt-space-xs flex flex-wrap items-center justify-between gap-y-space-xs bg-surface-container/60 rounded-lg p-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[14px]">satellite_alt</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface">INSAT-3DR + OCEANSAT-3</span>
+</div>
+<div class="flex items-center gap-space-xs font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span>IMD Gridded: 14m ago</span>
+<span class="text-outline-variant">•</span>
+<span class="text-primary font-medium">20.59°N, 78.96°E</span>
+</div>
+</div>
+<!-- Mode Controller Pill & Observatory State -->
+<div class="mt-space-sm flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-telemetry-micro text-telemetry-micro">
+<span class="material-symbols-outlined text-[14px] text-primary">sensors</span>
+<span>ASSIMILATION FREQ: 15 MIN</span>
+</div>
+<div class="flex items-center bg-surface-container-highest p-0.5 rounded-full">
+<button class="px-2.5 py-1 rounded-full font-telemetry-micro text-telemetry-micro transition-all bg-primary text-on-primary font-semibold shadow-sm flex items-center gap-1" id="theme-space-btn" type="button">
+<span class="material-symbols-outlined text-[12px]">dark_mode</span> Space
+        </button>
+<button class="px-2.5 py-1 rounded-full font-telemetry-micro text-telemetry-micro transition-all text-on-surface-variant hover:text-on-surface flex items-center gap-1" id="theme-ivory-btn" type="button">
+<span class="material-symbols-outlined text-[12px]">wb_sunny</span> Ivory
+        </button>
+</div>
+</div>
+</div>
+<!-- Real-Time Severe Meteorological Briefing Banner -->
+<div class="rounded-xl bg-secondary-container p-space-md text-on-secondary-container shadow-md relative overflow-hidden">
+<div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-secondary/15 to-transparent pointer-events-none"></div>
+<div class="flex items-start gap-space-sm">
+<div class="p-1.5 rounded-lg bg-on-secondary-container/10 shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px] text-on-secondary-container">warning</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-space-xs">
+<span class="font-telemetry-micro text-telemetry-micro uppercase font-bold tracking-wider text-on-secondary-container">Orange Alert // MoES IMD</span>
+<span class="font-telemetry-micro text-telemetry-micro bg-on-secondary-container/15 px-1.5 py-0.5 rounded text-on-secondary-container font-semibold">T+48H LEAD</span>
+</div>
+<p class="font-body-md text-body-md font-semibold text-on-secondary-container mt-space-2xs leading-snug">
+          Intense Convective Band over Vidarbha &amp; Marathwada
+        </p>
+<p class="font-body-sm text-body-sm text-on-secondary-container/90 mt-0.5">
+          Deep moisture flux from Bay of Bengal depression. Flash-flood probability: 89%. Soil saturation nearing critical threshold.
+        </p>
+<div class="mt-space-sm flex items-center gap-space-sm font-telemetry-micro text-telemetry-micro">
+<span class="flex items-center gap-1 text-on-secondary-container font-medium underline cursor-pointer">
+<span class="material-symbols-outlined text-[14px]">download</span> Action Protocols
+          </span>
+<span class="text-on-secondary-container/60">•</span>
+<span class="text-on-secondary-container/80">Affected Basins: Godavari &amp; Wainganga</span>
+</div>
+</div>
+</div>
+</div>
+<!-- National Climate Telemetry Matrix (2x2 Grid) -->
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Card 1: Monsoon Deposition -->
+<div class="rounded-xl bg-surface-container-high p-space-sm shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant font-medium tracking-wider uppercase">Monsoon Precip</span>
+<span class="material-symbols-outlined text-primary text-[16px]">rainy</span>
+</div>
+<div class="mt-space-xs flex items-baseline gap-1">
+<span class="font-telemetry-xl text-telemetry-xl text-on-surface font-semibold">842.4</span>
+<span class="font-telemetry-micro text-telemetry-micro text-primary">mm/d</span>
+</div>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="font-telemetry-micro text-telemetry-micro text-primary font-medium">+4.2%</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">vs 30y IMD base</span>
+</div>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">Active Phase</span>
+<!-- Mini Sparkline -->
+<svg class="w-16 h-4 text-primary" fill="none" viewBox="0 0 64 16">
+<path d="M0 14 L12 11 L24 13 L36 6 L48 8 L64 2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</div>
+</div>
+<!-- Card 2: Surface Skin Temp -->
+<div class="rounded-xl bg-surface-container-high p-space-sm shadow-sm flex flex-col justify-between relative overflow-hidden">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant font-medium tracking-wider uppercase">Surface Skin Temp</span>
+<span class="material-symbols-outlined text-secondary text-[16px]">device_thermostat</span>
+</div>
+<div class="mt-space-xs flex items-baseline gap-1">
+<span class="font-telemetry-xl text-telemetry-xl text-on-surface font-semibold">34.8</span>
+<span class="font-telemetry-micro text-telemetry-micro text-secondary">°C</span>
+</div>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="font-telemetry-micro text-telemetry-micro text-secondary font-medium">+1.4 °C</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">Peninsular Anomaly</span>
+</div>
+</div>
+<div class="mt-space-sm pt-space-xs flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro px-1.5 py-0.5 rounded bg-secondary/15 text-secondary font-medium">Elevated</span>
+<!-- Mini Sparkline -->
+<svg class="w-16 h-4 text-secondary" fill="none" viewBox="0 0 64 16">
+<path d="M0 12 L14 10 L28 11 L40 7 L50 6 L64 3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+</svg>
+</div>
+</div>
+<!-- Card 3: Soil Moisture Saturation -->
+<div class="rounded-xl bg-surface-container-high p-space-sm shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant font-medium tracking-wider uppercase">Soil Saturation</span>
+<span class="material-symbols-outlined text-primary text-[16px]">water_drop</span>
+</div>
+<div class="mt-space-xs flex items-baseline gap-1">
+<span class="font-telemetry-xl text-telemetry-xl text-on-surface font-semibold">0.74</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">/ 1.0</span>
+</div>
+<p class="font-telemetry-micro text-telemetry-micro text-on-surface-variant mt-0.5">Root-zone reservoir healthy</p>
+</div>
+<div class="mt-space-sm">
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 74%"></div>
+</div>
+<div class="flex justify-between mt-1 font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span>0.0 Wilting</span>
+<span class="text-primary font-medium">74%</span>
+<span>1.0 Sat</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Climate Risk Severity Score -->
+<div class="rounded-xl bg-surface-container-high p-space-sm shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant font-medium tracking-wider uppercase">Risk Severity</span>
+<span class="material-symbols-outlined text-secondary text-[16px]">cyclone</span>
+</div>
+<div class="mt-space-xs flex items-baseline gap-1">
+<span class="font-telemetry-xl text-telemetry-xl text-on-surface font-semibold">0.42</span>
+<span class="font-telemetry-micro text-telemetry-micro text-secondary">INDEX</span>
+</div>
+<p class="font-telemetry-micro text-telemetry-micro text-on-surface-variant mt-0.5">Konkan &amp; W-Ghats Watch</p>
+</div>
+<div class="mt-space-sm">
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 35%"></div>
+<div class="bg-secondary h-full" style="width: 25%"></div>
+<div class="bg-surface-container-highest h-full" style="width: 40%"></div>
+</div>
+<div class="flex justify-between mt-1 font-telemetry-micro text-telemetry-micro text-on-surface-variant">
+<span>Low</span>
+<span class="text-secondary font-medium">Moderate Alert</span>
+<span>Critical</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Live Digital Twin Mini-Map Viewport -->
+<div class="rounded-xl bg-surface-container-low p-space-md shadow-lg flex flex-col space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">travel_explore</span>
+<span class="font-headline-md text-headline-md text-on-surface font-medium">Geo-Spatial Twin Viewport</span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded font-mono">
+        RES: 1.25 KM²
+      </span>
+</div>
+<!-- Map Viewport with Interactive Reticle and Isobars -->
+<div class="relative w-full h-72 rounded-lg bg-surface-container-lowest overflow-hidden">
+<!-- Background Cartographic Canvas / SVG Isobars -->
+<svg class="absolute inset-0 w-full h-full opacity-35" preserveAspectRatio="none" viewBox="0 0 360 288">
+<defs>
+<pattern height="30" id="reticle-grid" patternUnits="userSpaceOnUse" width="30">
+<path d="M 30 0 L 0 0 0 30" fill="none" stroke="#273647" stroke-width="0.75"></path>
+<circle cx="0" cy="0" fill="#57f1db" opacity="0.3" r="1"></circle>
+</pattern>
+<linearGradient id="cloud-grad" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#57f1db" stop-opacity="0.35"></stop>
+<stop offset="50%" stop-color="#ffb780" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#051424" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+<rect fill="url(#reticle-grid)" height="100%" width="100%"></rect>
+<!-- Stylized Subcontinent Coastline Contour -->
+<path d="M 120 40 L 190 45 L 230 70 L 260 110 L 250 140 L 220 180 L 190 230 L 180 255 L 175 250 L 155 210 L 140 170 L 125 150 L 105 130 L 95 100 L 105 60 Z" fill="none" opacity="0.6" stroke="#57f1db" stroke-dasharray="3 3" stroke-width="1.2"></path>
+<!-- Isobars / Atmospheric Depression Bands -->
+<ellipse cx="235" cy="165" fill="none" opacity="0.5" rx="55" ry="40" stroke="#ffb780" stroke-width="1"></ellipse>
+<ellipse cx="235" cy="165" fill="none" opacity="0.7" rx="35" ry="25" stroke="#ffb780" stroke-width="1.2"></ellipse>
+<ellipse cx="235" cy="165" fill="url(#cloud-grad)" rx="18" ry="12" stroke="#ffb780" stroke-width="1.4"></ellipse>
+<!-- Synoptic Wind Vector streamlines -->
+<path d="M 80 200 Q 140 190 190 170" fill="none" opacity="0.4" stroke="#57f1db" stroke-dasharray="4 2" stroke-width="1"></path>
+<path d="M 90 220 Q 150 210 210 185" fill="none" opacity="0.5" stroke="#57f1db" stroke-dasharray="4 2" stroke-width="1.2"></path>
+<path d="M 110 240 Q 170 230 225 200" fill="none" opacity="0.7" stroke="#57f1db" stroke-dasharray="4 2" stroke-width="1.5"></path>
+</svg>
+<!-- Active Storm Center Pill -->
+<div class="absolute top-[148px] right-[75px] flex items-center gap-1.5 bg-surface-container-high/90 px-2 py-1 rounded shadow-lg backdrop-blur-sm pointer-events-none">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+<div class="flex flex-col">
+<span class="font-telemetry-micro text-telemetry-micro text-secondary font-bold">BOB-04 DEPRESSION</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">994 hPa • 42 kts</span>
+</div>
+</div>
+<!-- Radar Sweep Line Animation (Subtle) -->
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent pointer-events-none animate-pulse"></div>
+<!-- Live Interactive Map Overlays -->
+<div class="absolute top-2 left-2 flex flex-col gap-1">
+<div class="bg-surface-container-high/80 backdrop-blur-md px-2 py-1 rounded text-on-surface flex items-center gap-1 font-telemetry-micro text-telemetry-micro shadow">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>LAT: 17.82° N</span>
+<span class="text-outline-variant">|</span>
+<span>LON: 86.45° E</span>
+</div>
+</div>
+<!-- Viewport Map Controls -->
+<div class="absolute top-2 right-2 flex flex-col gap-1">
+<button class="w-7 h-7 rounded bg-surface-container-high/90 text-on-surface flex items-center justify-center hover:text-primary transition-colors shadow" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+<button class="w-7 h-7 rounded bg-surface-container-high/90 text-on-surface flex items-center justify-center hover:text-primary transition-colors shadow" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<button class="w-7 h-7 rounded bg-surface-container-high/90 text-on-surface flex items-center justify-center hover:text-primary transition-colors shadow" type="button">
+<span class="material-symbols-outlined text-[16px]">layers</span>
+</button>
+</div>
+<!-- Layer Toggle Chips Over Map Bottom -->
+<div class="absolute bottom-2 inset-x-2 flex items-center justify-between gap-1 overflow-x-auto">
+<div class="flex items-center gap-1 bg-surface-container-high/85 backdrop-blur-md p-1 rounded-lg">
+<button class="px-2 py-0.5 rounded bg-primary text-on-primary font-telemetry-micro text-telemetry-micro font-semibold shadow-xs" type="button">
+            Precip
+          </button>
+<button class="px-2 py-0.5 rounded text-on-surface-variant hover:text-on-surface font-telemetry-micro text-telemetry-micro" type="button">
+            TIR-1 Thermal
+          </button>
+<button class="px-2 py-0.5 rounded text-on-surface-variant hover:text-on-surface font-telemetry-micro text-telemetry-micro" type="button">
+            850hPa Wind
+          </button>
+</div>
+<div class="bg-surface-container-high/85 backdrop-blur-md px-2 py-1 rounded-lg font-telemetry-micro text-telemetry-micro text-primary">
+          ECMWF + AI FUSED
+        </div>
+</div>
+</div>
+</div>
+<!-- Scientific Forecast & Uncertainty Band Chart (NeuralGCM vs IMD vs Bhū-Darpan) -->
+<div class="rounded-xl bg-surface-container-high p-space-md shadow-md flex flex-col space-y-space-sm">
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-md text-headline-md text-on-surface font-medium">7-Day Precipitation Projection</span>
+<span class="font-telemetry-micro text-telemetry-micro text-primary bg-primary/10 px-1.5 py-0.5 rounded font-mono">Ensemble ±2σ</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">All-India Areal Mean Deposition Trajectory (mm/day)</p>
+</div>
+<button class="text-on-surface-variant hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[18px]">query_stats</span>
+</button>
+</div>
+<!-- Chart Canvas -->
+<div class="relative w-full h-44 mt-space-xs">
+<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 340 140">
+<defs>
+<linearGradient id="uncertainty-grad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#57f1db" stop-opacity="0.30"></stop>
+<stop offset="100%" stop-color="#57f1db" stop-opacity="0.03"></stop>
+</linearGradient>
+</defs>
+<!-- Y-Axis Grid Lines -->
+<line stroke="#273647" stroke-dasharray="2 2" stroke-width="0.75" x1="20" x2="330" y1="20" y2="20"></line>
+<line stroke="#273647" stroke-dasharray="2 2" stroke-width="0.75" x1="20" x2="330" y1="60" y2="60"></line>
+<line stroke="#273647" stroke-dasharray="2 2" stroke-width="0.75" x1="20" x2="330" y1="100" y2="100"></line>
+<text fill="#859490" font-family="JetBrains Mono" font-size="8" x="5" y="24">1200</text>
+<text fill="#859490" font-family="JetBrains Mono" font-size="8" x="5" y="64">800</text>
+<text fill="#859490" font-family="JetBrains Mono" font-size="8" x="5" y="104">400</text>
+<!-- ±2σ Confidence Ribbon Area -->
+<polygon fill="url(#uncertainty-grad)" points="
+          30,85 75,70 120,40 170,25 220,38 270,55 320,68
+          320,115 270,105 220,85 170,75 120,90 75,108 30,118
+        "></polygon>
+<!-- Model 1: IMD GFS Baseline (Dashed Secondary) -->
+<polyline fill="none" opacity="0.85" points="30,102 75,92 120,72 170,58 220,68 270,82 320,95" stroke="#ffb780" stroke-dasharray="4 3" stroke-width="1.5"></polyline>
+<!-- Model 2: NeuralGCM Baseline (Subtle Grey) -->
+<polyline fill="none" opacity="0.6" points="30,96 75,84 120,60 170,48 220,55 270,70 320,85" stroke="#bacac5" stroke-width="1.2"></polyline>
+<!-- Model 3: Bhū-Darpan Fused AI Model (Solid Neon Primary) -->
+<polyline fill="none" points="30,90 75,78 120,52 170,35 220,44 270,62 320,78" stroke="#57f1db" stroke-linecap="round" stroke-width="2.5"></polyline>
+<!-- Data Focus Markers on Peak -->
+<circle class="animate-pulse" cx="170" cy="35" fill="#57f1db" r="3.5"></circle>
+<line opacity="0.6" stroke="#57f1db" stroke-dasharray="2 2" stroke-width="0.75" x1="170" x2="170" y1="35" y2="120"></line>
+</svg>
+</div>
+<!-- X-Axis Labels -->
+<div class="flex justify-between px-4 font-telemetry-micro text-telemetry-micro text-on-surface-variant font-mono">
+<span>TODAY</span>
+<span>D+1</span>
+<span>D+2</span>
+<span class="text-primary font-bold">D+3 (PEAK)</span>
+<span>D+4</span>
+<span>D+5</span>
+<span>D+6</span>
+</div>
+<!-- Chart Legend Matrix -->
+<div class="pt-space-xs flex flex-wrap items-center justify-between gap-2 bg-surface-container/70 p-space-xs rounded-lg">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-0.5 bg-primary rounded-full"></span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface font-semibold">Bhū-Darpan Fused AI (1,048 mm)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-0.5 bg-secondary rounded-full"></span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">IMD GFS (890 mm)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-0.5 bg-outline rounded-full"></span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant">NeuralGCM (940 mm)</span>
+</div>
+</div>
+</div>
+<!-- Real-Time Data Assimilation & Sensor Pipeline -->
+<div class="rounded-xl bg-surface-container p-space-md shadow-md space-y-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">hub</span>
+<span class="font-headline-md text-headline-md text-on-surface font-medium">Assimilation Pipeline</span>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-primary font-semibold">4 / 4 INGESTIONS NOMINAL</span>
+</div>
+<div class="space-y-space-xs">
+<!-- Pipeline Row 1 -->
+<div class="flex items-center justify-between p-space-xs rounded-lg bg-surface-container-high/60">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<div class="truncate">
+<span class="font-telemetry-sm text-telemetry-sm text-on-surface font-medium">INSAT-3DR Multispectral TIR1/TIR2</span>
+<span class="block font-telemetry-micro text-telemetry-micro text-on-surface-variant">Geostationary 74°E • Band Radiance Calibrated</span>
+</div>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold shrink-0">99.8% Sync</span>
+</div>
+<!-- Pipeline Row 2 -->
+<div class="flex items-center justify-between p-space-xs rounded-lg bg-surface-container-high/60">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<div class="truncate">
+<span class="font-telemetry-sm text-telemetry-sm text-on-surface font-medium">IMD 0.25° Gridded Rainfall Network</span>
+<span class="block font-telemetry-micro text-telemetry-micro text-on-surface-variant">AWS Station Ingestion • QC Layer Passed</span>
+</div>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant font-mono shrink-0">10:30 IST Valid</span>
+</div>
+<!-- Pipeline Row 3 -->
+<div class="flex items-center justify-between p-space-xs rounded-lg bg-surface-container-high/60">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<div class="truncate">
+<span class="font-telemetry-sm text-telemetry-sm text-on-surface font-medium">Bhuvan Hydrology River Gauges</span>
+<span class="block font-telemetry-micro text-telemetry-micro text-on-surface-variant">4,120 telemetry buoys streaming live discharge</span>
+</div>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-semibold shrink-0">Active Telemetry</span>
+</div>
+<!-- Pipeline Row 4 -->
+<div class="flex items-center justify-between p-space-xs rounded-lg bg-surface-container-high/60">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<div class="truncate">
+<span class="font-telemetry-sm text-telemetry-sm text-on-surface font-medium">MOSDAC Atmospheric Reanalysis</span>
+<span class="block font-telemetry-micro text-telemetry-micro text-on-surface-variant">Kalman-Filtered Boundary Conditions (0–30 km)</span>
+</div>
+</div>
+<span class="font-telemetry-micro text-telemetry-micro px-2 py-0.5 rounded bg-primary/10 text-primary font-semibold shrink-0">Ready</span>
+</div>
+</div>
+</div>
+<!-- Operational Short-Cut Deck (What-If, Map, Models) -->
+<div class="rounded-xl bg-surface-container-high p-space-md shadow-md space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-md text-headline-md text-on-surface font-medium">Mission Actions &amp; Diagnostics</span>
+<span class="font-telemetry-micro text-telemetry-micro text-primary uppercase font-mono">[READY_STATE]</span>
+</div>
+<div class="grid grid-cols-2 gap-space-xs">
+<a class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-highest transition-colors flex items-center gap-2 group" href="#">
+<div class="w-8 h-8 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">precision_manufacturing</span>
+</div>
+<div class="min-w-0">
+<span class="font-body-sm text-body-sm text-on-surface font-medium block truncate">Run Simulator</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant block truncate">Cloud Seeding &amp; Heat</span>
+</div>
+</a>
+<a class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-highest transition-colors flex items-center gap-2 group" href="#">
+<div class="w-8 h-8 rounded bg-secondary/10 text-secondary flex items-center justify-center shrink-0 group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined text-[18px]">public</span>
+</div>
+<div class="min-w-0">
+<span class="font-body-sm text-body-sm text-on-surface font-medium block truncate">GIS Choropleth</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant block truncate">Full Spatial Layers</span>
+</div>
+</a>
+<a class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-highest transition-colors flex items-center gap-2 group" href="#">
+<div class="w-8 h-8 rounded bg-surface-bright text-on-surface flex items-center justify-center shrink-0 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">schema</span>
+</div>
+<div class="min-w-0">
+<span class="font-body-sm text-body-sm text-on-surface font-medium block truncate">AI Model Hub</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant block truncate">Weights &amp; Benchmarks</span>
+</div>
+</a>
+<a class="p-space-sm rounded-lg bg-surface-container hover:bg-surface-container-highest transition-colors flex items-center gap-2 group" href="#">
+<div class="w-8 h-8 rounded bg-surface-bright text-on-surface flex items-center justify-center shrink-0 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">file_download</span>
+</div>
+<div class="min-w-0">
+<span class="font-body-sm text-body-sm text-on-surface font-medium block truncate">Policy Brief PDF</span>
+<span class="font-telemetry-micro text-telemetry-micro text-on-surface-variant block truncate">NDMA Ready Dispatch</span>
+</div>
+</a>
+</div>
+<!-- Execution Terminal Button -->
+<button class="w-full py-2.5 px-space-md rounded-lg bg-primary text-on-primary font-headline-md text-headline-md font-semibold tracking-tight shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 mt-space-xs" type="button">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+<span>[ INITIALIZE WHAT-IF SCENARIO RUN ]</span>
+</button>
+</div>
+</div>
+<script>
+  (function() {
+    const spaceBtn = document.getElementById('theme-space-btn');
+    const ivoryBtn = document.getElementById('theme-ivory-btn');
+
+    if (spaceBtn && ivoryBtn) {
+      spaceBtn.addEventListener('click', () => {
+        spaceBtn.className = "px-2.5 py-1 rounded-full font-telemetry-micro text-telemetry-micro transition-all bg-primary text-on-primary font-semibold shadow-sm flex items-center gap-1";
+        ivoryBtn.className = "px-2.5 py-1 rounded-full font-telemetry-micro text-telemetry-micro transition-all text-on-surface-variant hover:text-on-surface flex items-center gap-1";
+      });
+
+      ivoryBtn.addEventListener('click', () => {
+        ivoryBtn.className = "px-2.5 py-1 rounded-full font-telemetry-micro text-telemetry-micro transition-all bg-secondary text-on-secondary font-semibold shadow-sm flex items-center gap-1";
+        spaceBtn.className = "px-2.5 py-1 rounded-full font-telemetry-micro text-telemetry-micro transition-all text-on-surface-variant hover:text-on-surface flex items-center gap-1";
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-1px_16px_rgba(0,0,0,0.4)]" data-active-classes="text-primary font-semibold"><div class="flex justify-between items-center h-20 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center gap-space-2xs min-w-[52px] min-h-[44px] flex-1 transition-colors text-primary font-semibold" data-path="overview" href="#"><span class="material-symbols-outlined text-[22px]">dashboard</span><span class="font-telemetry-micro text-telemetry-micro tracking-tight">Overview</span></a><a class="flex flex-col items-center justify-center gap-space-2xs min-w-[52px] min-h-[44px] flex-1 text-on-surface-variant hover:text-primary transition-colors" data-path="climate-map" href="#"><span class="material-symbols-outlined text-[22px]">public</span><span class="font-telemetry-micro text-telemetry-micro tracking-tight">Map</span></a><a class="flex flex-col items-center justify-center gap-space-2xs min-w-[52px] min-h-[44px] flex-1 text-on-surface-variant hover:text-primary transition-colors" data-path="forecast" href="#"><span class="material-symbols-outlined text-[22px]">air</span><span class="font-telemetry-micro text-telemetry-micro tracking-tight">Forecast</span></a><a class="flex flex-col items-center justify-center gap-space-2xs min-w-[52px] min-h-[44px] flex-1 text-on-surface-variant hover:text-primary transition-colors" data-path="simulator" href="#"><span class="material-symbols-outlined text-[22px]">precision_manufacturing</span><span class="font-telemetry-micro text-telemetry-micro tracking-tight">Simulator</span></a><a class="flex flex-col items-center justify-center gap-space-2xs min-w-[52px] min-h-[44px] flex-1 text-on-surface-variant hover:text-primary transition-colors" data-path="models" href="#"><span class="material-symbols-outlined text-[22px]">schema</span><span class="font-telemetry-micro text-telemetry-micro tracking-tight">Models</span></a><a class="flex flex-col items-center justify-center gap-space-2xs min-w-[52px] min-h-[44px] flex-1 text-on-surface-variant hover:text-primary transition-colors" data-path="reports" href="#"><span class="material-symbols-outlined text-[22px]">assessment</span><span class="font-telemetry-micro text-telemetry-micro tracking-tight">Reports</span></a></div></nav></body></html>
