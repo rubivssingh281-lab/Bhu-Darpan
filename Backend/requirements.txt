@@ -1,0 +1,44 @@
+# Bhu-Darpan — Satellite Image Analysis System (FastAPI backend)
+# Tested on Python 3.12
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pydantic==2.10.4
+email-validator==2.2.0
+python-dotenv==1.0.1
+
+# Auth
+PyJWT==2.10.1
+passlib==1.7.4
+
+# Image processing / AI (classical CV pipeline)
+numpy==2.2.1
+pillow==11.1.0
+opencv-python-headless==4.11.0.86
+scikit-learn==1.6.1
+scipy==1.15.1
+
+# Deep learning — EuroSAT-trained land-cover CNN (satellite scene analysis + change detection)
+# CPU-only wheels. Install with the PyTorch CPU index (see README section 3):
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+torch==2.14.0
+torchvision==0.29.0
+
+# Multispectral GeoTIFF reading (NIR/SWIR indices for reliable flood/burn detection)
+# tifffile handles band data; add rasterio for full geo-metadata if needed.
+tifffile==2026.9.20
+imagecodecs==2026.8.16
+
+# Reporting
+reportlab==4.2.5
+
+# Database (optional — app falls back to a local JSON store if Mongo is unreachable)
+pymongo==4.10.1
+
+# National-data ingestion ETL (gridded IMD / NASA POWER / INSAT)
+xarray==2025.1.1
+netCDF4==1.7.2
+requests==2.32.3
+imdlib==0.1.21
+

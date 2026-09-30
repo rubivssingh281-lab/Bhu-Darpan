@@ -1,0 +1,1758 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhū-Darpan — Jammu &amp; Kashmir Climate &amp; Satellite Twin</title>
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    #districtMap { height: 440px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--panel-2); }
+    .leaflet-container { font-family: var(--font-mono); background: var(--panel-2); }
+    .leaflet-tooltip.mk-label { background: rgba(255,254,251,.72); border: none; box-shadow: none; color: #33302a; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; padding: 0 3px; }
+    .leaflet-tooltip.mk-label::before { display: none; }
+  </style>
+  <style>
+    :root {
+      /* Cream / ivory theme */
+      --bg: #f3ede0;
+      --panel: #fffefb;
+      --panel-2: #f7f2e8;
+      --line: #e6dfce;
+      --line-hover: #d8cfb8;
+      --teal: #0e9c8a;
+      --teal-soft: #14b8a6;
+      --teal-dim: #0f766e;
+      --terracotta: #d2694a;
+      --ochre: #dd9138;
+      --forest: #2e7d32;
+      --water: #1565c0;
+      --agri: #d9a520;
+      --urban: #e53935;
+      --other: #9e9e9e;
+      --text: #262218;
+      --ink-soft: #4a4433;
+      --muted: #857b67;
+      --shadow: 0 10px 30px rgba(40, 33, 18, .07);
+      --shadow-lg: 0 22px 60px rgba(40, 33, 18, .12);
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); line-height: 1.6; overflow-x: hidden; font-size: 15px; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    ::selection { background: var(--teal-soft); color: #fff; }
+    [hidden] { display: none !important; }
+
+    /* Background ring (kept from original) */
+    .mesh-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 12% 8%, rgba(20,184,166,.06) 0%, transparent 55%), radial-gradient(ellipse at 88% 92%, rgba(221,145,56,.05) 0%, transparent 55%); }
+    .isobars { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .07; background-image: repeating-radial-gradient(circle at 78% 12%, transparent 0, transparent 58px, var(--teal) 59px, transparent 60px); }
+
+    /* ---------- Sidebar nav ---------- */
+    :root { --sbw: 284px; }
+    nav { position: fixed; top: 0; left: 0; bottom: 0; z-index: 50; width: var(--sbw); display: flex; flex-direction: column; align-items: stretch; padding: 22px 16px; background: #1c211b; background-image: linear-gradient(180deg, #20261f 0%, #191d18 100%); border-right: 1px solid rgba(255,255,255,.08); box-shadow: 2px 0 22px rgba(0,0,0,.14); overflow-y: auto; }
+    .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 2px 6px 8px; }
+    .brand-mark { width: 88px; height: 88px; object-fit: contain; display: block; }
+    .brand-hi, .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 30px; letter-spacing: -.01em; line-height: 1.15; white-space: nowrap; color: #f4efe3; }
+    .brand-sub { font-size: 9.5px; color: rgba(244,239,227,.5); letter-spacing: .1em; text-transform: uppercase; font-weight: 500; font-family: var(--font-mono); margin-top: 3px; }
+    .navlinks { display: flex; flex-direction: column; gap: 3px; margin-top: 16px; font-size: 20px; color: rgba(244,239,227,.62); font-weight: 500; }
+    .navlinks a { position: relative; transition: all .2s; padding: 10px 14px; border-radius: 9px; }
+    .navlinks a:hover { color: #fff; background: rgba(255,255,255,.06); }
+    .navlinks a.active { color: #fff; background: rgba(124,201,179,.16); font-weight: 600; box-shadow: inset 3px 0 0 var(--teal); }
+    .nav-right { display: flex; flex-direction: column; align-items: flex-start; gap: 0; margin-top: auto; padding: 14px 8px 2px; border-top: 1px solid rgba(255,255,255,.09); position: relative; }
+    .acct-btn { width: 46px; height: 46px; border-radius: 50%; border: none; background: var(--teal); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 19px; cursor: pointer; display: grid; place-items: center; transition: transform .18s, box-shadow .18s; box-shadow: 0 2px 8px rgba(14,156,138,.28); }
+    .acct-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(14,156,138,.4); }
+    .acct-btn.open { box-shadow: 0 0 0 4px #eaf6f2, 0 4px 14px rgba(14,156,138,.35); }
+    .acct-panel { position: absolute; bottom: 62px; left: 8px; right: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px; box-shadow: 0 -6px 24px rgba(0,0,0,.12); animation: acctIn .18s ease; z-index: 5; }
+    @keyframes acctIn { from { opacity: 0; transform: translateY(8px); } }
+    .acct-head { display: flex; align-items: center; gap: 11px; margin-bottom: 12px; }
+    .acct-av { width: 40px; height: 40px; border-radius: 50%; background: var(--teal); color: #fff; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 16px; flex-shrink: 0; }
+    .acct-name { font-weight: 600; font-size: 14px; color: var(--ink); }
+    .acct-email { font-family: var(--font-mono); font-size: 11px; color: var(--muted); word-break: break-all; margin-top: 2px; }
+    .acct-details { display: flex; flex-direction: column; margin-bottom: 12px; border-top: 1px solid var(--line); }
+    .acct-row { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; font-size: 12px; border-bottom: 1px dashed var(--line); }
+    .acct-row:last-child { border-bottom: none; }
+    .acct-row .k { color: var(--muted); font-family: var(--font-mono); flex-shrink: 0; }
+    .acct-row .v { color: var(--ink); font-weight: 600; text-align: right; word-break: break-word; }
+    .acct-badge { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; color: var(--teal); background: #eaf6f2; padding: 3px 9px; border-radius: 12px; }
+    #appShell { padding-left: var(--sbw); }
+    @media(max-width:960px){
+      nav { position: sticky; top: 0; left: auto; bottom: auto; width: auto; flex-direction: row; align-items: center; gap: 14px; padding: 11px 5vw; border-right: none; border-bottom: 1px solid rgba(255,255,255,.09); overflow-x: auto; overflow-y: hidden; }
+      .brand { padding: 0; flex-shrink: 0; }
+      .navlinks { flex-direction: row; margin-top: 0; gap: 4px; }
+      .navlinks a { padding: 7px 11px; white-space: nowrap; }
+      .nav-right { flex-direction: row; align-items: center; margin-top: 0; margin-left: auto; padding: 0; border-top: none; flex-shrink: 0; }
+      #appShell { padding-left: 0; }
+    }
+
+    /* ---------- Buttons ---------- */
+    .btn { font-family: var(--font-mono); font-size: 13px; padding: 12px 22px; border-radius: 8px; letter-spacing: .01em; font-weight: 500; transition: all .25s cubic-bezier(.16,1,.3,1); display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer; }
+    .btn-primary { background: var(--teal); color: #fff; box-shadow: 0 4px 16px rgba(14,156,138,.25); }
+    .btn-primary:hover { background: var(--teal-dim); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(14,156,138,.32); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-ghost { border: 1px solid var(--line-hover); color: var(--ink-soft); background: var(--panel); }
+    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); background: #f0faf7; }
+    .btn-sm { padding: 8px 14px; font-size: 12px; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 74px 5vw; position: relative; z-index: 1; border-bottom: 1px solid var(--line); }
+    .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px; flex-wrap: wrap; gap: 18px; }
+    .sec-num { font-family: var(--font-mono); font-size: 11px; color: var(--teal); letter-spacing: .12em; font-weight: 500; }
+    .sec-title { font-family: var(--font-display); font-size: clamp(26px,3.2vw,38px); font-weight: 700; margin-top: 8px; letter-spacing: -.02em; }
+    .sec-desc { color: var(--muted); max-width: 60ch; font-size: 15.5px; line-height: 1.65; }
+
+    /* ---------- Hero ---------- */
+    .hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: start; padding-top: 80px; }
+    @media(max-width:980px){ .hero { grid-template-columns: 1fr; gap: 40px; } }
+    .eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--teal); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; font-weight: 500; }
+    .eyebrow::before { content: ''; width: 28px; height: 1.5px; background: var(--teal); }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(34px,5vw,56px); font-weight: 700; letter-spacing: -.025em; line-height: 1.07; margin-bottom: 22px; }
+    .hero h1 .accent { color: var(--teal); }
+    .hero p.lede { font-size: 17px; color: var(--muted); max-width: 52ch; margin-bottom: 30px; line-height: 1.6; }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .telemetry { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 26px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+    .telemetry::before { content: 'LIVE CLIMATE DOWNLINK · JAMMU & KASHMIR'; display: block; font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: .1em; margin-bottom: 18px; font-weight: 600; }
+    .tele-row { display: flex; justify-content: space-between; align-items: baseline; padding: 13px 0; border-bottom: 1px dashed var(--line); font-family: var(--font-mono); }
+    .tele-row:last-child { border-bottom: none; }
+    .tele-label { font-size: 12px; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 10px; }
+    .tele-value { font-size: 22px; color: var(--teal); font-weight: 600; letter-spacing: -.02em; }
+    .tele-value.warn { color: var(--terracotta); }
+    .tele-unit { font-size: 11px; color: var(--muted); margin-left: 5px; }
+    .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--teal-soft); display: inline-block; animation: pulse 2.2s ease-in-out infinite; }
+    .pulse.warn { background: var(--terracotta); }
+    @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(20,184,166,.35);} 50%{opacity:.35;box-shadow:0 0 0 7px rgba(20,184,166,0);} }
+
+    /* ---------- Mission status bar + data provenance ---------- */
+    .mission-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+    .mission-chip { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); background: var(--panel); border: 1px solid var(--line); padding: 8px 13px; border-radius: 20px; letter-spacing: .02em; }
+    .mission-chip b { color: var(--teal); font-weight: 600; }
+    .mission-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-soft); box-shadow: 0 0 0 3px rgba(20,184,166,.15); animation: pulse 2.6s ease-in-out infinite; }
+    .mission-chip .dot.amber { background: var(--ochre); box-shadow: 0 0 0 3px rgba(221,145,56,.15); }
+    .provenance { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 24px; padding-top: 20px; border-top: 1px dashed var(--line); }
+    .provenance .plabel { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+    .prov-badge { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-soft); background: var(--panel); border: 1px solid var(--line); border-radius: 7px; padding: 6px 11px; transition: border-color .2s; }
+    .prov-badge:hover { border-color: var(--teal); }
+    .prov-badge span { color: var(--teal); }
+
+    /* ---------- Stat band ---------- */
+    .statband { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+    @media(max-width:900px){ .statband { grid-template-columns: repeat(2, 1fr); } }
+    .statband-item { background: var(--panel); padding: 24px 20px; }
+    .sb-num { font-family: var(--font-display); font-size: 30px; font-weight: 700; letter-spacing: -.02em; color: var(--text); line-height: 1; }
+    .sb-num small { font-size: 15px; color: var(--muted); font-weight: 500; }
+    .sb-lbl { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-top: 10px; }
+
+    /* ---------- Detail panels (make each tab full) ---------- */
+    .block-head { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); margin: 36px 0 16px; font-weight: 600; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .info-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); }
+    .info-card .ic { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; font-size: 19px; background: #f0faf7; margin-bottom: 12px; }
+    .info-card h5 { font-family: var(--font-display); font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .info-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .mini-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+    .mini-stat { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; box-shadow: var(--shadow); }
+    .mini-stat .n { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -.02em; line-height: 1; }
+    .mini-stat .n small { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .mini-stat .l { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-top: 9px; }
+    .preset-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+    .preset-chip { font-family: var(--font-mono); font-size: 12px; padding: 9px 15px; border-radius: 20px; border: 1px solid var(--line-hover); background: var(--panel); color: var(--ink-soft); cursor: pointer; transition: all .2s; }
+    .preset-chip:hover { border-color: var(--teal); color: var(--teal); background: #f0faf7; }
+    .basemap-toggle { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--ink-soft); cursor: pointer; line-height: 1.5; }
+    .basemap-toggle input { margin-top: 2px; width: 16px; height: 16px; accent-color: var(--teal); flex-shrink: 0; cursor: pointer; }
+    .step-row { display: flex; gap: 16px; align-items: flex-start; padding: 15px 0; border-bottom: 1px dashed var(--line); }
+    .step-row:last-child { border-bottom: none; }
+    .step-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px; background: var(--teal); color: #fff; display: grid; place-items: center; font-family: var(--font-mono); font-weight: 600; font-size: 13px; }
+    .step-row h5 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+    .step-row p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .sector-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; padding: 13px 0; border-bottom: 1px dashed var(--line); }
+    .sector-row:last-child { border-bottom: none; }
+    .sector-row .sname { font-weight: 600; font-size: 14px; }
+    .sector-row .snote { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-top: 3px; max-width: 42ch; }
+    .sector-badge { flex-shrink: 0; font-family: var(--font-mono); font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 20px; }
+    .wb-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed var(--line); font-size: 13.5px; }
+    .wb-row:last-child { border-bottom: none; }
+    .wb-row b { font-family: var(--font-mono); }
+
+    /* ---------- Pilot map ---------- */
+    .dash-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 26px; }
+    @media(max-width:980px){ .dash-grid { grid-template-columns: 1fr; } }
+    .map-card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 26px; box-shadow: var(--shadow); }
+    .map-toolbar { display: flex; gap: 10px; margin-bottom: 22px; flex-wrap: wrap; }
+    .toggle { font-family: var(--font-mono); font-size: 12px; padding: 8px 16px; border: 1.5px solid var(--line-hover); border-radius: 22px; cursor: pointer; color: var(--muted); background: transparent; transition: all .2s; font-weight: 500; }
+    .toggle.active { border-color: var(--teal); color: var(--teal); background: #eafaf6; }
+    .toggle:hover:not(.active) { border-color: var(--teal-soft); color: var(--ink-soft); }
+    .district-info { background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-top: 20px; font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); min-height: 60px; transition: opacity .3s; line-height: 1.6; }
+    .district-info b { color: var(--teal); font-weight: 600; }
+    .dist-marker { cursor: pointer; transition: transform .3s cubic-bezier(.16,1,.3,1); }
+    .dist-marker:hover { transform: scale(1.07); }
+    .dist-marker circle.ring { transition: fill-opacity .3s, stroke-width .3s; }
+    .dist-marker:hover circle.ring { fill-opacity: .55; stroke-width: 2.5; }
+    .dist-marker circle.core { animation: dotpulse 3s ease-in-out infinite; }
+    @keyframes dotpulse { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+    .side-card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin-bottom: 18px; box-shadow: var(--shadow); }
+    .side-card:last-child { margin-bottom: 0; }
+    .side-card h4 { font-family: var(--font-display); font-size: 15px; margin-bottom: 14px; font-weight: 600; }
+    .legend-row { display: flex; align-items: center; gap: 11px; font-size: 13px; color: var(--muted); margin-bottom: 9px; font-weight: 500; }
+    .legend-swatch { width: 13px; height: 13px; border-radius: 4px; }
+    .status-rows { display: flex; flex-direction: column; }
+    .status-row { display: flex; justify-content: space-between; gap: 16px; font-family: var(--font-mono); font-size: 12.5px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+    .status-row:last-child { border-bottom: none; }
+    .status-row span:first-child { color: var(--muted); }
+    .status-row span:last-child { color: var(--text); font-weight: 600; text-align: right; }
+
+    /* ---------- Simulator (what-if) ---------- */
+    .simulator { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 36px; position: relative; overflow: hidden; box-shadow: var(--shadow); }
+    .simulator::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal-soft), var(--ochre), var(--terracotta)); }
+    .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 42px; }
+    @media(max-width:980px){ .sim-grid { grid-template-columns: 1fr; } }
+    .slider-block { margin-bottom: 32px; }
+    .slider-label { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 13px; margin-bottom: 12px; font-weight: 500; }
+    .slider-label span:last-child { color: var(--teal); font-weight: 600; }
+    .impact-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .impact-card { background: var(--panel-2); border: 1.5px solid var(--line); border-radius: 10px; padding: 20px; transition: all .3s; }
+    .impact-card:hover { border-color: var(--teal-soft); transform: translateY(-3px); box-shadow: var(--shadow); }
+    .impact-card .k { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; font-weight: 600; }
+    .impact-card .v { font-family: var(--font-display); font-size: 28px; margin-top: 8px; font-weight: 700; letter-spacing: -.02em; color: var(--text); transition: color .3s; }
+    .impact-card .v.up { color: var(--terracotta); }
+    .impact-card .v.down { color: var(--teal); }
+    .impact-card .v.warn { color: var(--ochre); }
+    .impact-card .v.flash { animation: flash .4s ease; }
+    @keyframes flash { 0%{transform:scale(1.1);} 100%{transform:scale(1);} }
+
+    /* ---------- Forecast ---------- */
+    .forecast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+    @media(max-width:980px){ .forecast-grid { grid-template-columns: 1fr; } }
+    .chart-card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 24px; box-shadow: var(--shadow); }
+    .chart-card h4 { font-family: var(--font-display); font-size: 16px; margin-bottom: 5px; display: flex; align-items: center; font-weight: 600; }
+    .chart-card .dot-indicator { width: 8px; height: 8px; border-radius: 50%; margin-right: 10px; display: inline-block; }
+    .chart-card .sub { font-size: 12px; color: var(--muted); font-family: var(--font-mono); margin-bottom: 16px; }
+    .sim-chart { height: 300px; }
+
+    /* ---------- Generic cards ---------- */
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); }
+    .card h3 { font-family: var(--font-display); font-size: 16px; margin-bottom: 4px; font-weight: 600; }
+    .card .card-sub { font-size: 12px; color: var(--muted); font-family: var(--font-mono); margin-bottom: 16px; }
+    .grid { display: grid; gap: 22px; }
+    .g2 { grid-template-columns: 1fr 1fr; }
+    .g3 { grid-template-columns: repeat(3,1fr); }
+    .g4 { grid-template-columns: repeat(4,1fr); }
+    @media(max-width:980px){ .g2,.g3 { grid-template-columns: 1fr; } .g4 { grid-template-columns: repeat(2,1fr); } }
+    /* Climate overview KPIs / summary / districts (ported into the Region tab) */
+    .ckpi { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: var(--shadow); }
+    .ckpi .ktop { display: flex; align-items: center; justify-content: space-between; }
+    .ckpi .lbl { font-size: 11px; color: var(--muted); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .04em; }
+    .ckpi .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-size: 17px; }
+    .ckpi .val { font-family: var(--font-display); font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1; margin-top: 14px; }
+    .ckpi .val small { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .ckpi .meta { font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .cspark { height: 34px; width: 100%; margin-top: 8px; }
+    .csrc { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+    .csrc:last-child { border-bottom: none; }
+    .csrc .sd { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .csrc .sn { font-size: 13.5px; font-weight: 600; }
+    .csrc .sr { font-size: 11.5px; color: var(--muted); font-family: var(--font-mono); }
+    .csrc .st { margin-left: auto; font-family: var(--font-mono); font-size: 10px; font-weight: 600; text-transform: uppercase; padding: 3px 9px; border-radius: 12px; }
+    .cdist { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .cdist .dn { font-size: 13px; font-weight: 600; }
+    .cdist .dm { display: flex; gap: 14px; margin-top: 9px; font-family: var(--font-mono); font-size: 12px; flex-wrap: wrap; }
+    .cbar { height: 8px; background: var(--line); border-radius: 5px; overflow: hidden; }
+    .cbar i { display: block; height: 100%; }
+
+    .work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    @media(max-width:980px){ .work-grid { grid-template-columns: 1fr; } }
+
+    /* ---------- Pipeline ---------- */
+    .pipeline { display: flex; gap: 0; overflow-x: auto; padding-bottom: 10px; }
+    .stage { min-width: 220px; background: var(--panel); border: 1px solid var(--line); padding: 24px; position: relative; flex: 1; transition: all .35s; }
+    .stage:hover { border-color: var(--line-hover); transform: translateY(-4px); box-shadow: var(--shadow); }
+    .stage:first-child { border-radius: 10px 0 0 10px; }
+    .stage:last-child { border-radius: 0 10px 10px 0; }
+    .stage+.stage { border-left: none; }
+    .stage-tag { font-family: var(--font-mono); font-size: 10px; color: var(--ochre); letter-spacing: .12em; margin-bottom: 12px; font-weight: 600; }
+    .stage h4 { font-family: var(--font-display); font-size: 17px; margin-bottom: 12px; font-weight: 600; }
+    .stage p { font-size: 14px; color: var(--muted); line-height: 1.65; }
+    .stage-arrow { position: absolute; right: -13px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; z-index: 2; color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 13px; background: var(--bg); border-radius: 50%; border: 1.5px solid var(--line-hover); font-family: var(--font-mono); }
+    @media(max-width:980px){ .pipeline { flex-direction: column; } .stage { min-width: auto; border-radius: 10px !important; margin-bottom: 12px; } .stage+.stage { border-left: 1px solid var(--line); } .stage-arrow { display: none; } }
+
+    /* ---------- Dropzone / fields ---------- */
+    .dropzone { border: 1.5px dashed var(--line-hover); border-radius: 12px; padding: 34px 20px; text-align: center; background: var(--panel-2); transition: all .2s; cursor: pointer; }
+    .dropzone:hover, .dropzone.drag { border-color: var(--teal); background: #f0faf7; }
+    .dropzone .dz-ic { font-size: 34px; margin-bottom: 8px; }
+    .dropzone h4 { font-size: 14.5px; margin-bottom: 3px; }
+    .dropzone p { color: var(--muted); font-size: 12px; }
+    .dropzone img.preview { max-height: 210px; margin: 0 auto; border-radius: 8px; border: 1px solid var(--line); }
+    .field { margin-bottom: 13px; }
+    .field label { display: block; font-size: 12px; font-weight: 500; margin-bottom: 6px; color: var(--muted); font-family: var(--font-mono); }
+    .field input, .field select { width: 100%; padding: 11px 13px; border: 1px solid var(--line-hover); border-radius: 9px; font-size: 14px; font-family: inherit; background: var(--panel); color: var(--text); }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(20,184,166,.14); }
+    input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; background: var(--line-hover); border-radius: 2px; outline: none; padding: 0; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--teal); cursor: pointer; border: 3px solid var(--panel); box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+    input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--teal); cursor: pointer; border: 3px solid var(--panel); }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* ---------- Result frames ---------- */
+    .frames { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    @media(max-width:760px){ .frames { grid-template-columns: 1fr; } }
+    .frame { position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #ece6d8; min-height: 120px; }
+    .frame img { width: 100%; height: 100%; object-fit: cover; }
+    .frame .cap { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 12px; background: linear-gradient(transparent, rgba(0,0,0,.7)); color: #fff; font-size: 11px; font-weight: 600; font-family: var(--font-mono); }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 14px; }
+    .legend .lg { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); font-family: var(--font-mono); }
+    .legend .sw { width: 12px; height: 12px; border-radius: 3px; }
+    .objchips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .objchip { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 12.5px; color: var(--text); background: var(--panel-2); border: 1px solid var(--line); padding: 7px 12px; border-radius: 20px; }
+    .objchip b { color: var(--teal); }
+    .gauge-wrap { display: flex; align-items: center; gap: 20px; }
+    .gauge { position: relative; width: 108px; height: 108px; flex-shrink: 0; }
+    .gauge svg { transform: rotate(-90deg); }
+    .gauge .gval { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--teal); }
+    .conf-big { font-family: var(--font-display); font-size: 52px; font-weight: 700; letter-spacing: -.02em; }
+
+    .rlist { display: flex; flex-direction: column; }
+    .ritem { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--line); cursor: pointer; transition: background .2s; }
+    .ritem:last-child { border-bottom: none; }
+    .ritem:hover { background: var(--panel-2); }
+    .ritem img { width: 40px; height: 40px; border-radius: 7px; object-fit: cover; border: 1px solid var(--line); }
+    .ritem .rn { font-size: 13px; font-weight: 600; }
+    .ritem .rd { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+    .ritem .rc { margin-left: auto; font-family: var(--font-mono); font-size: 12px; color: var(--teal); }
+    .tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; font-family: var(--font-mono); }
+    .empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+    .empty .em-ic { font-size: 38px; margin-bottom: 10px; opacity: .55; }
+    .chart-box { height: 250px; position: relative; }
+
+    .processing { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 13px; color: var(--teal); margin-top: 14px; }
+    .spinner { width: 18px; height: 18px; border: 2px solid var(--line-hover); border-top-color: var(--teal); border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .err-box { background: #fbeae4; border: 1px solid #eabfb0; color: #b8492c; padding: 10px 13px; border-radius: 9px; font-size: 12.5px; margin: 10px 0; font-family: var(--font-mono); }
+    /* Disaster detection */
+    .dis-badge { font-family: var(--font-mono); font-size: 12px; font-weight: 600; padding: 6px 13px; border-radius: 20px; letter-spacing: .02em; }
+    .dis-row { padding: 12px 0; border-bottom: 1px dashed var(--line); }
+    .dis-row:last-child { border-bottom: none; }
+    .dis-row .dh { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .dis-row .dn { font-weight: 600; font-size: 14px; }
+    .dis-row .dc { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+    .dis-row .de { font-size: 12.5px; color: var(--ink-soft); margin-top: 5px; line-height: 1.5; }
+    .dis-bar { height: 6px; background: var(--line); border-radius: 4px; margin-top: 8px; overflow: hidden; }
+    .dis-bar i { display: block; height: 100%; background: var(--teal); }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--panel); border: 1px solid var(--teal); color: var(--text); padding: 14px 20px; border-radius: 10px; font-family: var(--font-mono); font-size: 13px; z-index: 200; box-shadow: var(--shadow-lg); animation: slidein .3s ease; }
+    @keyframes slidein { from { transform: translateY(20px); opacity: 0; } }
+
+    /* ---------- Auth overlay (split screen) ---------- */
+    .auth-overlay { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: grid; grid-template-columns: calc(52.5% + 50px) 1fr; }
+    /* LEFT — map visual with a seagreen scrim so the text stays legible */
+    .auth-visual { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-start; padding: 148px 44px 46px; color: #f3fbf7; background: #f3ede0; }
+    /* Fade the map + scrim to transparent on the right so the cream panel bg shows through */
+    .auth-visual .map-svg, .auth-visual .auth-scrim {
+      -webkit-mask-image: linear-gradient(90deg, #000 46%, rgba(0,0,0,.35) 78%, rgba(0,0,0,0) 96%);
+      mask-image: linear-gradient(90deg, #000 46%, rgba(0,0,0,.35) 78%, rgba(0,0,0,0) 96%);
+    }
+    .auth-visual .map-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .auth-scrim { position: absolute; inset: 0; pointer-events: none;
+      background:
+        linear-gradient(100deg, rgba(6,40,36,.96) 0%, rgba(8,52,47,.90) 38%, rgba(11,74,66,.74) 70%, rgba(13,88,79,.62) 100%),
+        linear-gradient(0deg, rgba(5,36,33,.70) 0%, rgba(5,36,33,.10) 50%),
+        linear-gradient(180deg, rgba(5,36,33,.55) 0%, rgba(5,36,33,0) 24%); }
+    .auth-visual > * { position: relative; z-index: 2; }
+    .av-brand { display: flex; align-items: center; gap: 15px; margin-bottom: 18px; }
+    .av-brand .brand-mark { width: 82px; height: 82px; }
+    .av-brand .n { font-family: var(--font-display); font-size: 42px; font-weight: 700; letter-spacing: .3px; line-height: 1.05; }
+    .av-brand .s { font-family: var(--font-mono); font-size: 14px; letter-spacing: 3px; opacity: .8; }
+    .av-head { font-family: var(--font-display); font-size: 44px; line-height: 1.16; margin: 0 0 12px; max-width: 15ch; text-shadow: 0 2px 18px rgba(0,0,0,.35); }
+    .av-tag { font-size: 19px; line-height: 1.55; opacity: .92; max-width: 42ch; text-shadow: 0 1px 12px rgba(0,0,0,.35); }
+    .av-features { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 18px; max-width: 42ch; }
+    .av-features li { display: flex; gap: 14px; align-items: flex-start; }
+    .av-features .ic { flex: none; width: 46px; height: 46px; border-radius: 11px; display: grid; place-items: center;
+      background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); font-size: 22px; }
+    .av-features .ft { font-weight: 600; font-size: 19px; line-height: 1.2; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
+    .av-features .fd { font-size: 16px; opacity: .86; line-height: 1.45; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
+    .av-foot { font-family: var(--font-mono); font-size: 15px; opacity: .7; letter-spacing: .4px; margin-top: auto; padding-top: 20px; }
+    /* pilot points on the map */
+    .map-point { }
+    .map-point .halo { fill: rgba(122,224,192,.28); }
+    .map-point .core { fill: #7ce7c4; }
+    .map-point .lbl { fill: #eafff7; font-family: var(--font-mono); font-size: 12px; font-weight: 600; paint-order: stroke; stroke: rgba(6,45,40,.6); stroke-width: 3px; }
+    .map-ping { transform-origin: center; transform-box: fill-box; animation: mapping 2.6s ease-out infinite; }
+    @keyframes mapping { 0% { transform: scale(.6); opacity: .9; } 70% { transform: scale(2.6); opacity: 0; } 100% { opacity: 0; } }
+
+    /* RIGHT — form panel */
+    .auth-panel { display: grid; place-items: center; padding: 30px; overflow-y: auto;
+      background:
+        radial-gradient(ellipse at 82% -8%, rgba(14,156,138,.16), transparent 52%),
+        radial-gradient(ellipse at 94% 104%, rgba(221,145,56,.09), transparent 55%),
+        repeating-radial-gradient(circle at 86% 7%, transparent 0, transparent 50px, rgba(14,156,138,.11) 51px, transparent 53px),
+        var(--bg); }
+    .auth-card { width: 100%; max-width: 396px; }
+    .card-brand { display: none; align-items: center; gap: 11px; margin-bottom: 20px; }
+    .auth-card h2 { font-family: var(--font-display); font-size: 25px; margin-bottom: 4px; }
+    .auth-card .sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; font-family: var(--font-mono); }
+    .auth-tabs { display: flex; gap: 6px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 11px; padding: 4px; margin-bottom: 22px; }
+    .auth-tabs button { flex: 1; border: 0; background: transparent; padding: 9px 0; border-radius: 8px; font-family: var(--font-mono); font-size: 12.5px; color: var(--muted); cursor: pointer; transition: .15s; }
+    .auth-tabs button.on { background: var(--panel); color: var(--teal); box-shadow: 0 1px 4px rgba(0,0,0,.06); font-weight: 600; }
+    .demo-hint { margin-top: 15px; font-size: 11.5px; color: var(--muted); background: var(--panel-2); border: 1px solid var(--line); padding: 10px 12px; border-radius: 9px; font-family: var(--font-mono); }
+    .otp-hint { margin-top: 14px; font-size: 12px; color: var(--muted); background: #eef7f0; border: 1px dashed var(--teal); padding: 11px 13px; border-radius: 9px; font-family: var(--font-mono); line-height: 1.5; }
+    .otp-hint b { color: var(--teal); }
+    .switch-auth { text-align: center; margin-top: 15px; font-size: 13px; color: var(--muted); }
+    .switch-auth b { color: var(--teal); cursor: pointer; }
+    .auth-alt { text-align: center; margin-top: 14px; font-size: 12.5px; }
+    .auth-alt a { color: var(--teal); cursor: pointer; text-decoration: none; font-family: var(--font-mono); }
+    #authOtp { letter-spacing: 8px; text-align: center; font-size: 20px; font-family: var(--font-mono); }
+    @media (max-width: 860px) {
+      .auth-overlay { grid-template-columns: 1fr; }
+      .auth-visual { display: none; }
+      .auth-panel { padding: 24px; }
+      .card-brand { display: flex; }
+    }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+    .reveal.in { opacity: 1; transform: none; }
+    @media(prefers-reduced-motion:reduce){ .reveal { opacity: 1; transform: none; transition: none; } .pulse, .dist-marker circle.core { animation: none; } }
+
+    footer { padding: 44px 5vw; text-align: center; font-family: var(--font-mono); font-size: 12px; color: var(--muted); line-height: 2.1; }
+    footer strong { color: var(--text); font-weight: 600; }
+  </style>
+</head>
+
+<body>
+  <div class="mesh-bg"></div>
+  <div class="isobars"></div>
+
+  <!-- ============ AUTH OVERLAY (split screen) ============ -->
+  <div class="auth-overlay" id="authOverlay">
+    <!-- LEFT: map visual with seagreen scrim -->
+    <div class="auth-visual">
+      <svg class="map-svg" viewBox="0 0 900 1040" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <!-- Real Esri satellite imagery of the J&K pilot region -->
+        <image href="/auth-map.jpg" xlink:href="/auth-map.jpg" x="0" y="0" width="900" height="1040"
+               preserveAspectRatio="xMidYMid slice"/>
+        <!-- pilot points, geo-aligned to the imagery (dots only, labels omitted to keep text clear) -->
+        <g class="map-point"><circle class="halo map-ping" cx="327" cy="324" r="13"/><circle class="core" cx="327" cy="324" r="6"/></g>
+        <g class="map-point"><circle class="halo map-ping" cx="213" cy="332" r="13"/><circle class="core" cx="213" cy="332" r="6"/></g>
+        <g class="map-point"><circle class="halo map-ping" cx="207" cy="289" r="13"/><circle class="core" cx="207" cy="289" r="6"/></g>
+        <g class="map-point"><circle class="halo map-ping" cx="346" cy="714" r="13"/><circle class="core" cx="346" cy="714" r="6"/></g>
+      </svg>
+      <div class="auth-scrim"></div>
+
+      <div class="av-brand">
+        <img class="brand-mark" src="/logo.png" alt="Bhū-Darpan" />
+        <div>
+          <div class="n">Bhū-Darpan</div>
+          <div class="s">CLIMATE DIGITAL TWIN</div>
+        </div>
+      </div>
+
+      <div>
+        <h1 class="av-head">India's climate, mirrored in real time.</h1>
+        <p class="av-tag">An AI-powered digital twin of the Jammu &amp; Kashmir climate — fused
+          from national satellite &amp; ground datasets, paired with satellite-image intelligence.</p>
+        <ul class="av-features">
+          <li><span class="ic">🌦️</span><div><div class="ft">Climate Digital Twin</div>
+            <div class="fd">Live district anomalies, 14-day AI forecasts &amp; what-if scenarios.</div></div></li>
+          <li><span class="ic">🛰️</span><div><div class="ft">Satellite Scene Analysis</div>
+            <div class="fd" id="lcModelFeat">Land-cover CNN trained on EuroSAT, fused with spectral physics.</div></div></li>
+          <li><span class="ic">🔀</span><div><div class="ft">Change Detection</div>
+            <div class="fd">Compare two epochs and reveal semantic land-cover shifts.</div></div></li>
+          <li><span class="ic">⚠️</span><div><div class="ft">Hazard Intelligence</div>
+            <div class="fd">Drought (SPI), heatwave &amp; monsoon-onset monitoring.</div></div></li>
+        </ul>
+      </div>
+
+      <div class="av-foot">OBSERVE · PREDICT · SIMULATE · REPORT</div>
+    </div>
+
+    <!-- RIGHT: form panel -->
+    <div class="auth-panel">
+      <form class="auth-card" id="authForm">
+        <div class="card-brand">
+          <img class="brand-mark" src="/logo.png" alt="Bhū-Darpan" style="width:38px;height:38px" />
+          <div style="font-family:var(--font-display);font-weight:700;font-size:18px">Bhū-Darpan</div>
+        </div>
+        <h2 id="authTitle">Welcome back</h2>
+        <div class="sub" id="authSub">Sign in to the J&amp;K climate &amp; satellite twin</div>
+
+        <div class="auth-tabs" id="authTabs">
+          <button type="button" data-mode="login" class="on">Sign in</button>
+          <button type="button" data-mode="register">Create account</button>
+        </div>
+
+        <div class="err-box" id="authErr" hidden></div>
+
+        <!-- Step 1: credentials -->
+        <div id="credStep">
+          <div class="field" id="nameField" hidden>
+            <label>Full name</label>
+            <input id="authName" placeholder="Your name" autocomplete="name" />
+          </div>
+          <div class="field" id="orgField" hidden>
+            <label>Organization <span style="color:var(--muted)">(optional)</span></label>
+            <input id="authOrg" placeholder="e.g. J&amp;K SDMA / IIT / Startup" autocomplete="organization" />
+          </div>
+          <div class="field" id="roleField" hidden>
+            <label>Role / designation <span style="color:var(--muted)">(optional)</span></label>
+            <input id="authRole" placeholder="e.g. Analyst, Researcher, Officer" autocomplete="organization-title" />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div class="field" id="passField">
+            <label>Password</label>
+            <input id="authPass" type="password" placeholder="Your password" autocomplete="current-password" />
+          </div>
+        </div>
+
+        <!-- Step 2: OTP -->
+        <div id="otpStep" hidden>
+          <div class="field">
+            <label>Enter the 6-digit code sent to <b id="otpEmail" style="color:var(--text)"></b></label>
+            <input id="authOtp" inputmode="numeric" maxlength="6" placeholder="______" autocomplete="one-time-code" />
+          </div>
+          <div class="otp-hint" id="otpHint" hidden></div>
+        </div>
+
+        <button class="btn btn-primary" id="authBtn" style="width:100%;justify-content:center" type="submit">Sign in</button>
+
+        <div class="auth-alt" id="authAlt"><a id="altOtp">✉️ Email me a one-time code instead</a></div>
+        <div class="auth-alt" id="otpBack" hidden><a id="toBack">← Use a different method</a> · <a id="otpResend">Resend code</a></div>
+
+        <div class="switch-auth" id="authSwitch"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ APP SHELL ============ -->
+  <div id="appShell" hidden>
+    <nav>
+      <div class="brand">
+        <img class="brand-mark" src="/logo.png" alt="Bhū-Darpan" />
+        <div>
+          <div class="brand-hi">भू-दर्पण</div>
+          <div class="brand-name">Bhū-Darpan</div>
+          <div class="brand-sub">J&amp;K Climate · Satellite AI</div>
+        </div>
+      </div>
+      <div class="navlinks">
+        <a href="#region">Region</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#scenario">Scenario</a>
+        <a href="#forecast">Forecast</a>
+        <a href="#disaster">Disaster</a>
+        <a href="#workspace">Analyse</a>
+        <a href="#reports">Reports</a>
+      </div>
+      <div class="nav-right">
+        <button class="acct-btn" id="acctBtn" aria-label="Account" title="Account"><span id="acctInitial">U</span></button>
+        <div class="acct-panel" id="acctPanel" hidden>
+          <div class="acct-head">
+            <div class="acct-av" id="acctAv">U</div>
+            <div class="acct-meta">
+              <div class="acct-name" id="navUser">—</div>
+              <div class="acct-email" id="acctEmail">—</div>
+            </div>
+          </div>
+          <div class="acct-details" id="acctDetails"></div>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn" style="width:100%;justify-content:center">Sign out</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- CURRENT CLIMATE STATE (live) -->
+    <section id="top" style="padding-top:80px">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">Live fused state · Jammu &amp; Kashmir</div>
+          <div class="sec-title">Current climate state</div>
+        </div>
+        <p class="sec-desc">A continuously-updated snapshot of the region, fused from IMD gridded
+          observations and satellite reanalysis and compared against the 1973–2023 climate normal.
+          <span id="satOvLive" style="display:block;margin-top:8px;color:var(--teal);font-family:var(--font-mono);font-size:12px"><span class="pulse" style="display:inline-block;margin-right:6px"></span>Live · initialising…</span></p>
+      </div>
+      <div class="grid g4" id="satKpis"><div class="card" style="grid-column:1/-1">Loading live state…</div></div>
+    </section>
+
+    <section id="metrics" style="padding-top:0">
+      <div class="grid g2" style="align-items:start">
+        <div class="card"><h3>Regional summary</h3><div class="card-sub">Latest assimilation snapshot</div><div id="satSummary" style="margin-top:14px"></div></div>
+        <div class="card"><h3>Data assimilation pipeline</h3><div class="card-sub">National &amp; live datasets feeding the twin</div><div id="satPipe" style="margin-top:12px"></div></div>
+      </div>
+      <div class="card" style="margin-top:22px">
+        <h3>District conditions</h3>
+        <div class="card-sub">Per-district anomalies sampled live from the gridded state · Jammu &amp; Kashmir</div>
+        <div class="grid g3" id="satDistricts" style="margin-top:16px"><div class="card-sub">Loading districts…</div></div>
+      </div>
+    </section>
+
+    <!-- 01 · PILOT REGION MAP -->
+    <section id="region">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">01 — Pilot region</div>
+          <div class="sec-title" id="regionTitle">Jammu &amp; Kashmir</div>
+        </div>
+        <p class="sec-desc">Chosen for its steep Himalayan gradients, high year-to-year variability
+          and recurring drought &amp; water stress — a demanding, high-value test case for the twin.</p>
+      </div>
+      <div class="dash-grid">
+        <div class="map-card reveal">
+          <div class="map-toolbar" id="omRegion">
+            <button class="toggle active" data-region="jk">Jammu &amp; Kashmir</button>
+            <button class="toggle" data-region="india">All India</button>
+          </div>
+          <div class="map-toolbar">
+            <button class="toggle active" data-layer="rain">Rainfall anomaly</button>
+            <button class="toggle" data-layer="temp">Temperature anomaly</button>
+          </div>
+          <div id="districtMap"></div>
+          <div class="district-info" id="districtInfo">Hover or tap a district to inspect its current fused climate state.</div>
+        </div>
+        <div>
+          <div class="side-card reveal"><h4>Layer legend</h4><div id="legendBox"></div></div>
+          <div class="side-card reveal"><h4 id="monitoredHead">Districts monitored</h4>
+            <div id="monitoredList" style="font-family:var(--font-mono);font-size:12.5px;color:var(--muted);line-height:2.1">Srinagar · Baramulla · Anantnag · Kishtwar · Doda · Udhampur · Rajouri · Kathua · Jammu</div>
+          </div>
+          <div class="side-card reveal"><h4>Pilot snapshot</h4>
+            <div class="status-rows">
+              <div class="status-row"><span>Coverage area</span><span>~2.22 lakh km²</span></div>
+              <div class="status-row"><span>Coordinate bounds</span><span>32.3–37.1°N · 73.9–80.3°E</span></div>
+              <div class="status-row"><span>Fusion grid</span><span>0.25° (~28 km)</span></div>
+              <div class="status-row"><span>INSAT-3D products</span><span>4 km LST · rainfall</span></div>
+              <div class="status-row"><span>Fusion cadence</span><span>Daily</span></div>
+              <div class="status-row"><span>Climatology baseline</span><span>1973–2023 (50 yr)</span></div>
+              <div class="status-row"><span>Forecast horizon</span><span>14 days</span></div>
+              <div class="status-row"><span>Validation source</span><span>IMD ground stations</span></div>
+              <div class="status-row"><span>Primary inputs</span><span>INSAT-3D · IMD · POWER · ERA5</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · SCENARIO ENGINE -->
+    <section id="scenario">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">02 — Scenario engine</div>
+          <div class="sec-title">What if the monsoon shifts?</div>
+        </div>
+        <p class="sec-desc">Perturb rainfall and temperature against the fused J&amp;K baseline and watch
+          the twin propagate the change through a physically-grounded water-balance response model.</p>
+      </div>
+      <div class="preset-chips" id="scenarioPresets">
+        <button class="preset-chip" data-rain="0" data-temp="0">↺ Reset to normal</button>
+        <button class="preset-chip" data-rain="-35" data-temp="2">Drought year · −35% rain, +2°C</button>
+        <button class="preset-chip" data-rain="40" data-temp="-0.5">Strong monsoon · +40% rain</button>
+        <button class="preset-chip" data-rain="-10" data-temp="4">Heatwave · +4°C</button>
+        <button class="preset-chip" data-rain="25" data-temp="3">Warm &amp; wet · +25% rain, +3°C</button>
+      </div>
+      <div class="simulator reveal">
+        <div class="sim-grid">
+          <div>
+            <div class="slider-block">
+              <div class="slider-label"><span>Rainfall deviation from normal</span><span id="rainVal">0%</span></div>
+              <input type="range" id="rainSlider" min="-50" max="50" value="0" step="1">
+            </div>
+            <div class="slider-block">
+              <div class="slider-label"><span>Temperature deviation from normal</span><span id="tempVal">+0.0°C</span></div>
+              <input type="range" id="tempSlider" min="-2" max="5" value="0" step="0.1">
+            </div>
+            <div class="impact-cards">
+              <div class="impact-card"><div class="k">Soil moisture index</div><div class="v" id="impSoil">0.41</div></div>
+              <div class="impact-card"><div class="k">Drought risk score</div><div class="v" id="impDrought">42</div></div>
+              <div class="impact-card"><div class="k">Crop water stress</div><div class="v" id="impCrop">Low</div></div>
+              <div class="impact-card"><div class="k">Reservoir inflow est.</div><div class="v" id="impWater">−4%</div></div>
+            </div>
+          </div>
+          <div class="sim-chart"><canvas id="whatIfChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="block-head">Sector impact &amp; water balance</div>
+      <div class="grid g2" style="align-items:start">
+        <div class="card reveal">
+          <h3>Sector risk response</h3>
+          <div class="card-sub">How this perturbation propagates to J&amp;K's key sectors</div>
+          <div id="scSectors" style="margin-top:14px"><div class="card-sub">Move a slider to compute sector impacts…</div></div>
+        </div>
+        <div class="card reveal">
+          <h3>Water balance</h3>
+          <div class="card-sub">Rainfall input vs. evapotranspiration demand (mm/day)</div>
+          <div id="scWater" style="margin-top:14px"></div>
+          <div class="block-head" style="margin:22px 0 10px">Interpretation</div>
+          <p id="scNarrative" style="font-size:13.5px;color:var(--ink-soft);line-height:1.7">—</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 03 · FORECAST -->
+    <section id="forecast">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">03 — Forecast skill</div>
+          <div class="sec-title">14-day rainfall &amp; temperature outlook</div>
+        </div>
+        <p class="sec-desc">Forecast output for Jammu &amp; Kashmir, with shaded uncertainty bands
+          derived from ensemble spread — the short-horizon layer of the twin.</p>
+      </div>
+      <div class="mini-stats" id="fcStats" style="margin-bottom:26px">
+        <div class="mini-stat"><div class="n" id="fcTempSkill">—</div><div class="l">Temp skill vs climatology</div></div>
+        <div class="mini-stat"><div class="n" id="fcTempRmse">—</div><div class="l">Temp RMSE</div></div>
+        <div class="mini-stat"><div class="n" id="fcRainSkill">—</div><div class="l">Rain skill vs climatology</div></div>
+        <div class="mini-stat"><div class="n" id="fcRainRmse">—</div><div class="l">Rain RMSE</div></div>
+        <div class="mini-stat"><div class="n">14<small>d</small></div><div class="l">Forecast horizon</div></div>
+      </div>
+      <div class="forecast-grid">
+        <div class="chart-card reveal">
+          <h4><span class="dot-indicator" style="background:var(--teal-soft)"></span>Rainfall forecast</h4>
+          <div class="sub">mm/day · observed vs. predicted · ±1σ band</div>
+          <div class="sim-chart"><canvas id="rainChart"></canvas></div>
+        </div>
+        <div class="chart-card reveal">
+          <h4><span class="dot-indicator" style="background:var(--terracotta)"></span>Temperature forecast</h4>
+          <div class="sub">°C · observed vs. predicted · ±1σ band</div>
+          <div class="sim-chart"><canvas id="tempChart"></canvas></div>
+        </div>
+        <div class="chart-card reveal">
+          <h4><span class="dot-indicator" style="background:var(--water)"></span>Soil-moisture outlook</h4>
+          <div class="sub">index 0–1 · derived from the rain &amp; temp forecast · ±band</div>
+          <div class="sim-chart"><canvas id="soilChart"></canvas></div>
+        </div>
+        <div class="chart-card reveal">
+          <h4><span class="dot-indicator" style="background:var(--ochre)"></span>Drought-risk trajectory</h4>
+          <div class="sub">risk /100 · SPI-style from the soil outlook · ±band</div>
+          <div class="sim-chart"><canvas id="droughtChart"></canvas></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 04 · DISASTER DETECTION & ALERTING -->
+    <section id="disaster">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">04 — Emergency response</div>
+          <div class="sec-title">Disaster detection &amp; alerting</div>
+        </div>
+        <p class="sec-desc">Scan a satellite scene for flood, drought, wildfire, snow/avalanche and
+          land loss; estimate the affected area and built-up exposure; and generate an alert
+          ready to send to disaster-management authorities. Add a pre-event image for
+          change-based confirmation.</p>
+      </div>
+      <div class="work-grid">
+        <div class="card">
+          <h3>Scene to assess</h3>
+          <div class="card-sub">Post-event image · JPG · PNG · WEBP · TIFF</div>
+          <div class="dropzone" id="dzDis">
+            <div id="dzDisEmpty"><div class="dz-ic">🛑</div><h4>Drop a scene here</h4><p>or click to browse</p></div>
+            <img class="preview" id="dzDisPrev" hidden />
+          </div>
+          <input type="file" id="disFile" accept="image/*" hidden />
+
+          <label class="basemap-toggle" style="margin-top:16px">
+            <input type="checkbox" id="disUseBasemap" checked />
+            <span>Auto-fetch the “before” baseline from the satellite map at the coordinates below</span>
+          </label>
+
+          <div id="disBasemapNote" class="card-sub" style="margin-top:10px;line-height:1.6">
+            The pre-event scene is pulled from <b>Esri World Imagery</b> (the same map layer,
+            which is a few years old) around the latitude/longitude you enter — no second upload needed.
+          </div>
+
+          <div id="disManualBefore" hidden>
+            <div class="card-sub" style="margin-top:16px">Pre-event baseline (upload)</div>
+            <div class="dropzone" id="dzDisB" style="min-height:96px;padding:16px">
+              <div id="dzDisBEmpty"><div class="dz-ic" style="font-size:22px">🕘</div><p>Drop a "before" image</p></div>
+              <img class="preview" id="dzDisBPrev" hidden />
+            </div>
+            <input type="file" id="disBefore" accept="image/*" hidden />
+          </div>
+        </div>
+        <div class="card">
+          <h3>Report parameters</h3>
+          <div class="card-sub">Location stamped on the authority alert</div>
+          <div class="field"><label>Region / area</label><input id="disRegion" placeholder="Jammu &amp; Kashmir" /></div>
+          <div class="two">
+            <div class="field"><label>Latitude</label><input id="disLat" placeholder="34.08" /></div>
+            <div class="field"><label>Longitude</label><input id="disLon" placeholder="74.80" /></div>
+          </div>
+          <div class="err-box" id="disErr" hidden></div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
+            <button class="btn btn-primary" id="disRun" disabled>⚠ Scan for disasters</button>
+            <button class="btn btn-ghost" id="disClear" hidden>Clear</button>
+          </div>
+          <div class="processing" id="disProc" hidden><span class="spinner"></span>Segmenting → indices → exposure → alert…</div>
+          <div class="card-sub" style="margin-top:16px;line-height:1.65">Backbone: EuroSAT land-cover CNN<span id="disModelAcc"></span> + physically-grounded spectral indices. Decision-support triage — verify on the ground before acting.</div>
+        </div>
+      </div>
+
+      <div id="disResult" hidden style="margin-top:22px">
+        <div class="card" style="margin-bottom:22px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px">
+            <div>
+              <div class="card-sub">Primary assessment</div>
+              <h3 style="margin:4px 0 0;font-size:24px" id="disPrimary">—</h3>
+              <div class="card-sub" id="disMode" style="margin-top:4px"></div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+              <span class="dis-badge" id="disSeverity">—</span>
+              <span class="dis-badge" id="disAffected" style="background:#eef2f7;color:#33507a">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid g2" style="align-items:start">
+          <div class="card">
+            <h3>Impact overlay</h3><div class="card-sub">Affected pixels highlighted over the scene</div>
+            <img id="disOverlay" style="width:100%;border-radius:10px;border:1px solid var(--line);margin-top:10px;background:var(--panel-2)" hidden />
+            <div id="disNoOverlay" class="card-sub" style="margin-top:10px" hidden>No impact zone highlighted for this scene.</div>
+            <div id="disBaselineBox" hidden style="margin-top:14px">
+              <div class="card-sub" style="margin-bottom:6px">Pre-event baseline · <span id="disBaselineSrc" style="color:var(--teal)"></span></div>
+              <img id="disBaseline" style="width:100%;border-radius:10px;border:1px solid var(--line);background:var(--panel-2)" />
+            </div>
+            <div id="disDetections" style="margin-top:16px"></div>
+          </div>
+          <div class="card">
+            <h3>Authority alert</h3><div class="card-sub">Copy &amp; send to J&amp;K SDMA / District Control Room</div>
+            <pre id="disAlert" style="white-space:pre-wrap;font-family:var(--font-mono);font-size:12.5px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px;line-height:1.65;color:var(--ink)"></pre>
+            <button class="btn btn-ghost btn-sm" id="disCopy" style="margin-top:10px">⧉ Copy alert</button>
+            <div id="disExposure" style="margin-top:18px"></div>
+            <div id="disLimits" class="card-sub" style="margin-top:16px;line-height:1.7"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="disHistory" style="margin-top:22px">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <div><h3 style="margin:0">Previous disaster scans</h3><div class="card-sub" style="margin-top:4px" id="disHistSub">Your recent assessments</div></div>
+          <span class="dis-badge" id="disHistCount" style="background:#eef2f7;color:#33507a">0</span>
+        </div>
+        <div class="rlist" id="disHistoryList" style="margin-top:14px"></div>
+      </div>
+    </section>
+
+    <!-- 05 · WORKSPACE -->
+    <section id="workspace">
+      <div class="sec-head">
+        <div>
+          <div class="sec-num">05 — Workspace</div>
+          <div class="sec-title">Analyse a satellite scene</div>
+        </div>
+        <p class="sec-desc">Drop an image (e.g. a Sentinel/INSAT tile over J&amp;K), tune the options, and run the full pipeline.</p>
+      </div>
+      <div class="work-grid" id="uploadArea">
+        <div class="card">
+          <h3>Satellite image</h3>
+          <div class="card-sub">JPG · PNG · WEBP · TIFF · BMP</div>
+          <div class="dropzone" id="dropzone">
+            <div id="dzEmpty"><div class="dz-ic">🛰️</div><h4>Drop an image here</h4><p>or click to browse</p></div>
+            <img class="preview" id="dzPreview" hidden />
+          </div>
+          <input type="file" id="fileInput" accept="image/*" hidden />
+          <div class="mono" id="fileName" style="margin-top:10px;font-size:12px;color:var(--muted)"></div>
+        </div>
+        <div class="card">
+          <h3>Analysis options</h3>
+          <div class="card-sub">Optional metadata &amp; parameters</div>
+          <div class="field"><label>Scene name</label><input id="optName" placeholder="e.g. Srinagar_2026" /></div>
+          <div class="two">
+            <div class="field"><label>Latitude</label><input id="optLat" placeholder="34.08" /></div>
+            <div class="field"><label>Longitude</label><input id="optLon" placeholder="74.80" /></div>
+          </div>
+          <div class="field"><label>Segmentation detail — <span id="clusterVal">6</span> clusters</label><input type="range" id="optClusters" min="4" max="10" value="6" /></div>
+          <div class="err-box" id="uploadErr" hidden></div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
+            <button class="btn btn-primary" id="runBtn" disabled>⚡ Run analysis</button>
+            <button class="btn btn-ghost" id="clearBtn" hidden>Clear</button>
+          </div>
+          <div class="processing" id="processing" hidden><span class="spinner"></span>Preprocessing → segmentation → detection → report…</div>
+        </div>
+      </div>
+
+      <div id="resultArea" hidden style="margin-top:22px">
+        <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:22px">
+          <div><h3 style="margin:0" id="resTitle">Analysis complete</h3><div class="card-sub" style="margin:4px 0 0" id="resMeta"></div></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-ghost btn-sm" id="resPdf" target="_blank" rel="noreferrer">▤ Download PDF</a>
+            <button class="btn btn-primary btn-sm" id="newBtn">+ New analysis</button>
+          </div>
+        </div>
+        <div class="frames">
+          <div class="frame"><img id="resOrig" /><div class="cap">Original (preprocessed)</div></div>
+          <div class="frame"><img id="resSeg" /><div class="cap">Land-cover segmentation</div></div>
+          <div class="frame"><img id="resDet" /><div class="cap">Object detection</div></div>
+        </div>
+        <div class="grid g2" style="margin-top:22px">
+          <div class="card">
+            <h3>Land-cover distribution</h3><div class="card-sub" id="resDim"></div>
+            <div class="chart-box"><canvas id="resDonut"></canvas></div>
+            <div class="legend" id="resLegend"></div>
+          </div>
+          <div class="card">
+            <h3>Detected objects &amp; confidence</h3><div class="card-sub" id="resObjCount"></div>
+            <div class="objchips" id="resObjs" style="margin-bottom:20px"></div>
+            <div class="gauge-wrap">
+              <div class="gauge">
+                <svg width="108" height="108">
+                  <circle cx="54" cy="54" r="46" fill="none" stroke="#e6dfce" stroke-width="9" />
+                  <circle id="gaugeArc" cx="54" cy="54" r="46" fill="none" stroke="var(--teal)" stroke-width="9" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transition:stroke-dashoffset .8s ease" />
+                </svg>
+                <div class="gval" id="gaugeVal">0%</div>
+              </div>
+              <div>
+                <div class="mono" style="font-size:12px;color:var(--muted)">MODEL CONFIDENCE</div>
+                <div class="mono" style="font-size:12px;color:var(--muted);margin-top:8px;max-width:26ch;line-height:1.6">Mean class probability across the scene (EuroSAT-CNN + spectral-texture).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 · CHANGE DETECTION -->
+    <section id="change">
+      <div class="sec-head">
+        <div><div class="sec-num">06 — Change detection</div><div class="sec-title">Compare two moments in time</div></div>
+        <p class="sec-desc">Upload two co-located scenes (before &amp; after) to reveal what changed and by how much.</p>
+      </div>
+      <div class="card">
+        <div class="grid g2">
+          <div>
+            <div class="field"><label>Before</label></div>
+            <div class="dropzone" id="beforeDz"><div id="beforeEmpty"><div class="dz-ic" style="font-size:26px">🖼️</div><p>Click or drop the "before" image</p></div><img class="preview" id="beforePrev" hidden /></div>
+            <input type="file" id="beforeInput" accept="image/*" hidden />
+          </div>
+          <div>
+            <div class="field"><label>After</label></div>
+            <div class="dropzone" id="afterDz"><div id="afterEmpty"><div class="dz-ic" style="font-size:26px">🖼️</div><p>Click or drop the "after" image</p></div><img class="preview" id="afterPrev" hidden /></div>
+            <input type="file" id="afterInput" accept="image/*" hidden />
+          </div>
+        </div>
+        <div class="field" style="max-width:340px;margin-top:16px"><label>Analysis name</label><input id="changeName" placeholder="e.g. Dal_Lake_2015_2026" /></div>
+        <div class="err-box" id="changeErr" hidden></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="changeBtn" disabled>⇄ Detect changes</button>
+          <button class="btn btn-ghost" id="changeClear" hidden>Clear</button>
+        </div>
+        <div class="processing" id="changeProc" hidden><span class="spinner"></span>Aligning &amp; differencing scenes…</div>
+      </div>
+      <div id="changeResult" hidden style="margin-top:22px">
+        <div class="frames">
+          <div class="frame"><img id="chBefore" /><div class="cap">Before</div></div>
+          <div class="frame"><img id="chAfter" /><div class="cap">After</div></div>
+          <div class="frame"><img id="chMap" /><div class="cap">Change map — red = changed</div></div>
+        </div>
+        <div class="grid g2" style="margin-top:22px">
+          <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+            <div class="mono" style="font-size:12px;color:var(--muted)">CHANGED AREA</div>
+            <div class="conf-big" style="color:var(--terracotta)" id="chPercent">0%</div>
+            <div class="mono" style="font-size:12px;color:var(--muted)" id="chConf"></div>
+            <div class="legend" style="justify-content:center;margin-top:14px">
+              <div class="lg"><span class="sw" style="background:var(--urban)"></span>Changed</div>
+              <div class="lg"><span class="sw" style="background:var(--forest)"></span>No change</div>
+            </div>
+          </div>
+          <div class="card"><h3>Land-cover shift</h3><div class="card-sub">Change in each class (after − before)</div><div class="chart-box"><canvas id="chDeltaChart"></canvas></div></div>
+        </div>
+      </div>
+      <div class="card" id="changeHistory" hidden style="margin-top:22px">
+        <h3>Previous change analyses</h3><div class="rlist" id="changeHistoryList" style="margin-top:12px"></div>
+      </div>
+
+    </section>
+
+    <!-- 07 · DASHBOARD -->
+    <section id="dashboard">
+      <div class="sec-head">
+        <div><div class="sec-num">07 — Satellite dashboard</div><div class="sec-title">Live statistics</div></div>
+        <p class="sec-desc" id="dashSub">Aggregated across every scene you have analysed.</p>
+      </div>
+      <div id="dashEmpty" class="card empty" hidden>
+        <div class="em-ic">🛰️</div><h3>No analyses yet</h3>
+        <p style="margin-top:8px">Analyse your first scene in the workspace above to populate the dashboard.</p>
+      </div>
+      <div id="dashContent" hidden>
+        <div class="grid g2">
+          <div class="card"><h3>Land-cover distribution</h3><div class="card-sub">Average composition across all scenes</div><div class="chart-box"><canvas id="dashDonut"></canvas></div></div>
+          <div class="card"><h3>Area change</h3><div class="card-sub">Recent scenes vs earlier scenes (Δ %)</div><div class="chart-box"><canvas id="dashBar"></canvas></div></div>
+        </div>
+        <div class="grid g2" style="margin-top:22px">
+          <div class="card"><h3>Detected objects</h3><div class="card-sub" id="dashObjSub">Total detections across all scenes</div><div class="chart-box"><canvas id="dashObjChart"></canvas></div></div>
+          <div class="card"><h3>Confidence trend</h3><div class="card-sub" id="dashConfSub">Model confidence per scene</div><div class="chart-box"><canvas id="dashLine"></canvas></div></div>
+        </div>
+        <div class="card" style="margin-top:22px"><h3>Recent analyses</h3><div class="rlist" id="recentList" style="margin-top:12px"></div></div>
+      </div>
+    </section>
+
+    <!-- 08 · REPORTS -->
+    <section id="reports">
+      <div class="sec-head">
+        <div><div class="sec-num">08 — Reports</div><div class="sec-title">Downloadable PDF reports</div></div>
+        <p class="sec-desc">Every analysis auto-generates a PDF with imagery, charts and statistics.</p>
+      </div>
+      <div class="mini-stats" id="repStats" style="margin-bottom:22px">
+        <div class="mini-stat"><div class="n" id="repCount">0</div><div class="l">Reports generated</div></div>
+        <div class="mini-stat"><div class="n">PDF</div><div class="l">Format · portable</div></div>
+        <div class="mini-stat"><div class="n">4</div><div class="l">Sections per report</div></div>
+      </div>
+      <div class="card"><div class="rlist" id="reportsList"></div></div>
+    </section>
+
+    <footer>
+      <strong>Bhū-Darpan</strong><br>
+      Jammu &amp; Kashmir Climate Digital Twin · AI Satellite Image Analysis<br>
+      Observe · Predict · Simulate · Report
+    </footer>
+  </div>
+
+  <script>
+    // ============ Chart.js defaults (light theme) ============
+    Chart.defaults.color = '#857b67';
+    Chart.defaults.font.family = "'JetBrains Mono',monospace";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.borderColor = '#e6dfce';
+    const GRID = '#ece6d8';
+    const INK = '#2b2618';
+
+    const CLASS_HEX = { Forest: '#2E7D32', Water: '#1565C0', Agriculture: '#D9A520', Urban: '#E53935', Others: '#9E9E9E' };
+    const OBJ_HEX = { Building: '#E53935', Road: '#DD9138', 'Water Body': '#1565C0', Vegetation: '#2E7D32', Farmland: '#B0951F' };
+
+    const el = (id) => document.getElementById(id);
+    const store = { token: localStorage.getItem('bd_token') || null, user: null };
+    async function api(path, { method = 'GET', body, form } = {}) {
+      const headers = {};
+      if (store.token) headers.Authorization = 'Bearer ' + store.token;
+      let payload;
+      if (form) payload = form;
+      else if (body) { headers['Content-Type'] = 'application/json'; payload = JSON.stringify(body); }
+      const res = await fetch(path, { method, headers, body: payload });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.detail || ('Request failed (' + res.status + ')'));
+      return data;
+    }
+    function toast(msg) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 3200); }
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+    // ============ AUTH (password + email OTP) ============
+    let authMode = 'login';     // 'login' | 'register'
+    let authStep = 'cred';      // 'cred' | 'otp'
+    let pendingEmail = '', pendingPurpose = 'login';
+
+    function setTabs() {
+      [...el('authTabs').children].forEach(b => b.classList.toggle('on', b.dataset.mode === authMode));
+    }
+    function renderAuthMode() {
+      authStep = 'cred';
+      const isLogin = authMode === 'login';
+      el('authTitle').textContent = isLogin ? 'Welcome back' : 'Create account';
+      el('authSub').textContent = isLogin ? 'Sign in to the J&K climate & satellite twin' : 'Create your analysis account';
+      el('credStep').hidden = false; el('otpStep').hidden = true;
+      el('nameField').hidden = isLogin; el('passField').hidden = false;
+      el('orgField').hidden = isLogin; el('roleField').hidden = isLogin;
+      el('authBtn').textContent = isLogin ? 'Sign in' : 'Send verification code';
+      el('authAlt').hidden = !isLogin;      // OTP-login link only when signing in
+      el('otpBack').hidden = true;
+      el('authSwitch').innerHTML = '';
+      el('authErr').hidden = true; el('authOtp').value = '';
+      setTabs();
+    }
+    function goOtpStep(email, purpose, resp) {
+      authStep = 'otp'; pendingEmail = email; pendingPurpose = purpose;
+      el('credStep').hidden = true; el('otpStep').hidden = false;
+      el('authAlt').hidden = true; el('otpBack').hidden = false;
+      el('otpEmail').textContent = email;
+      el('authTitle').textContent = 'Check your email';
+      el('authSub').textContent = resp.delivery === 'email'
+        ? 'We sent a 6-digit code to your inbox.'
+        : 'Enter the code below to continue.';
+      el('authBtn').textContent = 'Verify & continue';
+      if (resp.dev_otp) { el('otpHint').hidden = false; el('otpHint').innerHTML = 'Dev mode (no SMTP configured): your code is <b>' + resp.dev_otp + '</b>'; }
+      else el('otpHint').hidden = true;
+      el('authOtp').focus();
+    }
+
+    [...el('authTabs').children].forEach(b => b.onclick = () => { authMode = b.dataset.mode; renderAuthMode(); });
+    el('altOtp').onclick = async () => {
+      const email = el('authEmail').value.trim();
+      if (!email) { el('authErr').textContent = 'Enter your email first.'; el('authErr').hidden = false; return; }
+      el('authErr').hidden = true; el('authBtn').disabled = true;
+      try { const r = await api('/api/auth/request-otp', { method: 'POST', body: { email } }); goOtpStep(email, 'login', r); }
+      catch (ex) { el('authErr').textContent = ex.message; el('authErr').hidden = false; }
+      finally { el('authBtn').disabled = false; }
+    };
+    el('toBack').onclick = () => renderAuthMode();
+    el('otpResend').onclick = async () => {
+      el('authErr').hidden = true;
+      try {
+        let r;
+        if (pendingPurpose === 'register')
+          r = await api('/api/auth/register', { method: 'POST', body: { name: el('authName').value.trim() || pendingEmail.split('@')[0], email: pendingEmail, password: el('authPass').value, organization: el('authOrg').value.trim(), role: el('authRole').value.trim() } });
+        else r = await api('/api/auth/request-otp', { method: 'POST', body: { email: pendingEmail } });
+        goOtpStep(pendingEmail, pendingPurpose, r); toast('New code sent');
+      } catch (ex) { el('authErr').textContent = ex.message; el('authErr').hidden = false; }
+    };
+
+    function finishAuth(r) { store.token = r.token; store.user = r.user; localStorage.setItem('bd_token', r.token); enterApp(); }
+
+    el('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault(); el('authErr').hidden = true; el('authBtn').disabled = true;
+      try {
+        if (authStep === 'otp') {
+          const r = await api('/api/auth/verify-otp', { method: 'POST', body: { email: pendingEmail, code: el('authOtp').value.trim() } });
+          finishAuth(r); return;
+        }
+        const email = el('authEmail').value.trim();
+        if (authMode === 'login') {
+          const r = await api('/api/auth/login', { method: 'POST', body: { email, password: el('authPass').value } });
+          finishAuth(r);
+        } else {
+          const r = await api('/api/auth/register', { method: 'POST', body: { name: el('authName').value.trim(), email, password: el('authPass').value, organization: el('authOrg').value.trim(), role: el('authRole').value.trim() } });
+          goOtpStep(email, 'register', r);
+        }
+      } catch (ex) { el('authErr').textContent = ex.message; el('authErr').hidden = false; }
+      finally { el('authBtn').disabled = false; }
+    });
+    el('logoutBtn').addEventListener('click', () => { localStorage.removeItem('bd_token'); store.token = null; store.user = null; window.location.href = '/'; });
+
+    let climateReady = false;
+    function enterApp() {
+      el('authOverlay').hidden = true; el('appShell').hidden = false;
+      const nm = store.user?.name || store.user?.email || 'user';
+      const em = store.user?.email || '';
+      el('navUser').textContent = nm;
+      el('acctEmail').textContent = em;
+      const initial = (nm || 'U').trim().charAt(0).toUpperCase() || 'U';
+      el('acctInitial').textContent = initial;
+      el('acctAv').textContent = initial;
+      const esc = s => (s == null ? '' : String(s)).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      const u = store.user || {};
+      const rows = [];
+      if (u.organization) rows.push(['Organization', esc(u.organization)]);
+      if (u.role) rows.push(['Role', esc(u.role)]);
+      if (u.created_at) rows.push(['Member since', esc((u.created_at || '').split(' ')[0])]);
+      rows.push(['Status', '<span class="acct-badge">✓ Verified</span>']);
+      el('acctDetails').innerHTML = rows.map(([k, v]) => `<div class="acct-row"><span class="k">${k}</span><span class="v">${v}</span></div>`).join('');
+      initAccount();
+      if (!climateReady) { initClimate(); climateReady = true; }
+      loadDashboard(); loadReports(); loadChangeHistory(); loadDisasterHistory();
+      initScrollSpy();
+      initDisaster();
+    }
+    let acctReady = false;
+    function initAccount() {
+      if (acctReady) return; acctReady = true;
+      const btn = el('acctBtn'), panel = el('acctPanel');
+      const close = () => { panel.hidden = true; btn.classList.remove('open'); };
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const willOpen = panel.hidden;
+        panel.hidden = !willOpen;
+        btn.classList.toggle('open', willOpen);
+      });
+      panel.addEventListener('click', (e) => e.stopPropagation());
+      document.addEventListener('click', close);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    }
+    let disReady = false, disScene = null, disBefore = null;
+    function initDisaster() {
+      if (disReady) return; disReady = true;
+      const bind = (zone, input, prev, empty, set) => {
+        const z = el(zone), i = el(input);
+        z.addEventListener('click', () => i.click());
+        z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('drag'); });
+        z.addEventListener('dragleave', () => z.classList.remove('drag'));
+        z.addEventListener('drop', e => { e.preventDefault(); z.classList.remove('drag'); const f = e.dataTransfer.files[0]; if (f) put(f); });
+        i.addEventListener('change', e => { const f = e.target.files[0]; if (f) put(f); });
+        function put(f) { set(f); const img = el(prev); img.src = URL.createObjectURL(f); img.hidden = false; el(empty).hidden = true; el('disRun').disabled = !disScene; el('disClear').hidden = false; }
+      };
+      bind('dzDis', 'disFile', 'dzDisPrev', 'dzDisEmpty', f => disScene = f);
+      bind('dzDisB', 'disBefore', 'dzDisBPrev', 'dzDisBEmpty', f => disBefore = f);
+      el('disClear').onclick = () => {
+        disScene = disBefore = null;
+        ['dzDisPrev', 'dzDisBPrev'].forEach(id => { el(id).hidden = true; el(id).src = ''; });
+        ['dzDisEmpty', 'dzDisBEmpty'].forEach(id => el(id).hidden = false);
+        el('disRun').disabled = true; el('disClear').hidden = true; el('disResult').hidden = true; el('disErr').hidden = true;
+      };
+      el('disRun').onclick = runDisaster;
+      el('disCopy').onclick = () => { navigator.clipboard.writeText(el('disAlert').textContent).then(() => toast('Alert copied')); };
+      const syncBasemap = () => {
+        const on = el('disUseBasemap').checked;
+        el('disManualBefore').hidden = on;
+        el('disBasemapNote').hidden = !on;
+        if (on) { disBefore = null; el('dzDisBPrev').hidden = true; el('dzDisBPrev').src = ''; el('dzDisBEmpty').hidden = false; }
+      };
+      el('disUseBasemap').addEventListener('change', syncBasemap);
+      syncBasemap();
+    }
+    async function runDisaster() {
+      if (!disScene) return;
+      const useBase = el('disUseBasemap').checked;
+      const lat = el('disLat').value.trim(), lon = el('disLon').value.trim();
+      if (useBase && (!lat || !lon)) {
+        el('disErr').textContent = 'Enter latitude & longitude so the "before" baseline can be fetched from the satellite map.';
+        el('disErr').hidden = false; return;
+      }
+      el('disErr').hidden = true; el('disProc').hidden = false; el('disRun').disabled = true;
+      try {
+        const fd = new FormData();
+        fd.append('file', disScene);
+        if (useBase) { fd.append('use_basemap', 'true'); fd.append('extent_km', '3'); }
+        else if (disBefore) fd.append('before', disBefore);
+        if (el('disRegion').value.trim()) fd.append('region', el('disRegion').value.trim());
+        if (lat) fd.append('lat', lat);
+        if (lon) fd.append('lon', lon);
+        const r = await api('/api/disaster/detect', { method: 'POST', form: fd });
+        renderDisaster(r);
+      } catch (ex) { el('disErr').textContent = ex.message; el('disErr').hidden = false; }
+      finally { el('disProc').hidden = true; el('disRun').disabled = false; }
+    }
+    const SEV_COL = { None: '#8a8f98', Low: '#0e9c8a', Moderate: '#dd9138', High: '#d2694a', Severe: '#b23b1e' };
+    function renderDisaster(r) {
+      const sevCol = SEV_COL;
+      el('disPrimary').textContent = r.primary;
+      el('disMode').textContent = (r.mode === 'change' ? 'Pre/post change analysis' : 'Single-scene assessment') + ' · ' + r.detected_at;
+      const sc = sevCol[r.severity] || '#8a8f98';
+      el('disSeverity').textContent = 'Severity: ' + r.severity;
+      el('disSeverity').style.background = sc + '22'; el('disSeverity').style.color = sc;
+      el('disAffected').textContent = 'Affected ~' + r.affected_area_pct + '%';
+      const ov = el('disOverlay');
+      if (r.overlay_url) { ov.src = r.overlay_url; ov.hidden = false; el('disNoOverlay').hidden = true; }
+      else { ov.hidden = true; el('disNoOverlay').hidden = false; }
+      const bb = el('disBaselineBox');
+      if (r.baseline_url) { el('disBaseline').src = r.baseline_url; el('disBaselineSrc').textContent = r.baseline_source || 'Esri World Imagery'; bb.hidden = false; }
+      else bb.hidden = true;
+      el('disDetections').innerHTML = r.detections.length ? r.detections.map(d => `
+        <div class="dis-row">
+          <div class="dh"><span class="dn">${d.type}</span><span class="dc">${Math.round(d.confidence * 100)}% confidence</span></div>
+          <div class="dis-bar"><i style="width:${Math.round(d.confidence * 100)}%;background:${sc}"></i></div>
+          <div class="de">${d.evidence}</div>
+        </div>`).join('') : '<div class="card-sub">No disaster signature detected in this scene.</div>';
+      el('disAlert').textContent = r.authority_alert;
+      const ex = r.exposure || {};
+      el('disExposure').innerHTML = `<div class="card-sub" style="margin-bottom:6px;color:var(--teal);font-weight:600">Exposure estimate</div>
+        <div style="font-size:13px;color:var(--ink-soft);line-height:1.6">Built-up cover <b>${ex.builtup_pct ?? '—'}%</b>${ex.builtup_in_impact_pct > 0.5 ? `, <b>${ex.builtup_in_impact_pct}%</b> within the impact zone` : ''}. ${ex.note || ''}</div>`;
+      el('disLimits').innerHTML = '<b>Limitations:</b><br>• ' + (r.limitations || []).join('<br>• ');
+      el('disResult').hidden = false;
+      el('disResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      loadDisasterHistory();
+    }
+    async function loadDisasterHistory() {
+      let items; try { items = await api('/api/disaster/history'); } catch { return; }
+      const sub = el('disHistSub'), cnt = el('disHistCount'), list = el('disHistoryList');
+      if (cnt) cnt.textContent = items.length;
+      if (sub) sub.textContent = items.length ? `${items.length} scan${items.length > 1 ? 's' : ''} on record` : 'No scans yet';
+      if (!list) return;
+      if (!items.length) { list.innerHTML = '<div class="empty"><div class="em-ic">🛑</div>No disaster scans yet — assess a scene above to build a history.</div>'; return; }
+      list.innerHTML = items.map(d => {
+        const sc = SEV_COL[d.severity] || '#8a8f98';
+        const thumb = d.overlay_url
+          ? `<img src="${d.overlay_url}" alt="" />`
+          : `<div style="width:46px;height:46px;border-radius:8px;background:var(--panel-2);display:grid;place-items:center;font-size:18px;flex-shrink:0">🛑</div>`;
+        const loc = d.location && d.location.lat != null ? ` · ${d.location.lat}, ${d.location.lon}` : '';
+        return `<div class="ritem">${thumb}
+          <div><div class="rn">${d.primary || 'Assessment'} <span style="color:var(--muted);font-weight:400">— ${d.name || 'scene'}</span></div>
+            <div class="rd">${d.created_at} · ${d.region || 'J&K'}${loc}</div></div>
+          <span class="rc"><span class="dis-badge" style="background:${sc}22;color:${sc}">${d.severity} · ~${d.affected_area_pct ?? 0}%</span></span></div>`;
+      }).join('');
+    }
+    // ---- Dedicated per-tab views: each nav link shows its own page ----
+    const VIEWS = {
+      region:    ['top', 'metrics', 'region'],
+      scenario:  ['scenario'],
+      forecast:  ['forecast'],
+      disaster:  ['disaster'],
+      workspace: ['workspace', 'change'],
+      dashboard: ['dashboard'],
+      reports:   ['reports'],
+    };
+    const ALL_SECTIONS = Object.values(VIEWS).flat();
+    let currentView = null;
+    function showView(view) {
+      if (!VIEWS[view]) view = 'region';
+      currentView = view;
+      const show = new Set(VIEWS[view]);
+      ALL_SECTIONS.forEach(id => { const s = document.getElementById(id); if (s) s.hidden = !show.has(id); });
+      // reveal-on-scroll never fires for a section that loaded hidden, so force it visible
+      VIEWS[view].forEach(id => { const s = document.getElementById(id); if (s) s.querySelectorAll('.reveal').forEach(r => r.classList.add('in')); });
+      document.querySelectorAll('.navlinks a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + view));
+      if (view === 'region' && typeof satMap !== 'undefined' && satMap) { setTimeout(fitSat, 60); setTimeout(fitSat, 220); }
+      history.replaceState(null, '', '#' + view);
+      window.scrollTo(0, 0);
+    }
+    let navReady = false;
+    function initScrollSpy() {
+      if (navReady) return; navReady = true;
+      // intercept every in-page anchor that targets a view (nav links + hero CTAs + buttons)
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        const id = a.getAttribute('href').slice(1);
+        const owner = VIEWS[id] ? id : Object.keys(VIEWS).find(v => VIEWS[v].includes(id));
+        if (!owner) return;
+        a.addEventListener('click', e => { e.preventDefault(); showView(owner); });
+      });
+      const hash = (location.hash || '').slice(1);
+      const start = VIEWS[hash] ? hash : (Object.keys(VIEWS).find(v => VIEWS[v].includes(hash)) || 'region');
+      showView(start);
+    }
+    // model accuracy straight from the metrics files (never hard-coded in the page)
+    async function loadModelInfo() {
+      try {
+        const m = await api('/api/analysis/model');
+        if (m.test_accuracy_10class == null) return;
+        const pe = m.pipeline_eval;
+        el('lcModelFeat').textContent = `Land-cover CNN trained on EuroSAT — ${m.test_accuracy_10class}% held-out test accuracy (${m.test_accuracy}% on the 5 app classes)`
+          + (pe ? `; full segmentation pipeline ${pe.eurosat_accuracy_pct}% on EuroSAT test tiles.` : '.');
+        el('disModelAcc').textContent = ` (${m.test_accuracy_10class}% held-out test)`;
+      } catch { }
+    }
+
+    async function boot() {
+      loadModelInfo();
+      renderAuthMode();
+      if (store.token) { try { store.user = await api('/api/auth/me'); enterApp(); return; } catch { localStorage.removeItem('bd_token'); store.token = null; } }
+      el('authOverlay').hidden = false;
+    }
+
+    /* =========================================================
+       CLIMATE TWIN (client-side prototype for Jammu & Kashmir)
+       ========================================================= */
+    function initClimate() { loadClimateOverview(); initMap(); initWhatIf(); initForecasts(); }
+
+    // ---- Current climate state (live KPIs, summary, pipeline, districts) ----
+    const CC = { clay: '#d2694a', ochre: '#dd9138', teal: '#2aa38a', ocean: '#2f7d9a' };
+    const rainCol = p => p < -20 ? CC.clay : p < -10 ? CC.ochre : p > 25 ? CC.ocean : CC.teal;
+    const soilCol = v => v < 0.35 ? CC.clay : v < 0.45 ? CC.ochre : CC.teal;
+    function csparkline(values, color) {
+      if (!values || !values.length) return '';
+      const w = 100, h = 34, mn = Math.min(...values), mx = Math.max(...values), rng = (mx - mn) || 1;
+      const pts = values.map((v, i) => `${(i / (values.length - 1) * w).toFixed(1)},${(h - 4 - (v - mn) / rng * (h - 8)).toFixed(1)}`).join(' ');
+      return `<svg class="cspark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }
+    let satOvStamp = 0, satOvTimer = null;
+    function satOvTick() {
+      if (!satOvStamp) return;
+      const s = Math.round((Date.now() - satOvStamp) / 1000);
+      const ago = s < 60 ? s + 's ago' : Math.floor(s / 60) + 'm ' + (s % 60) + 's ago';
+      const e = el('satOvLive'); if (e) e.innerHTML = `<span class="pulse" style="display:inline-block;margin-right:6px"></span>Live · auto-refresh 60s · updated ${ago}`;
+    }
+    async function loadClimateOverview() {
+      let s; try { s = await api('/api/climate/current'); } catch { return; }
+      const ra = (s.rainfall_anomaly_pct > 0 ? '+' : '') + s.rainfall_anomaly_pct;
+      const dCol = { Severe: CC.clay, Moderate: CC.ochre, Mild: CC.ochre, Normal: CC.teal }[s.drought_class] || CC.teal;
+      const kpis = [
+        { lbl: 'Rainfall anomaly', ic: '🌧️', col: rainCol(s.rainfall_anomaly_pct), val: ra, unit: '%', meta: '90-day vs normal', spark: s.spark_precip },
+        { lbl: 'Temperature anomaly', ic: '🌡️', col: s.temperature_anomaly_c > 1.3 ? CC.clay : CC.teal, val: (s.temperature_anomaly_c > 0 ? '+' : '') + s.temperature_anomaly_c, unit: '°C', meta: 'vs 1973–2023 normal', spark: s.spark_temp },
+        { lbl: 'Soil moisture', ic: '💧', col: soilCol(s.soil_moisture_index), val: s.soil_moisture_index, unit: '/1.0', meta: 'root-zone index', spark: s.spark_precip },
+        { lbl: 'Drought risk', ic: '🍃', col: dCol, val: s.drought_class, unit: '', meta: 'SPI-based class', spark: s.spark_temp },
+      ];
+      el('satKpis').innerHTML = kpis.map(k => `<div class="ckpi"><div class="ktop"><span class="lbl">${k.lbl}</span><span class="ic" style="background:${k.col}1c;color:${k.col}">${k.ic}</span></div><div class="val" style="color:${k.col}">${k.val}<small>${k.unit}</small></div><div class="meta">${k.meta}</div>${csparkline(k.spark, k.col)}</div>`).join('');
+
+      const severe = s.drought_class === 'Severe' || s.temperature_anomaly_c > 1.3 || s.rainfall_anomaly_pct < -20;
+      const watch = s.drought_class === 'Moderate' || s.drought_class === 'Mild';
+      const stCol = severe ? CC.clay : watch ? CC.ochre : CC.teal, stLbl = severe ? 'Alert' : watch ? 'Watch' : 'Normal';
+      const sevPct = ({ Normal: 20, Mild: 45, Moderate: 70, Severe: 95 })[s.drought_class] || 20;
+      el('satSummary').innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap"><span style="background:${stCol}1c;color:${stCol};font-family:var(--font-mono);font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px">${stLbl}</span><span style="font-size:13px;color:var(--ink-soft)">${s.drought_class} drought · rainfall ${ra}% and temperature ${s.temperature_anomaly_c > 0 ? '+' : ''}${s.temperature_anomaly_c}°C vs the 1973–2023 normal.</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px 22px;font-size:13.5px;color:var(--ink-soft)">
+          <div>Mean temperature <b>${s.mean_temp_c}°C</b></div><div>30-day precipitation <b>${s.precip_30d_mm} mm</b></div>
+          <div>Rainfall anomaly <b>${ra}%</b></div><div>Warming trend <b>+${s.warming_trend_c_per_decade}°C/decade</b></div>
+          <div>Districts monitored <b>9</b></div><div>Last assimilation <b>${s.as_of || '—'}</b></div></div>
+        <div style="margin-top:18px"><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-bottom:6px"><span>Soil-moisture index</span><span>${s.soil_moisture_index} / 1.0</span></div><div class="cbar"><i style="width:${(s.soil_moisture_index * 100).toFixed(0)}%;background:${soilCol(s.soil_moisture_index)}"></i></div></div>
+        <div style="margin-top:13px"><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-bottom:6px"><span>Drought severity</span><span>${s.drought_class}</span></div><div class="cbar"><i style="width:${sevPct}%;background:${stCol}"></i></div></div>`;
+
+      try {
+        const d = await api('/api/climate/data');
+        const scol = { active: CC.teal, ingesting: CC.ochre, ready: CC.ocean, stale: CC.clay };
+        const byLive = d.sources.slice().sort((a, b) => (b.status === 'active') - (a.status === 'active'));
+        el('satPipe').innerHTML = byLive.slice(0, 4).map(x => { const c = scol[x.status] || CC.teal; return `<div class="csrc"><span class="sd" style="background:${c}"></span><div><div class="sn">${x.name}</div><div class="sr">${x.res} · ${x.role}</div></div><span class="st" style="background:${c}1c;color:${c}">${x.status}</span></div>`; }).join('');
+      } catch { }
+      try {
+        const dj = await api('/api/climate/districts?layer=rain');
+        el('satDistricts').innerHTML = dj.districts.map(t => { const tc = t.temp > 1.3 ? CC.clay : t.temp > 0.6 ? CC.ochre : CC.teal; return `<div class="cdist"><div class="dn">${t.name}</div><div class="dm"><span style="color:${rainCol(t.rain)}">🌧 ${t.rain > 0 ? '+' : ''}${t.rain}%</span><span style="color:${tc}">🌡 ${t.temp > 0 ? '+' : ''}${t.temp}°</span><span style="color:${soilCol(t.soil)}">💧 ${t.soil}</span></div></div>`; }).join('');
+      } catch { el('satDistricts').innerHTML = '<div class="card-sub">District layer unavailable.</div>'; }
+
+      satOvStamp = Date.now();
+      if (!satOvTimer) { satOvTimer = setInterval(() => { if (currentView === 'region') loadClimateOverview(); }, 60000); setInterval(satOvTick, 1000); }
+      satOvTick();
+    }
+
+    // ---- District/city map (real gridded, region-aware) ----
+    const GRID_VAR = { rain: 'rain', temp: 'tmean' };
+    let currentLayer = 'rain', mapRegion = 'jk', mapData = null, mapAbsmax = 1;
+    function lerp3(a, b, f) { return [Math.round(a[0] + (b[0] - a[0]) * f), Math.round(a[1] + (b[1] - a[1]) * f), Math.round(a[2] + (b[2] - a[2]) * f)]; }
+    function anomColor(v, layer, absmax) {
+      if (v == null) return '#e9e0cc';
+      const t = Math.max(-1, Math.min(1, v / (absmax || 1)));
+      const neg = layer === 'temp' ? [47, 125, 154] : [214, 154, 72];
+      const pos = layer === 'temp' ? [210, 105, 74] : [47, 125, 154];
+      const mid = [243, 237, 224];
+      const c = t < 0 ? lerp3(mid, neg, -t) : lerp3(mid, pos, t);
+      return `rgb(${c[0]},${c[1]},${c[2]})`;
+    }
+    let satMap = null, satOverlay = null, satMarkers = null, satFit = null, satBounds = null;
+    function fitSat() {
+      if (!satMap || !satBounds) return;
+      satMap.invalidateSize();
+      // instant (non-animated) fit: deterministic even if the tab is backgrounded mid-switch
+      satMap.fitBounds(satBounds, { padding: [12, 12], animate: false });
+    }
+    function initLeafletSat() {
+      if (satMap) return;
+      satMap = L.map('districtMap', { scrollWheelZoom: false, zoomSnap: 0.25 });
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 18, attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics',
+      }).addTo(satMap);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18, opacity: 0.9 }).addTo(satMap);
+      satMarkers = L.layerGroup().addTo(satMap);
+      satMap.on('mousemove', onSatHover);
+      setTimeout(() => satMap.invalidateSize(), 60);
+    }
+    function initMap() {
+      document.querySelectorAll('#omRegion .toggle').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('#omRegion .toggle').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); mapRegion = b.dataset.region;
+        el('regionTitle').textContent = mapRegion === 'india' ? 'All India' : 'Jammu & Kashmir';
+        el('monitoredHead').textContent = mapRegion === 'india' ? 'Cities monitored' : 'Districts monitored';
+        fetchMap();
+      }));
+      document.querySelectorAll('#region .map-toolbar .toggle[data-layer]').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('#region .map-toolbar .toggle[data-layer]').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); currentLayer = b.dataset.layer; fetchMap();
+      }));
+      initLeafletSat();
+      fetchMap();
+    }
+    async function fetchMap() {
+      try { mapData = await api('/api/gridded/anomaly?var=' + GRID_VAR[currentLayer] + '&region=' + mapRegion); }
+      catch { el('districtInfo').textContent = 'Ingest gridded data for this region to view the map.'; return; }
+      mapAbsmax = Math.max(Math.abs(mapData.amin), Math.abs(mapData.amax)) || 1;
+      el('monitoredList').textContent = mapData.districts.map(d => d.name).join(' · ');
+      drawSatMap(); renderLegend();
+    }
+    function _gridBounds(g) {
+      const r = g.res_deg, la = g.lats, lo = g.lons;
+      return [[la[0] - r / 2, lo[0] - r / 2], [la[la.length - 1] + r / 2, lo[lo.length - 1] + r / 2]];
+    }
+    function _overlayURL(g) {
+      const rows = g.anomaly.length, cols = g.anomaly[0].length;
+      const cv = document.createElement('canvas'); cv.width = cols; cv.height = rows;
+      const ctx = cv.getContext('2d');
+      for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) {
+        const v = g.anomaly[i][j]; if (v == null) continue;
+        ctx.fillStyle = anomColor(v, currentLayer, mapAbsmax);
+        ctx.fillRect(j, rows - 1 - i, 1, 1);
+      }
+      return cv.toDataURL();
+    }
+    function drawSatMap() {
+      if (!satMap) return;
+      satMap.invalidateSize();
+      if (satOverlay) { satMap.removeLayer(satOverlay); satOverlay = null; }
+      satOverlay = L.imageOverlay(_overlayURL(mapData), _gridBounds(mapData), { opacity: 0.6, interactive: false }).addTo(satMap);
+      satMarkers.clearLayers();
+      mapData.districts.forEach(d => {
+        if (d.lat == null) return;
+        L.circleMarker([d.lat, d.lon], { radius: 4, color: '#1b2b27', weight: 2, fillColor: '#1b2b27', fillOpacity: 1 })
+          .bindTooltip(d.name, { permanent: true, direction: 'right', className: 'mk-label', offset: [4, 0] }).addTo(satMarkers);
+      });
+      const bb = mapData.bbox; satBounds = [[bb[0], bb[2]], [bb[1], bb[3]]];
+      if (satFit !== mapRegion) {
+        fitSat(); setTimeout(fitSat, 150); satFit = mapRegion;   // re-fit after layout settles
+      }
+    }
+    function onSatHover(e) {
+      if (!mapData) return;
+      const lat = e.latlng.lat, lon = e.latlng.lng, a = mapData;
+      let ci = 0, cj = 0, bi = 1e9, bj = 1e9;
+      a.lats.forEach((la, i) => { const dd = Math.abs(la - lat); if (dd < bi) { bi = dd; ci = i; } });
+      a.lons.forEach((lo, j) => { const dd = Math.abs(lo - lon); if (dd < bj) { bj = dd; cj = j; } });
+      const v = a.value[ci][cj], an = a.anomaly[ci][cj];
+      const nm = currentLayer === 'rain' ? 'Rainfall' : 'Temperature', u = currentLayer === 'rain' ? ' mm/day' : '°C';
+      el('districtInfo').innerHTML = `<b>${lat.toFixed(2)}°N, ${lon.toFixed(2)}°E</b> — ${nm}: <b>${v == null ? '—' : v}${u}</b> · anomaly <b style="color:${anomColor(an, currentLayer, mapAbsmax)}">${an == null ? '—' : (an > 0 ? '+' : '') + an}</b>`;
+    }
+    function renderLegend() {
+      const stops = [-1, -.5, 0, .5, 1].map(t => anomColor(t * mapAbsmax, currentLayer, mapAbsmax));
+      const unit = currentLayer === 'rain' ? 'mm/day' : '°C';
+      el('legendBox').innerHTML = `<div style="height:12px;border-radius:6px;background:linear-gradient(90deg,${stops.join(',')})"></div>
+        <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:6px"><span>−${mapAbsmax.toFixed(1)}</span><span>0</span><span>+${mapAbsmax.toFixed(1)} ${unit}</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:8px">Anomaly = value − per-cell climatology</div>`;
+    }
+
+    // ---- What-if scenario (live API) ----
+    let whatIfChart, wiTimer;
+    function initWhatIf() {
+      whatIfChart = new Chart(el('whatIfChart'), {
+        type: 'bar',
+        data: { labels: ['Soil moisture', 'Drought risk', 'Crop stress', 'Reservoir inflow'], datasets: [
+          { label: 'Baseline', data: [], backgroundColor: '#d8cfb8', borderRadius: 4 },
+          { label: 'Scenario', data: [], backgroundColor: '#14b8a6', borderRadius: 4 },
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, animation: { duration: 400 },
+          plugins: { legend: { labels: { color: '#857b67' } } },
+          scales: { x: { grid: { display: false } }, y: { grid: { color: GRID }, border: { display: false } } } }
+      });
+      el('rainSlider').addEventListener('input', updateWhatIf);
+      el('tempSlider').addEventListener('input', updateWhatIf);
+      document.querySelectorAll('#scenarioPresets .preset-chip').forEach(btn => btn.addEventListener('click', () => {
+        el('rainSlider').value = btn.dataset.rain; el('tempSlider').value = btn.dataset.temp; updateWhatIf();
+      }));
+      updateWhatIf();
+    }
+    const LVL_COL = { Low: '#2aa38a', Moderate: '#dd9138', Medium: '#dd9138', High: '#d2694a', Severe: '#b3402a' };
+    function updateWhatIf() {
+      const rain = parseFloat(el('rainSlider').value), temp = parseFloat(el('tempSlider').value);
+      el('rainVal').textContent = (rain > 0 ? '+' : '') + rain + '%';
+      el('tempVal').textContent = (temp >= 0 ? '+' : '') + temp.toFixed(1) + '°C';
+      clearTimeout(wiTimer);
+      wiTimer = setTimeout(async () => {
+        let s; try { s = await api('/api/climate/whatif', { method: 'POST', body: { rain_pct: rain, temp_c: temp } }); } catch { return; }
+        const set = (id, txt, cls) => { const e = el(id); e.textContent = txt; e.className = 'v ' + cls; e.classList.remove('flash'); void e.offsetWidth; e.classList.add('flash'); };
+        set('impSoil', s.soil_moisture_index, s.soil_moisture_index < 0.35 ? 'up' : s.soil_moisture_index > 0.45 ? 'down' : '');
+        set('impDrought', s.drought_risk_score, s.drought_risk_score > 55 ? 'up' : s.drought_risk_score < 30 ? 'down' : 'warn');
+        set('impCrop', s.crop_water_stress, ['High', 'Severe'].includes(s.crop_water_stress) ? 'up' : s.crop_water_stress === 'Low' ? 'down' : 'warn');
+        set('impWater', (s.reservoir_inflow_change_pct >= 0 ? '+' : '') + s.reservoir_inflow_change_pct + '%', s.reservoir_inflow_change_pct < -15 ? 'up' : s.reservoir_inflow_change_pct > 10 ? 'down' : '');
+        const b = s.baseline;
+        whatIfChart.data.datasets[0].data = [b.soil_moisture_index * 100, b.drought_risk_score, b.crop_water_stress_score, 50 + b.reservoir_inflow_change_pct];
+        whatIfChart.data.datasets[1].data = [s.soil_moisture_index * 100, s.drought_risk_score, s.crop_water_stress_score, 50 + s.reservoir_inflow_change_pct];
+        whatIfChart.update('active');
+
+        // sector impact panel
+        if (s.sectors) el('scSectors').innerHTML = s.sectors.map(x => {
+          const c = LVL_COL[x.risk_label] || '#857b67';
+          return `<div class="sector-row"><div><div class="sname">${x.name}</div><div class="snote">${x.note}</div></div>
+            <span class="sector-badge" style="background:${c}1c;color:${c}">${x.risk_label} · ${x.risk_score}</span></div>`;
+        }).join('');
+        // water balance panel
+        const w = s.water_balance;
+        if (w) el('scWater').innerHTML = `
+          <div class="wb-row"><span>Rainfall input</span><b>${w.rain_in_mm} mm/day <span style="color:var(--muted)">(normal ${w.baseline_rain_mm})</span></b></div>
+          <div class="wb-row"><span>Evapotranspiration demand</span><b>${w.et_out_mm} mm/day <span style="color:var(--muted)">(normal ${w.baseline_et_mm})</span></b></div>
+          <div class="wb-row"><span>Net balance</span><b style="color:${w.net_mm < 0 ? 'var(--terracotta)' : 'var(--teal)'}">${w.net_mm > 0 ? '+' : ''}${w.net_mm} mm/day <span style="color:var(--muted)">(normal ${w.baseline_net_mm})</span></b></div>`;
+        if (s.narrative) el('scNarrative').textContent = s.narrative;
+        const bi = s.baseline_info;
+        if (bi && el('scNarrative')) el('scNarrative').textContent +=
+          ` Baseline: this season's normal (${bi.season}) from today's soil moisture ${bi.live_soil_moisture}` +
+          `${bi.soil_as_of ? ' (as of ' + bi.soil_as_of + ')' : ''}.`;
+      }, 120);
+    }
+
+    // ---- 14-day forecasts (real ML ensemble) ----
+    function buildForecast(canvasId, d, color, unit) {
+      const ctx = el(canvasId).getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 0, 260); grad.addColorStop(0, color + '40'); grad.addColorStop(1, color + '05');
+      const labels = [...d.observed.map(o => o.label), ...d.predicted.map(p => p.label)];
+      const obs = [...d.observed.map(o => o.value), ...d.predicted.map(() => null)];
+      const pad = d.observed.map(() => null);
+      const pred = [...pad.slice(0, -1), d.observed.at(-1).value, ...d.predicted.map(p => p.value)];
+      const up = [...pad, ...d.predicted.map(p => p.upper)];
+      const lo = [...pad, ...d.predicted.map(p => p.lower)];
+      new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets: [
+          { label: 'Upper band', data: up, borderWidth: 0, pointRadius: 0, fill: '+1', backgroundColor: grad },
+          { label: 'Lower band', data: lo, borderWidth: 0, pointRadius: 0, fill: false },
+          { label: 'Predicted', data: pred, borderColor: color, backgroundColor: color, borderDash: [5, 4], pointRadius: 0, tension: 0.4, borderWidth: 2 },
+          { label: 'Observed', data: obs, borderColor: INK, backgroundColor: INK, pointRadius: 3, tension: 0.4, borderWidth: 2 },
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { labels: { filter: (i) => i.text === 'Predicted' || i.text === 'Observed' } } },
+          scales: { x: { grid: { color: GRID }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }, y: { grid: { color: GRID }, title: { display: true, text: unit }, border: { display: false } } } }
+      });
+    }
+    async function initForecasts() {
+      try {
+        const [r, t, sm, dr] = await Promise.all([
+          api('/api/climate/forecast?var=rainfall'),
+          api('/api/climate/forecast?var=temperature'),
+          api('/api/climate/forecast?var=soil'),
+          api('/api/climate/forecast?var=drought'),
+        ]);
+        buildForecast('rainChart', r, '#14b8a6', 'mm/day');
+        buildForecast('tempChart', t, '#d2694a', '°C');
+        buildForecast('soilChart', sm, '#1565C0', 'index');
+        buildForecast('droughtChart', dr, '#dd9138', '/100');
+        const sk = (v) => (v > 0 ? '+' : '') + v + '%';
+        if (t.skill) {
+          el('fcTempSkill').innerHTML = sk(t.skill.skill_pct);
+          el('fcTempRmse').innerHTML = t.skill.rmse + '<small>°C</small>';
+        }
+        if (r.skill) {
+          el('fcRainSkill').innerHTML = sk(r.skill.skill_pct);
+          el('fcRainRmse').innerHTML = r.skill.rmse + '<small>mm</small>';
+        }
+      } catch { }
+    }
+
+    /* =========================================================
+       SATELLITE ANALYSIS (backend-powered)
+       ========================================================= */
+    let selectedFile = null, donutChart = null;
+    const dz = el('dropzone'), fi = el('fileInput');
+    dz.addEventListener('click', () => fi.click());
+    dz.addEventListener('dragover', (e) => { e.preventDefault(); dz.classList.add('drag'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+    dz.addEventListener('drop', (e) => { e.preventDefault(); dz.classList.remove('drag'); pickFile(e.dataTransfer.files[0]); });
+    fi.addEventListener('change', (e) => pickFile(e.target.files[0]));
+    function pickFile(f) {
+      if (!f) return; selectedFile = f;
+      el('dzEmpty').hidden = true; const img = el('dzPreview'); img.src = URL.createObjectURL(f); img.hidden = false;
+      el('fileName').textContent = 'Selected: ' + f.name;
+      if (!el('optName').value) el('optName').value = f.name.replace(/\.[^.]+$/, '');
+      el('runBtn').disabled = false; el('clearBtn').hidden = false;
+    }
+    el('optClusters').addEventListener('input', (e) => el('clusterVal').textContent = e.target.value);
+    el('clearBtn').addEventListener('click', resetUpload);
+    el('newBtn').addEventListener('click', () => { resetUpload(); if (typeof showView === 'function') showView('workspace'); });
+    function resetUpload() {
+      selectedFile = null; fi.value = '';
+      el('dzEmpty').hidden = false; el('dzPreview').hidden = true; el('fileName').textContent = '';
+      el('optName').value = ''; el('optLat').value = ''; el('optLon').value = '';
+      el('runBtn').disabled = true; el('clearBtn').hidden = true;
+      el('resultArea').hidden = true; el('uploadArea').hidden = false; el('uploadErr').hidden = true;
+    }
+    el('runBtn').addEventListener('click', async () => {
+      if (!selectedFile) return;
+      el('uploadErr').hidden = true; el('processing').hidden = false; el('runBtn').disabled = true;
+      try {
+        const fd = new FormData(); fd.append('file', selectedFile);
+        if (el('optName').value) fd.append('name', el('optName').value);
+        if (el('optLat').value) fd.append('lat', el('optLat').value);
+        if (el('optLon').value) fd.append('lon', el('optLon').value);
+        fd.append('clusters', el('optClusters').value);
+        const a = await api('/api/analysis', { method: 'POST', form: fd });
+        renderResult(a); toast('Analysis complete — ' + a.name); loadDashboard(); loadReports();
+      } catch (ex) { el('uploadErr').textContent = ex.message; el('uploadErr').hidden = false; }
+      finally { el('processing').hidden = true; el('runBtn').disabled = false; }
+    });
+    function renderResult(a) {
+      el('uploadArea').hidden = true; el('resultArea').hidden = false;
+      el('resTitle').textContent = '✓ ' + a.name;
+      const accTxt = (a.model_accuracy != null) ? ` · ${a.model_accuracy}% test acc` : '';
+      el('resMeta').textContent = `Confidence ${a.confidence}%${accTxt} · ${a.width}×${a.height}px · ${a.created_at}`;
+      el('resDim').textContent = a.model_type ? `${a.width} × ${a.height} px · ${a.model_type}` : `${a.width} × ${a.height} px · 5 classes`;
+      el('resObjCount').textContent = (a.objects?.length || 0) + ' detections';
+      el('resOrig').src = a.original_url; el('resSeg').src = a.segmentation_url; el('resDet').src = a.detection_url;
+      if (a.report_url) { el('resPdf').href = a.report_url; el('resPdf').hidden = false; } else el('resPdf').hidden = true;
+      if (donutChart) donutChart.destroy(); donutChart = landDonut('resDonut', a.land_cover);
+      el('resLegend').innerHTML = Object.entries(a.land_cover).map(([k, v]) => `<div class="lg"><span class="sw" style="background:${CLASS_HEX[k]}"></span>${k} — <b style="color:var(--text)">${v.toFixed(1)}%</b></div>`).join('');
+      const counts = a.object_counts || {};
+      el('resObjs').innerHTML = Object.keys(counts).length ? Object.entries(counts).map(([k, v]) => `<div class="objchip"><span class="sw" style="width:10px;height:10px;border-radius:3px;background:${OBJ_HEX[k] || '#888'}"></span>${k} <b>${v}</b></div>`).join('') : '<span class="mono" style="color:var(--muted)">No discrete objects detected.</span>';
+      el('gaugeArc').style.strokeDashoffset = 289 * (1 - a.confidence / 100); el('gaugeVal').textContent = a.confidence + '%';
+      el('resultArea').scrollIntoView({ behavior: 'smooth' });
+    }
+    function landDonut(canvasId, lc) {
+      const labels = Object.keys(lc), values = labels.map(k => lc[k]);
+      return new Chart(el(canvasId), { type: 'doughnut',
+        data: { labels, datasets: [{ data: values, backgroundColor: labels.map(k => CLASS_HEX[k]), borderColor: '#fffefb', borderWidth: 2, hoverOffset: 6 }] },
+        options: { cutout: '62%', maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 12, padding: 12 } }, tooltip: { callbacks: { label: (c) => ' ' + c.label + ': ' + c.parsed.toFixed(1) + '%' } } } } });
+    }
+
+    // ---- Change detection ----
+    let beforeFile = null, afterFile = null, chDeltaChart = null;
+    function wireDz(dzId, emptyId, prevId, inputId, setter) {
+      const d = el(dzId), inp = el(inputId);
+      d.addEventListener('click', () => inp.click());
+      d.addEventListener('dragover', (e) => { e.preventDefault(); d.classList.add('drag'); });
+      d.addEventListener('dragleave', () => d.classList.remove('drag'));
+      d.addEventListener('drop', (e) => { e.preventDefault(); d.classList.remove('drag'); handle(e.dataTransfer.files[0]); });
+      inp.addEventListener('change', (e) => handle(e.target.files[0]));
+      function handle(f) { if (!f) return; setter(f); el(emptyId).hidden = true; const img = el(prevId); img.src = URL.createObjectURL(f); img.hidden = false; checkChangeReady(); }
+    }
+    wireDz('beforeDz', 'beforeEmpty', 'beforePrev', 'beforeInput', (f) => beforeFile = f);
+    wireDz('afterDz', 'afterEmpty', 'afterPrev', 'afterInput', (f) => afterFile = f);
+    function checkChangeReady() { el('changeBtn').disabled = !(beforeFile && afterFile); el('changeClear').hidden = !(beforeFile || afterFile); }
+    el('changeClear').addEventListener('click', () => {
+      beforeFile = afterFile = null; el('beforeInput').value = ''; el('afterInput').value = '';
+      el('beforeEmpty').hidden = false; el('afterEmpty').hidden = false; el('beforePrev').hidden = true; el('afterPrev').hidden = true;
+      el('changeResult').hidden = true; checkChangeReady();
+    });
+    el('changeBtn').addEventListener('click', async () => {
+      el('changeErr').hidden = true; el('changeProc').hidden = false; el('changeBtn').disabled = true;
+      try {
+        const fd = new FormData(); fd.append('before', beforeFile); fd.append('after', afterFile);
+        if (el('changeName').value) fd.append('name', el('changeName').value);
+        const c = await api('/api/change', { method: 'POST', form: fd });
+        renderChange(c); toast('Change detection complete'); loadChangeHistory();
+      } catch (ex) { el('changeErr').textContent = ex.message; el('changeErr').hidden = false; }
+      finally { el('changeProc').hidden = true; el('changeBtn').disabled = false; }
+    });
+    function renderChange(c) {
+      el('changeResult').hidden = false;
+      el('chBefore').src = c.before_url; el('chAfter').src = c.after_url; el('chMap').src = c.change_map_url;
+      el('chPercent').textContent = c.changed_percent + '%';
+      const chAcc = (c.model_accuracy != null) ? ' · ' + c.model_accuracy + '% test acc' : '';
+      let trTxt = '';
+      if (c.transitions && c.transitions.length) {
+        const t = c.transitions[0];
+        trTxt = ` · main shift ${t.from}→${t.to} (${t.pct}%)`;
+      }
+      el('chConf').textContent = 'of the scene changed · confidence ' + c.confidence + '%' + chAcc + trTxt;
+      const labels = Object.keys(c.class_deltas), vals = labels.map(k => c.class_deltas[k]);
+      if (chDeltaChart) chDeltaChart.destroy();
+      chDeltaChart = new Chart(el('chDeltaChart'), { type: 'bar',
+        data: { labels, datasets: [{ data: vals, backgroundColor: vals.map(v => v >= 0 ? '#2E7D32' : '#E53935'), borderRadius: 5 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: GRID }, ticks: { callback: (v) => v + '%' } } } } });
+      el('changeResult').scrollIntoView({ behavior: 'smooth' });
+    }
+    async function loadChangeHistory() {
+      try { const items = await api('/api/change');
+        if (!items.length) { el('changeHistory').hidden = true; return; }
+        el('changeHistory').hidden = false;
+        el('changeHistoryList').innerHTML = items.map(h => `<div class="ritem"><div><div class="rn">${h.name}</div><div class="rd">${h.created_at}</div></div><span class="rc"><span class="tag" style="background:#fbeae4;color:#b8492c">${h.changed_percent}% changed</span> · ${h.confidence}%</span></div>`).join('');
+      } catch { }
+    }
+
+    // ---- Dashboard ----
+    let dashDonut = null, dashBar = null, dashLine = null, dashObj = null;
+    async function loadDashboard() {
+      let d; try { d = await api('/api/dashboard'); } catch { return; }
+      if (d.totals.images === 0) { el('dashEmpty').hidden = false; el('dashContent').hidden = true; return; }
+      el('dashEmpty').hidden = true; el('dashContent').hidden = false;
+      const lc = d.land_cover;
+      if (dashDonut) dashDonut.destroy(); dashDonut = landDonut('dashDonut', lc);
+      const dl = d.land_cover_delta, dlL = Object.keys(dl), dlV = dlL.map(k => dl[k]);
+      if (dashBar) dashBar.destroy();
+      dashBar = new Chart(el('dashBar'), { type: 'bar', data: { labels: dlL, datasets: [{ data: dlV, backgroundColor: dlV.map(v => v >= 0 ? '#2E7D32' : '#E53935'), borderRadius: 5 }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: GRID }, ticks: { callback: (v) => v + '%' } } } } });
+      const ot = d.object_totals, otL = Object.keys(ot), otV = otL.map(k => ot[k]);
+      el('dashObjSub').textContent = 'Total detections across all scenes (' + d.totals.objects + ')';
+      if (dashObj) dashObj.destroy();
+      dashObj = new Chart(el('dashObjChart'), { type: 'bar', data: { labels: otL, datasets: [{ data: otV, backgroundColor: '#14b8a6', borderRadius: 5 }] }, options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: GRID }, ticks: { precision: 0 } }, y: { grid: { display: false } } } } });
+      const tr = d.trend, trL = tr.map((x, i) => x.name?.slice(0, 10) || ('#' + (i + 1))), trV = tr.map(x => x.confidence);
+      el('dashConfSub').textContent = 'Average confidence: ' + d.avg_confidence + '%';
+      if (dashLine) dashLine.destroy();
+      dashLine = new Chart(el('dashLine'), { type: 'line', data: { labels: trL, datasets: [{ data: trV, borderColor: '#14b8a6', backgroundColor: 'rgba(20,184,166,.14)', fill: true, tension: .35, pointRadius: 3, pointBackgroundColor: '#14b8a6' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { min: 0, max: 100, grid: { color: GRID }, ticks: { callback: (v) => v + '%' } } } } });
+      el('recentList').innerHTML = d.recent.map(r => `<div class="ritem" data-id="${r.id}"><img src="${r.thumb}" alt="" /><div><div class="rn">${r.name}</div><div class="rd">${r.created_at}</div></div><span class="rc"><span class="tag" style="background:${(CLASS_HEX[r.dominant] || '#888')}22;color:${CLASS_HEX[r.dominant] || '#777'}">${r.dominant}</span> · ${r.confidence}%</span></div>`).join('');
+      el('recentList').querySelectorAll('.ritem').forEach(item => item.addEventListener('click', () => openAnalysis(item.dataset.id)));
+    }
+    async function openAnalysis(id) { try { const a = await api('/api/analysis/' + id); renderResult(a); el('uploadArea').hidden = true; } catch (ex) { toast(ex.message); } }
+
+    // ---- Reports ----
+    async function loadReports() {
+      let items; try { items = await api('/api/analysis'); } catch { return; }
+      const withReport = items.filter(a => a.report_url).length;
+      const rc = el('repCount'); if (rc) rc.textContent = withReport || items.length;
+      if (!items.length) { el('reportsList').innerHTML = '<div class="empty"><div class="em-ic">▤</div>No reports yet — analyse a scene to generate one.</div>'; return; }
+      el('reportsList').innerHTML = items.map(a => `<div class="ritem"><img src="${a.segmentation_url}" alt="" /><div><div class="rn">${a.name}</div><div class="rd">${a.created_at} · ${a.confidence}%</div></div><span class="rc">${a.report_url ? `<a class="btn btn-ghost btn-sm" href="${a.report_url}" target="_blank" rel="noreferrer">▤ PDF</a>` : '<span style="color:var(--muted)">no report</span>'}</span></div>`).join('');
+    }
+
+    // ---- Reveal on scroll ----
+    const io = new IntersectionObserver((entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+    document.querySelectorAll('.reveal').forEach(x => io.observe(x));
+
+    boot();
+  </script>
+</body>
+
+</html>

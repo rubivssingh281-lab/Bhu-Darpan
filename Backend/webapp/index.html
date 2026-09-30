@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhū-Darpan — Climate Digital Twin (Jammu &amp; Kashmir)</title>
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <link rel="apple-touch-icon" href="/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    :root {
+      /* Cream / sand palette with teal + terracotta accents */
+      --bg: #f3ede0;
+      --panel: #fffefb;
+      --panel-2: #f7f2e8;
+      --line: #e6dfce;
+      --line-2: #ddd3bf;
+      --ink: #262218;
+      --ink-soft: #4a4433;
+      --muted: #857b67;
+      --algae: #0e9c8a;      /* primary teal */
+      --algae-dim: #0f766e;
+      --seaweed: #2aa38a;    /* near-normal teal-green */
+      --surf: #7cc9b3;       /* light teal */
+      --ocean: #2f7d9a;      /* blue-green water */
+      --clay: #d2694a;       /* deficit / warm terracotta */
+      --ochre: #dd9138;      /* moderate ochre */
+      --wash: #f1ece0;
+      --shadow: 0 8px 26px rgba(40, 33, 18, .07);
+      --shadow-lg: 0 18px 50px rgba(40, 33, 18, .12);
+      --fd: 'Space Grotesk', sans-serif;
+      --fb: 'Inter', sans-serif;
+      --fm: 'JetBrains Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--fb); font-size: 14.5px; line-height: 1.6; }
+    body::before { content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .6;
+      background: radial-gradient(ellipse at 85% -5%, rgba(14,156,138,.09), transparent 45%),
+                  radial-gradient(ellipse at 88% 92%, rgba(221,145,56,.05), transparent 55%),
+                  repeating-radial-gradient(circle at 90% 6%, transparent 0, transparent 52px, rgba(14,156,138,.055) 53px, transparent 55px); }
+    .mono { font-family: var(--fm); font-variant-numeric: tabular-nums; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: pointer; }
+    [hidden] { display: none !important; }
+    .wrap { max-width: 1600px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
+    @media(max-width:640px){ .wrap { padding: 0 18px; } }
+
+    /* Sidebar */
+    :root { --sbw: 284px; }
+    body { padding-left: var(--sbw); }
+    .sidebar { position: fixed; top: 0; left: 0; bottom: 0; z-index: 40; width: var(--sbw); display: flex; flex-direction: column; padding: 22px 16px; background: #1c211b; background-image: linear-gradient(180deg, #20261f 0%, #191d18 100%); border-right: 1px solid rgba(255,255,255,.08); box-shadow: 2px 0 22px rgba(0,0,0,.14); overflow-y: auto; }
+    .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; padding: 2px 6px 8px; }
+    .logo { width: 88px; height: 88px; object-fit: contain; display: block; }
+    .brand h1 { font-family: var(--fd); letter-spacing: -.02em; line-height: 1.15; color: #f4efe3; }
+    .brand h1 .hi, .brand h1 .en { display: block; white-space: nowrap; }
+    .brand h1 .hi { font-size: 30px; }
+    .brand h1 .en { font-size: 30px; }
+    .brand .sub { font-size: 9.5px; color: rgba(244,239,227,.5); letter-spacing: .09em; text-transform: uppercase; font-family: var(--fm); margin-top: 3px; }
+    .status { display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding: 14px 6px 2px; border-top: 1px solid rgba(255,255,255,.09); }
+    .live { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fm); font-size: 11.5px; color: var(--surf); background: rgba(124,201,179,.1); border: 1px solid rgba(124,201,179,.22); padding: 7px 12px; border-radius: 20px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--surf); animation: pulse 2.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(124,201,179,.4);} 50%{opacity:.4;box-shadow:0 0 0 6px rgba(124,201,179,0);} }
+    .sat-link { font-family: var(--fm); font-size: 11.5px; color: rgba(244,239,227,.55); padding: 2px; }
+    .sat-link:hover { color: var(--surf); }
+
+    /* Tabs (sidebar) */
+    nav.tabs { display: flex; flex-direction: column; gap: 3px; margin-top: 18px; }
+    .tab { font-family: var(--fm); font-size: 20px; color: rgba(244,239,227,.62); background: none; border: none; text-align: left; width: 100%; padding: 10px 14px; border-radius: 9px; white-space: nowrap; transition: all .18s; }
+    .tab:hover { color: #fff; background: rgba(255,255,255,.06); }
+    .tab.active { color: #fff; background: rgba(124,201,179,.16); font-weight: 600; box-shadow: inset 3px 0 0 var(--surf); }
+
+    /* Top-right login / sign-up CTA */
+    .login-cta { position: fixed; top: 18px; right: 26px; z-index: 60; display: inline-flex; align-items: center; gap: 8px; font-family: var(--fm); font-size: 13px; font-weight: 600; color: #fff; background: var(--algae); padding: 11px 20px; border-radius: 24px; box-shadow: 0 3px 12px rgba(14,156,138,.3); transition: transform .18s, box-shadow .18s, background .18s; }
+    .login-cta:hover { background: var(--seaweed); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(14,156,138,.42); }
+    @media(max-width:900px){ .login-cta { top: 12px; right: 14px; padding: 9px 15px; font-size: 12px; } }
+
+    @media(max-width:900px){
+      body { padding-left: 0; }
+      .sidebar { position: sticky; top: 0; left: auto; bottom: auto; width: auto; flex-direction: row; align-items: center; gap: 14px; padding: 10px 18px; border-right: none; border-bottom: 1px solid rgba(255,255,255,.09); overflow-x: auto; overflow-y: hidden; }
+      .brand { padding: 0; flex-shrink: 0; }
+      nav.tabs { flex-direction: row; margin-top: 0; gap: 4px; }
+      .tab { padding: 8px 12px; }
+      .status { flex-direction: row; align-items: center; margin-top: 0; margin-left: auto; padding: 0; border-top: none; flex-shrink: 0; }
+    }
+
+    /* Views */
+    main.wrap { padding-top: 40px; padding-bottom: 60px; }
+    .view { animation: fade .35s ease; }
+    @keyframes fade { from { opacity: 0; transform: translateY(8px); } }
+    .view-head { margin-bottom: 22px; }
+    .view-head .eb { font-family: var(--fm); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--seaweed); }
+    .view-head h2 { font-family: var(--fd); font-size: 26px; letter-spacing: -.02em; margin-top: 4px; }
+    .view-head p { color: var(--muted); font-size: 14px; margin-top: 6px; max-width: 66ch; }
+
+    /* Cards & grid */
+    .grid { display: grid; gap: 20px; align-items: start; }
+    .g4 { grid-template-columns: repeat(4, 1fr); }
+    .g3 { grid-template-columns: repeat(3, 1fr); }
+    .g2 { grid-template-columns: 1fr 1fr; }
+    .map-grid { grid-template-columns: 1.5fr 1fr; }
+    @media(max-width:960px){ .g4{grid-template-columns:repeat(2,1fr);} .g3,.g2,.map-grid{grid-template-columns:1fr;} }
+    @media(max-width:560px){ .g4{grid-template-columns:1fr;} }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
+    .card h3 { font-family: var(--fd); font-size: 15px; font-weight: 600; }
+    .card .cs { font-size: 12px; color: var(--muted); font-family: var(--fm); margin-top: 2px; margin-bottom: 16px; }
+
+    /* KPI */
+    .kpi { display: flex; flex-direction: column; gap: 10px; }
+    .kpi .top { display: flex; align-items: center; justify-content: space-between; }
+    .kpi .lbl { font-size: 11.5px; color: var(--muted); font-family: var(--fm); text-transform: uppercase; letter-spacing: .04em; }
+    .kpi .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; font-size: 17px; }
+    .kpi .val { font-family: var(--fd); font-size: 30px; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
+    .kpi .val small { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .kpi .meta { font-size: 12px; color: var(--muted); }
+    .spark { height: 34px; width: 100%; }
+
+    /* Overview — EO mission hero */
+    .algae { color: var(--algae); }
+    #v-overview { padding-top: 40px; }
+    @media(max-width:900px){ #v-overview { padding-top: 20px; } }
+    .ov-hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 48px; align-items: start; }
+    @media(max-width:980px){ .ov-hero { grid-template-columns: 1fr; gap: 32px; } }
+    .ov-h1 { font-family: var(--fd); font-size: clamp(30px,4.5vw,50px); font-weight: 700; letter-spacing: -.025em; line-height: 1.08; margin: 16px 0 18px; }
+    .ov-lede { font-size: 16px; color: var(--muted); max-width: 52ch; margin-bottom: 24px; line-height: 1.6; }
+    .ov-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+    .ov-btn { font-family: var(--fm); font-size: 13px; padding: 12px 22px; border-radius: 9px; font-weight: 600; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all .2s; }
+    .ov-btn-primary { background: var(--algae); color: #fff; box-shadow: 0 4px 16px rgba(14,156,138,.25); }
+    .ov-btn-primary:hover { background: var(--seaweed); transform: translateY(-1px); }
+    .ov-btn-ghost { border: 1px solid var(--line-2); color: var(--ink-soft); background: var(--panel); }
+    .ov-btn-ghost:hover { border-color: var(--algae); color: var(--algae); }
+    .telemetry { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 26px; box-shadow: var(--shadow); }
+    .tele-cap { font-family: var(--fm); font-size: 10px; color: var(--muted); letter-spacing: .1em; margin-bottom: 18px; font-weight: 600; }
+    .tele-row { display: flex; justify-content: space-between; align-items: baseline; padding: 13px 0; border-bottom: 1px dashed var(--line); font-family: var(--fm); }
+    .tele-row:last-child { border-bottom: none; }
+    .tele-label { font-size: 12px; color: var(--muted); font-weight: 500; display: flex; align-items: center; gap: 10px; }
+    .tele-value { font-size: 22px; color: var(--algae); font-weight: 600; letter-spacing: -.02em; }
+    .tele-value.warn { color: var(--clay); }
+    .tele-unit { font-size: 11px; color: var(--muted); margin-left: 5px; }
+    .mission-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .mission-chip { display: inline-flex; align-items: center; gap: 8px; font-family: var(--fm); font-size: 11px; color: var(--ink-soft); background: var(--panel); border: 1px solid var(--line); padding: 8px 13px; border-radius: 20px; }
+    .mission-chip b { color: var(--algae); font-weight: 600; }
+    .mission-chip .cdot { width: 6px; height: 6px; border-radius: 50%; background: var(--seaweed); box-shadow: 0 0 0 3px rgba(14,156,138,.15); }
+    .mission-chip .cdot.amber { background: var(--ochre); box-shadow: 0 0 0 3px rgba(221,145,56,.15); }
+    .provenance { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 22px; padding-top: 20px; border-top: 1px dashed var(--line); }
+    .provenance .plabel { font-family: var(--fm); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+    .prov-badge { font-family: var(--fm); font-size: 11px; font-weight: 600; color: var(--ink-soft); background: var(--panel); border: 1px solid var(--line); border-radius: 7px; padding: 6px 11px; }
+    .prov-badge span { color: var(--algae); }
+    .statband { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); margin-top: 24px; }
+    @media(max-width:900px){ .statband { grid-template-columns: repeat(2,1fr); } }
+    .statband-item { background: var(--panel); padding: 22px 20px; }
+    .sb-num { font-family: var(--fd); font-size: 28px; font-weight: 700; letter-spacing: -.02em; line-height: 1; color: var(--ink); }
+    .sb-num small { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .sb-lbl { font-family: var(--fm); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin-top: 9px; }
+    .factgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; margin-top: 16px; }
+    .factgrid .fk { font-family: var(--fm); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+    .factgrid .fv { font-size: 14.5px; font-weight: 600; margin-top: 4px; color: var(--ink); }
+    .season-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .season-tile { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .season-tile .n { font-family: var(--fd); font-size: 24px; font-weight: 700; letter-spacing: -.02em; line-height: 1; }
+    .season-tile .l { font-family: var(--fm); font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin-top: 9px; }
+    .season-tile .s { font-size: 12px; color: var(--ink-soft); margin-top: 5px; line-height: 1.45; }
+
+    /* Data & Models — gridded-field hero */
+    .data-hero { padding: 24px; }
+    .data-hero .fig-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+    .fig-frame { margin: 0; position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--panel-2); line-height: 0; }
+    .fig-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(40,33,18,.05), inset 0 -46px 60px -40px rgba(40,33,18,.28); }
+    .fig-frame canvas { width: 100%; display: block; }
+    .data-hero-side { display: flex; flex-direction: column; }
+    .data-hero-side .dlist { flex: 1; overflow-y: auto; max-height: 420px; padding-right: 4px; }
+    @media(max-width:900px){ .data-hero .grid.g2 { grid-template-columns: 1fr; } .data-hero-side .dlist { max-height: none; } }
+    .flex-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .dtable { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .dtable th { text-align: left; font-family: var(--fm); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+    .dtable th.r, .dtable td.r { text-align: right; }
+    .dtable td { padding: 7px 8px; border-bottom: 1px dashed var(--line); }
+    .dtable tr:last-child td { border-bottom: none; }
+    .agree { display: inline-block; padding: 2px 9px; border-radius: 20px; font-family: var(--fm); font-size: 10.5px; font-weight: 600; }
+
+    .pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--fm); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+    .summary { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 13.5px; color: var(--ink-soft); }
+    .summary b { color: var(--ink); }
+
+    /* sources */
+    .src { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+    .src:last-child { border-bottom: none; }
+    .src .sd { width: 8px; height: 8px; border-radius: 50%; }
+    .src .sn { font-size: 13.5px; font-weight: 600; }
+    .src .sr { font-family: var(--fm); font-size: 11.5px; color: var(--muted); }
+    .src .st { margin-left: auto; font-family: var(--fm); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; padding: 3px 9px; border-radius: 12px; }
+
+    /* Map */
+    .toolbar { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+    .toggle { font-family: var(--fm); font-size: 12px; padding: 8px 15px; border: 1.5px solid var(--line-2); border-radius: 22px; color: var(--muted); background: none; transition: all .18s; }
+    .toggle.active { border-color: var(--algae); color: var(--algae); background: var(--wash); }
+    .toggle:hover:not(.active) { color: var(--ink); }
+    .distinfo { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-top: 16px; font-family: var(--fm); font-size: 13px; color: var(--ink-soft); min-height: 54px; }
+    .distinfo b { color: var(--algae); }
+    #map { height: 440px; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: var(--panel-2); }
+    .leaflet-container { font-family: var(--fm); background: var(--panel-2); }
+    .leaflet-image-layer { image-rendering: auto; }
+    .leaflet-tooltip.mk-label { background: rgba(255,254,251,.7); border: none; box-shadow: none; color: #33302a; font-family: var(--fm); font-size: 10.5px; font-weight: 600; padding: 0 3px; }
+    .leaflet-tooltip.mk-label::before { display: none; }
+    .mk { cursor: pointer; transition: transform .25s; }
+    .mk:hover { transform: scale(1.07); }
+    .legrow { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--muted); margin-bottom: 9px; }
+    .sw { width: 13px; height: 13px; border-radius: 4px; }
+    .snap { display: flex; justify-content: space-between; font-family: var(--fm); font-size: 12px; padding: 9px 0; border-bottom: 1px dashed var(--line); }
+    .snap:last-child { border-bottom: none; }
+    .snap span:first-child { color: var(--muted); }
+    .snap span:last-child { font-weight: 600; }
+    .dlist { display: flex; flex-direction: column; }
+    .drow { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+    .drow:last-child { border-bottom: none; }
+    .drow .dnm { font-weight: 600; }
+    .drow .dvl { margin-left: auto; font-family: var(--fm); font-weight: 600; }
+
+    .chart-box { height: 300px; position: relative; }
+    .hz-big { font-family: var(--fd); font-size: 44px; font-weight: 700; letter-spacing: -.02em; line-height: 1.05; }
+    .chart-sm { height: 250px; position: relative; }
+
+    /* Simulator */
+    .slbl { display: flex; justify-content: space-between; font-family: var(--fm); font-size: 13px; margin-bottom: 10px; }
+    .slbl b { color: var(--algae); }
+    input[type=range] { -webkit-appearance: none; width: 100%; height: 5px; background: linear-gradient(90deg, var(--surf), var(--algae)); border-radius: 3px; outline: none; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid var(--algae); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+    input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid var(--algae); cursor: pointer; }
+    .imp { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+    .imp .k { font-family: var(--fm); font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .imp .v { font-family: var(--fd); font-size: 26px; font-weight: 700; margin-top: 6px; }
+
+    /* Model table */
+    table.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.tbl th { text-align: left; font-family: var(--fm); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    table.tbl td { padding: 11px 12px; border-bottom: 1px solid var(--line); }
+    table.tbl tr:last-child td { border-bottom: none; }
+
+    /* Reports */
+    .rep { display: flex; gap: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 14px; margin-bottom: 12px; background: var(--panel); }
+    .rep .bar { width: 4px; border-radius: 4px; flex-shrink: 0; }
+    .rep h4 { font-family: var(--fd); font-size: 15px; }
+    .rep p { font-size: 13px; color: var(--ink-soft); margin: 5px 0 8px; }
+    .rep .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .rep .tg { font-family: var(--fm); font-size: 10.5px; padding: 3px 9px; border-radius: 12px; background: var(--wash); color: var(--ink-soft); }
+
+    .skill { display: flex; gap: 30px; flex-wrap: wrap; }
+    .skill .m .n { font-family: var(--fd); font-size: 28px; font-weight: 700; color: var(--algae); }
+    .skill .m .n small { font-size: 14px; color: var(--muted); font-weight: 500; }
+    .skill .m .t { font-size: 11.5px; color: var(--muted); font-family: var(--fm); max-width: 30ch; }
+
+    /* Workflow (Figure 1) */
+    .flow { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding-bottom: 6px; }
+    .flow-step { min-width: 118px; flex: 1; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 14px 12px; text-align: center; position: relative; }
+    .flow-step .fi { font-size: 20px; }
+    .flow-step .fn { font-family: var(--fm); font-size: 9.5px; color: var(--seaweed); letter-spacing: .06em; margin-top: 6px; }
+    .flow-step .ft { font-size: 12px; font-weight: 600; margin-top: 3px; line-height: 1.3; }
+    .flow-step + .flow-step { margin-left: 20px; }
+    .flow-step + .flow-step::before { content: '→'; position: absolute; left: -16px; top: 50%; transform: translateY(-50%); color: var(--algae); font-family: var(--fm); font-size: 14px; }
+    @media(max-width:820px){ .flow { flex-direction: column; } .flow-step + .flow-step { margin-left: 0; margin-top: 20px; } .flow-step + .flow-step::before { content: '↓'; left: 50%; top: -16px; transform: translateX(-50%); } }
+
+    /* Live weather */
+    .wx { background: var(--panel-2); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    .wx .top { display: flex; align-items: center; justify-content: space-between; }
+    .wx .nm { font-weight: 600; font-size: 14px; }
+    .wx .ico { font-size: 26px; line-height: 1; }
+    .wx .t { font-family: var(--fd); font-size: 30px; font-weight: 700; letter-spacing: -.02em; margin-top: 6px; }
+    .wx .cond { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+    .wx .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 12px; font-family: var(--fm); font-size: 11.5px; color: var(--ink-soft); }
+
+    /* Weather headlines */
+    .news-item { padding: 14px 0; border-bottom: 1px dashed var(--line); display: flex; gap: 18px; align-items: flex-start; }
+    .news-item:last-child { border-bottom: none; }
+    .news-item .ni-text { flex: 1; min-width: 0; }
+    .news-item .ni-img { flex: none; width: 168px; aspect-ratio: 3 / 2; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: var(--panel-2); display: block; }
+    .news-item .ni-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    @media(max-width:560px){ .news-item .ni-img { width: 108px; } }
+    .news-item .nt { font-weight: 600; font-size: 14px; line-height: 1.4; }
+    .news-item .nt a:hover { color: var(--algae); }
+    .news-item .ns { font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; }
+    .news-item .nm { font-family: var(--fm); font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+    .loading { text-align: center; color: var(--muted); padding: 40px; font-family: var(--fm); font-size: 13px; }
+    footer { border-top: 1px solid var(--line); padding: 26px 0; text-align: center; font-family: var(--fm); font-size: 11.5px; color: var(--muted); }
+    footer b { color: var(--ink-soft); }
+  </style>
+</head>
+
+<body>
+  <a class="login-cta" href="/satellite" title="Sign in or create an account">Log in / Sign up →</a>
+  <aside class="sidebar">
+    <div class="brand">
+      <img class="logo" src="/logo.png" alt="Bhū-Darpan" />
+      <div>
+        <h1><span class="hi">भू-दर्पण</span><span class="en">Bhū-Darpan</span></h1>
+        <div class="sub">Climate Twin · J&amp;K</div>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="map">Climate Map</button>
+      <button class="tab" data-tab="forecast">Forecast</button>
+      <button class="tab" data-tab="hazards">Hazards</button>
+      <button class="tab" data-tab="simulator">What-If Simulator</button>
+      <button class="tab" data-tab="data">Data &amp; Models</button>
+      <button class="tab" data-tab="reports">Insights</button>
+    </nav>
+    <div class="status">
+      <a class="sat-link" href="/satellite" title="Satellite image analysis module">Satellite module →</a>
+      <div class="live" id="liveBadge" style="cursor:pointer" title="Pull the latest available data (near-real-time)"><span class="dot"></span><span id="liveText">Assimilating…</span></div>
+    </div>
+  </aside>
+
+  <main class="wrap">
+    <!-- OVERVIEW -->
+    <section class="view" id="v-overview">
+      <div class="ov-hero">
+        <div>
+          <div class="eb">Earth-observation digital twin · Jammu &amp; Kashmir pilot</div>
+          <h1 class="ov-h1">A living mirror of <span class="algae">Jammu &amp; Kashmir's</span> land &amp; climate.</h1>
+          <p class="ov-lede">Bhū-Darpan fuses a climate digital twin — district anomalies, 14-day
+            forecasts and monsoon what-if scenarios — with live satellite-image analysis:
+            land-cover segmentation, object detection, change monitoring and reports.</p>
+          <div class="ov-ctas">
+            <button class="ov-btn ov-btn-primary" data-tab="map">Explore the twin →</button>
+            <a class="ov-btn ov-btn-ghost" href="/satellite">Analyse a scene</a>
+          </div>
+          <div class="mission-bar" id="ovMission"></div>
+          <div class="provenance">
+            <span class="plabel">Built on national EO datasets</span>
+            <span class="prov-badge">ISRO <span>INSAT-3D</span></span>
+            <span class="prov-badge">ISRO <span>MOSDAC</span></span>
+            <span class="prov-badge">IMD <span>Gridded</span></span>
+            <span class="prov-badge">NASA <span>POWER</span></span>
+            <span class="prov-badge">ECMWF <span>ERA5</span></span>
+          </div>
+        </div>
+        <div class="telemetry" id="ovTelemetry">
+          <div class="tele-cap">LIVE CLIMATE DOWNLINK · JAMMU &amp; KASHMIR</div>
+          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Rainfall anomaly</div><div><span class="tele-value" id="tRain">—</span><span class="tele-unit">% of normal</span></div></div>
+          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Surface temp anomaly</div><div><span class="tele-value" id="tTemp">—</span><span class="tele-unit">°C</span></div></div>
+          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Soil moisture index</div><div><span class="tele-value" id="tSoil">—</span><span class="tele-unit">(0–1)</span></div></div>
+          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Drought risk class</div><div><span class="tele-value" id="tDrought">—</span></div></div>
+          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Last assimilation</div><div><span class="tele-value" style="font-size:14px;color:var(--muted)" id="tAsOf">—</span></div></div>
+        </div>
+      </div>
+      <div class="statband" id="ovStatband"></div>
+      <div class="cs" id="ovLive" style="margin-top:16px;color:var(--seaweed)"><span class="dot" style="display:inline-block;margin-right:6px"></span>Live · initialising…</div>
+
+      <div class="grid g2" style="margin-top:26px;align-items:start">
+        <div class="card">
+          <h3>Jammu &amp; Kashmir — region at a glance</h3>
+          <div class="cs">Physiographic &amp; demographic context of the pilot region</div>
+          <div class="factgrid">
+            <div><div class="fk">Total area</div><div class="fv">2,22,236 km²</div></div>
+            <div><div class="fk">Elevation range</div><div class="fv">247 – 7,135 m</div></div>
+            <div><div class="fk">Major rivers</div><div class="fv">Jhelum · Chenab · Indus · Ravi</div></div>
+            <div><div class="fk">Forest cover</div><div class="fv">~39% of area</div></div>
+            <div><div class="fk">Population</div><div class="fv">~1.36 crore</div></div>
+            <div><div class="fk">Districts</div><div class="fv">20 · 9 monitored</div></div>
+          </div>
+          <div class="cs" style="margin-top:16px;line-height:1.6">Steep Himalayan gradients, high year-to-year
+            variability and recurring water stress make J&amp;K a demanding, high-value test case for a climate twin.</div>
+        </div>
+        <div class="card">
+          <h3>This season so far</h3>
+          <div class="cs">Live seasonal signals from the current record · detailed on the Hazards tab</div>
+          <div id="ovSeason" class="season-grid" style="margin-top:16px"><div class="loading">Loading seasonal signals…</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAP -->
+    <section class="view" id="v-map" hidden>
+      <div class="view-head">
+        <div class="eb">Interactive geospatial layer</div>
+        <h2>District climate map</h2>
+        <p>Real gridded anomaly field (per-cell value − climatology) with markers sampled from the grid. Switch region (J&amp;K / All India) and layer; use the time control to view the ML forecast; hover any cell.</p>
+      </div>
+      <div class="grid map-grid">
+        <div class="card">
+          <div class="toolbar" id="regionCtl">
+            <button class="toggle active" data-region="jk">Jammu &amp; Kashmir</button>
+            <button class="toggle" data-region="india">All India</button>
+          </div>
+          <div class="toolbar" style="margin-top:-8px">
+            <button class="toggle active" data-layer="rain">Rainfall anomaly</button>
+            <button class="toggle" data-layer="temp">Temperature anomaly</button>
+            <button class="toggle" data-layer="soil">Soil moisture</button>
+          </div>
+          <div class="toolbar" id="timeCtl" style="margin-top:-8px"></div>
+          <svg id="mapStyled" viewBox="0 0 900 560" style="width:100%;height:auto"></svg>
+          <div class="cs" id="mapCaption" style="margin-top:8px"></div>
+          <div class="distinfo" id="distinfo">Hover the map to inspect a grid cell or district.</div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:20px"><h3>Layer legend</h3><div class="cs">Anomaly severity</div><div id="legend"></div></div>
+          <div class="card" style="margin-bottom:20px"><h3 id="monHead">Districts monitored</h3><div class="cs" id="monSub">Sampled from the grid</div><div id="monitored" style="font-family:var(--fm);font-size:12.5px;color:var(--muted);line-height:2.1"></div></div>
+          <div class="card"><h3>Pilot snapshot</h3><div class="cs">Twin configuration</div>
+            <div class="snap"><span>Grid resolution</span><span>4 km</span></div>
+            <div class="snap"><span>Fusion cadence</span><span>Daily</span></div>
+            <div class="snap"><span>Forecast horizon</span><span>14 days</span></div>
+            <div class="snap"><span>Validation</span><span>IMD ground network</span></div>
+            <div class="snap"><span>Primary inputs</span><span>INSAT-3D · IMD · ERA5</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORECAST -->
+    <section class="view" id="v-forecast" hidden>
+      <div class="view-head">
+        <div class="eb">Short-range prediction</div>
+        <h2>14-day rainfall &amp; temperature outlook</h2>
+        <p>A skill-optimised ensemble — an LSTM, gradient-boosted trees and damped persistence blended around a trend-adjusted climatology — seeded from the latest real observations. Bands show the backtested error at each lead; every model is scored on the same 14-day backtest.</p>
+        <div class="cs" id="fcMeta" style="margin-top:8px;color:var(--seaweed)">Issuing live outlook…</div>
+      </div>
+      <div class="grid g2">
+        <div class="card"><h3>Rainfall forecast</h3><div class="cs" id="rainFcSub">mm/day · observed vs predicted · ±1σ</div><div class="chart-box"><canvas id="rainFc"></canvas></div></div>
+        <div class="card"><h3>Temperature forecast</h3><div class="cs" id="tempFcSub">°C · observed vs predicted · ±1σ</div><div class="chart-box"><canvas id="tempFc"></canvas></div></div>
+      </div>
+      <div class="card" style="margin-top:20px">
+        <h3>Forecast skill &amp; validation</h3><div class="cs">Unified 14-day backtest · every model scored identically on held-out issue dates</div>
+        <div class="skill" id="skill"></div>
+      </div>
+      <div class="card" style="margin-top:20px">
+        <h3>Gridded per-cell forecast (spatial)</h3><div class="cs">Optimised damped persistence on a daily climatology (a per-cell GBRT was tested and not selected) · explore leads on the Climate Map</div>
+        <div class="skill" id="gridSkill"><div class="cs">Loading spatial validation…</div></div>
+      </div>
+    </section>
+
+    <!-- HAZARDS -->
+    <section class="view" id="v-hazards" hidden>
+      <div class="view-head">
+        <div class="eb">Hazard intelligence</div>
+        <h2>Hazards, trends &amp; extremes</h2>
+        <p>Standard climate-hazard indices, long-term trends and record extremes — computed from the real J&amp;K daily record (1973 onward), extended to the present with live NASA POWER data.</p>
+      </div>
+      <div class="grid g3">
+        <div class="card">
+          <h3>Drought monitor</h3><div class="cs" id="drSub">SPI-3</div>
+          <div class="hz-big" id="drVal">—</div>
+          <div style="margin:6px 0 4px"><span class="pill" id="drClass">—</span></div>
+          <div class="chart-sm" style="margin-top:12px"><canvas id="drChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Heatwave</h3><div class="cs" id="hwSub">Daily-max heat stress</div>
+          <div style="margin:6px 0"><span class="pill" id="hwStatus" style="font-size:14px">—</span></div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Recent daily-max anomaly: <b id="hwAnom" style="color:var(--ink)">—</b></div>
+          <div class="chart-sm"><canvas id="hwChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Monsoon (JJAS)</h3><div class="cs" id="mnSub">Seasonal progress</div>
+          <div class="hz-big" id="mnProg">—</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="mnDetail"></div>
+          <div class="chart-sm"><canvas id="mnChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid g3" style="margin-top:20px">
+        <div class="card">
+          <h3>Warming trend</h3><div class="cs" id="wtSub">Annual mean temperature</div>
+          <div class="hz-big" id="wtVal" style="color:#c9773f">—</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="wtDetail"></div>
+          <div class="chart-sm"><canvas id="wtChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Extreme rainfall</h3><div class="cs" id="erSub">Heavy-rain days / year</div>
+          <div class="hz-big" id="erVal" style="color:#2f7d9a">—</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="erDetail"></div>
+          <div class="chart-sm"><canvas id="erChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Cold wave &amp; frost</h3><div class="cs" id="cwSub">Frost days / year</div>
+          <div style="margin:6px 0"><span class="pill" id="cwStatus" style="font-size:14px">—</span></div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Latest year: <b id="cwVal" style="color:var(--ink)">—</b></div>
+          <div class="chart-sm"><canvas id="cwChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Climate records</h3><div class="cs" id="rcSub">All-time daily extremes</div>
+        <div class="grid g3" style="gap:14px;margin-top:8px">
+          <div class="imp"><div class="k">Hottest day</div><div class="v" id="rcHot" style="color:#d2694a">—</div><div class="cs" id="rcHotD" style="margin:2px 0 0"></div></div>
+          <div class="imp"><div class="k">Coldest day</div><div class="v" id="rcCold" style="color:#3b9be6">—</div><div class="cs" id="rcColdD" style="margin:2px 0 0"></div></div>
+          <div class="imp"><div class="k">Wettest day</div><div class="v" id="rcWet" style="color:#2f7d9a">—</div><div class="cs" id="rcWetD" style="margin:2px 0 0"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIMULATOR -->
+    <section class="view" id="v-simulator" hidden>
+      <div class="view-head">
+        <div class="eb">Scenario engine</div>
+        <h2>What-if simulator</h2>
+        <p>Perturb rainfall and temperature against the fused baseline and watch the twin propagate impacts through a physically-grounded water-balance model.</p>
+      </div>
+      <div class="grid g2">
+        <div class="card">
+          <h3>Atmospheric forcing</h3><div class="cs">Drag to explore a scenario</div>
+          <div style="margin:18px 0 26px">
+            <div class="slbl"><span>Rainfall deviation from normal</span><b id="rainV">0%</b></div>
+            <input type="range" id="rainS" min="-50" max="50" value="0" step="1">
+          </div>
+          <div style="margin-bottom:8px">
+            <div class="slbl"><span>Temperature deviation from normal</span><b id="tempV">+0.0°C</b></div>
+            <input type="range" id="tempS" min="-2" max="5" value="0" step="0.1">
+          </div>
+          <div class="cs" style="margin:20px 0 8px">Quick scenarios</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap" id="simPresets">
+            <button class="toggle" data-r="-40" data-t="1.5">Monsoon deficit</button>
+            <button class="toggle" data-r="-10" data-t="4">Severe heatwave</button>
+            <button class="toggle" data-r="-45" data-t="3">Compound drought</button>
+            <button class="toggle" data-r="35" data-t="-0.5">Wet year</button>
+            <button class="toggle" data-r="0" data-t="0">Reset</button>
+          </div>
+          <div class="grid g2" style="gap:14px;margin-top:24px">
+            <div class="imp"><div class="k">Soil-moisture index</div><div class="v" id="iSoil">—</div></div>
+            <div class="imp"><div class="k">Drought-risk score</div><div class="v" id="iDrought">—</div></div>
+            <div class="imp"><div class="k">Crop-water stress</div><div class="v" id="iCrop">—</div></div>
+            <div class="imp"><div class="k">Reservoir inflow</div><div class="v" id="iWater">—</div></div>
+          </div>
+        </div>
+        <div class="card"><h3>Baseline vs scenario</h3><div class="cs">Normalised impact comparison</div><div class="chart-box"><canvas id="simChart"></canvas></div></div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Scenario outcome</h3><div class="cs">Plain-language summary &amp; daily water balance</div>
+        <p id="simNarrative" style="font-size:14px;color:var(--ink-soft);margin:12px 0 6px;max-width:90ch">Adjust a scenario to see its outcome.</p>
+        <div class="cs" id="simBaseline" style="margin:0 0 18px"></div>
+        <div class="grid g4" style="gap:14px">
+          <div class="imp"><div class="k">Rainfall in</div><div class="v" id="wbRain" style="color:#2f7d9a">—</div><div class="cs" style="margin-top:2px">mm/day</div></div>
+          <div class="imp"><div class="k">Evapotranspiration out</div><div class="v" id="wbEt" style="color:#d2694a">—</div><div class="cs" style="margin-top:2px">mm/day</div></div>
+          <div class="imp"><div class="k">Net balance</div><div class="v" id="wbNet">—</div><div class="cs" style="margin-top:2px">mm/day</div></div>
+          <div class="imp"><div class="k">Shift vs normal</div><div class="v" id="wbDelta">—</div><div class="cs" style="margin-top:2px">mm/day</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Sector impact assessment</h3><div class="cs">How the scenario propagates to J&amp;K sectors</div>
+        <div class="grid g3" id="simSectors" style="gap:14px;margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- DATA & MODELS -->
+    <section class="view" id="v-data" hidden>
+      <div class="view-head">
+        <div class="eb">Provenance</div>
+        <h2>Data &amp; models</h2>
+        <p>The twin is trained and validated on national datasets from IMD and ISRO platforms.</p>
+      </div>
+      <div class="grid g4" id="dataKpis" style="margin-bottom:20px"></div>
+
+      <!-- Hero: the gridded field, front and centre -->
+      <div class="card data-hero" style="margin-bottom:20px">
+        <div class="grid g2" style="align-items:stretch;gap:26px">
+          <div class="data-hero-fig">
+            <div class="fig-head">
+              <div><div class="eb" style="color:var(--seaweed)">Live gridded field</div><div class="cs" id="gridTitle" style="margin-top:2px">Gridded field preview</div></div>
+              <div class="live" style="cursor:default"><span class="dot"></span>NetCDF · 0.25°</div>
+            </div>
+            <figure class="fig-frame">
+              <canvas id="gridHeat" width="870" height="630"></canvas>
+            </figure>
+            <div class="cs" id="gridScale" style="margin-top:10px"></div>
+            <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap" id="gridTabs"></div>
+          </div>
+          <div class="data-hero-side">
+            <h3 style="margin-bottom:2px">Live gridded data ingestion</h3>
+            <div class="cs" style="margin-bottom:14px">Real NetCDF grids · download → decode → regrid (0.25°) → store</div>
+            <div class="dlist" id="gridList"><div class="loading" style="padding:16px">Loading ingested grids…</div></div>
+            <div class="legend" style="margin-top:14px" id="gridSources"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:20px">
+        <div class="flex-head">
+          <div>
+            <h3>Multi-source data assimilation</h3>
+            <div class="cs">Optimal interpolation of two independent reanalyses · validated vs IMD station record</div>
+          </div>
+          <div class="cs mono" id="fuseMeta" style="text-align:right"></div>
+        </div>
+        <div style="display:flex;gap:8px;margin:14px 0" id="fuseTabs"></div>
+        <div class="grid g2" style="align-items:stretch;gap:26px">
+          <div class="data-hero-side">
+            <div class="eb" style="color:var(--seaweed);margin-bottom:8px">Source weighting</div>
+            <div id="fuseSources"></div>
+            <div class="skill" id="fuseVal" style="margin-top:16px"></div>
+            <div class="eb" style="color:var(--seaweed);margin:22px 0 8px">Fused field by district</div>
+            <div id="fuseDistricts"><div class="loading" style="padding:10px">Assimilating…</div></div>
+          </div>
+          <div>
+            <div class="fig-head">
+              <div><div class="eb" style="color:var(--seaweed)">Inter-source uncertainty</div><div class="cs" id="fuseSpreadTitle" style="margin-top:2px">Where the two reanalyses disagree</div></div>
+              <div class="live" style="cursor:default"><span class="dot"></span>|POWER − ERA5|</div>
+            </div>
+            <figure class="fig-frame"><canvas id="fuseHeat" width="870" height="630"></canvas></figure>
+            <div class="cs" id="fuseSpreadScale" style="margin-top:10px"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:20px"><h3>Data sources</h3><div class="cs" id="dataSpan"></div><div id="srcFull"></div></div>
+      <div class="card"><h3>Model registry</h3><div class="cs">Trained AI models · validated on a held-out time split</div>
+        <table class="tbl"><thead><tr><th>Variable</th><th>Model</th><th>RMSE (vs climatology)</th><th>Skill</th></tr></thead><tbody id="models"></tbody></table>
+      </div>
+    </section>
+
+    <!-- REPORTS / INSIGHTS -->
+    <section class="view" id="v-reports" hidden>
+      <div class="view-head">
+        <div class="eb">Decision support</div>
+        <h2>Insights &amp; advisories</h2>
+        <p>Auto-generated from the current fused state — the actionable layer of the digital twin.</p>
+      </div>
+      <div id="reports"></div>
+
+      <div class="card" style="margin-top:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <div><h3>Live weather across Jammu &amp; Kashmir</h3><div class="cs" id="wxSub">Real-time conditions</div></div>
+          <div class="live" style="cursor:default"><span class="dot"></span><span id="wxUpdated">Fetching…</span></div>
+        </div>
+        <div class="grid g3" id="wxGrid" style="margin-top:16px"><div class="loading">Fetching live weather…</div></div>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+          <div><h3>J&amp;K weather headlines</h3><div class="cs" id="newsSub">Live weather news</div></div>
+          <div class="live" style="cursor:default"><span class="dot"></span><span id="newsUpdated">—</span></div>
+        </div>
+        <div id="newsList" style="margin-top:14px"><div class="loading">Loading headlines…</div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <b>Bhū-Darpan</b> — AI-Powered Digital Twin of India's Climate · Jammu &amp; Kashmir pilot ·
+    Observe · Predict · Simulate
+  </footer>
+
+  <script>
+    Chart.defaults.color = '#6f847b';
+    Chart.defaults.font.family = "'JetBrains Mono',monospace";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.borderColor = '#e6dfce';
+    const GRID = '#efe7d6';
+    const el = id => document.getElementById(id);
+    const api = (p, o) => fetch(p, o).then(r => r.json());
+
+    // Anomaly colour scales (teal / ochre / terracotta / water)
+    const C = { clay: '#d2694a', ochre: '#dd9138', seaweed: '#2aa38a', ocean: '#2f7d9a', algae: '#0e9c8a' };
+    const scales = {
+      rain: v => v < -20 ? C.clay : v < -10 ? C.ochre : v > 25 ? C.ocean : C.seaweed,
+      temp: v => v > 1.8 ? C.clay : v > 1.3 ? C.ochre : C.seaweed,
+      soil: v => v < 0.35 ? C.clay : v < 0.45 ? C.ochre : C.seaweed,
+    };
+    const legends = {
+      rain: [['Severe deficit (< −20%)', C.clay], ['Moderate (−20 to −10%)', C.ochre], ['Near normal', C.seaweed], ['Surplus (> +25%)', C.ocean]],
+      temp: [['High (> +1.8°C)', C.clay], ['Elevated (+1.3 to +1.8°C)', C.ochre], ['Normal', C.seaweed]],
+      soil: [['Dry (< 0.35)', C.clay], ['Low (0.35–0.45)', C.ochre], ['Adequate (> 0.45)', C.seaweed]],
+    };
+
+    // ---------- Tabs ----------
+    const loaded = {};
+    function show(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      document.querySelectorAll('.view').forEach(v => v.hidden = v.id !== 'v-' + tab);
+      if (!loaded[tab]) { loaders[tab] && loaders[tab](); loaded[tab] = true; }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    el('tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) show(b.dataset.tab); });
+    document.addEventListener('click', e => { const b = e.target.closest('.ov-btn[data-tab]'); if (b) { e.preventDefault(); show(b.dataset.tab); } });
+
+    // ---------- Sparkline ----------
+    function sparkline(values, color) {
+      const w = 100, h = 34, min = Math.min(...values), max = Math.max(...values), rng = (max - min) || 1;
+      const pts = values.map((v, i) => `${(i / (values.length - 1) * w).toFixed(1)},${(h - 4 - (v - min) / rng * (h - 8)).toFixed(1)}`).join(' ');
+      return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    }
+
+    // ---------- Overview (EO mission hero — live telemetry + stat band) ----------
+    async function loadOverview() {
+      const s = await api('/api/climate/current');
+      const warn = cond => cond ? 'tele-value warn' : 'tele-value';
+      const setTele = (id, txt, hot) => { const e = el(id); if (!e) return; e.textContent = txt; e.className = warn(hot) + (id === 'tAsOf' ? '' : ''); };
+      el('tRain').textContent = (s.rainfall_anomaly_pct > 0 ? '+' : '') + s.rainfall_anomaly_pct;
+      el('tRain').className = warn(s.rainfall_anomaly_pct < -20);
+      el('tTemp').textContent = (s.temperature_anomaly_c > 0 ? '+' : '') + s.temperature_anomaly_c;
+      el('tTemp').className = warn(s.temperature_anomaly_c > 1.3);
+      el('tSoil').textContent = s.soil_moisture_index;
+      el('tSoil').className = warn(s.soil_moisture_index < 0.35);
+      const dd = el('tDrought'); dd.textContent = s.drought_class; dd.className = warn(['Severe', 'Moderate'].includes(s.drought_class));
+      el('tAsOf').textContent = s.as_of || '—';
+      el('tAsOf').style.cssText = 'font-size:14px;color:var(--muted)';
+
+      try {
+        const [d, lc] = await Promise.all([api('/api/climate/data'), api('/api/analysis/model').catch(() => ({}))]);
+        const cvAcc = lc.test_accuracy != null ? (+lc.test_accuracy).toFixed(1) : '—';
+        const active = d.sources.filter(x => (x.status || '').toLowerCase() === 'active').length;
+        const skills = d.models.map(m => m.skill_pct).filter(v => v != null);
+        const meanSkill = skills.length ? Math.round(skills.reduce((a, b) => a + b, 0) / skills.length) : null;
+        const yrs = Math.round(d.record_days / 365);
+        el('ovMission').innerHTML = `
+          <span class="mission-chip"><span class="cdot"></span>SYSTEMS <b>NOMINAL</b></span>
+          <span class="mission-chip"><span class="cdot ${active < d.sources.length ? 'amber' : ''}"></span>DATA LINK <b>${active}/${d.sources.length} ONLINE</b></span>
+          <span class="mission-chip">FUSION GRID <b>0.25°</b></span>
+          <span class="mission-chip">CV MODEL <b>${cvAcc}%</b></span>
+          <span class="mission-chip">LAST DOWNLINK <b>${s.as_of || '—'}</b></span>`;
+        el('ovStatband').innerHTML = [
+          { n: (d.record_days / 1000).toFixed(1) + '<small>k</small>', l: 'Daily records · ' + yrs + ' yr' },
+          { n: cvAcc + '<small>%</small>', l: 'Land-cover CNN · test' },
+          { n: meanSkill != null ? '+' + meanSkill + '<small>%</small>' : '—', l: 'Mean forecast skill' },
+          { n: d.sources.length, l: 'Data sources' },
+          { n: '9', l: 'Districts monitored' },
+          { n: '14<small>d</small>', l: 'Forecast horizon' },
+        ].map(x => `<div class="statband-item"><div class="sb-num">${x.n}</div><div class="sb-lbl">${x.l}</div></div>`).join('');
+      } catch { }
+
+      // live seasonal signals (current-record hazards — summarised, detailed on Hazards)
+      try {
+        const [mo, dr, an] = await Promise.all([
+          api('/api/hazards/monsoon'), api('/api/hazards/drought'), api('/api/hazards/analytics')]);
+        const tiles = [
+          { n: mo.progress_pct + '%', l: `Monsoon · JJAS ${mo.year}`, s: `${mo.received_mm} / ${mo.seasonal_normal_mm} mm normal`, col: mo.progress_pct >= 90 ? C.ocean : C.ochre },
+          { n: (dr.value > 0 ? '+' : '') + dr.value, l: 'Drought index · SPI-3', s: `${dr.class} · ${dr.as_of}`, col: dr.value <= -1 ? C.clay : C.seaweed },
+          { n: '+' + an.warming.slope_c_per_decade + '°C', l: 'Warming / decade', s: an.warming.span, col: C.clay },
+          { n: an.extreme_rain.latest_days, l: `Heavy-rain days · ${an.extreme_rain.latest_year}`, s: `vs ${an.extreme_rain.baseline_days}/yr normal`, col: C.ocean },
+        ];
+        el('ovSeason').innerHTML = tiles.map(t => `<div class="season-tile"><div class="n" style="color:${t.col}">${t.n}</div><div class="l">${t.l}</div><div class="s">${t.s}</div></div>`).join('');
+      } catch { el('ovSeason').innerHTML = '<div class="cs">Seasonal signals unavailable.</div>'; }
+
+      ovStamp = Date.now();
+      if (!ovTimer) {
+        ovTimer = setInterval(() => { if (!document.getElementById('v-overview').hidden) loadOverview(); }, 60000);
+        setInterval(ovTick, 1000);   // live "updated Ns ago" ticker
+      }
+      ovTick();
+    }
+    let ovStamp = 0, ovTimer = null;
+    function ovTick() {
+      if (!ovStamp) return;
+      const s = Math.round((Date.now() - ovStamp) / 1000);
+      const ago = s < 60 ? s + 's ago' : Math.floor(s / 60) + 'm ' + (s % 60) + 's ago';
+      el('ovLive').innerHTML = `<span class="dot" style="display:inline-block;margin-right:6px"></span>Live · auto-refresh 60s · updated ${ago}`;
+    }
+    const statusCol = { active: C.seaweed, ingesting: C.ochre, ready: C.ocean, stale: C.clay };
+    function srcRow(x) {
+      const c = statusCol[x.status] || C.seaweed;
+      const asOf = x.as_of ? ` · data to ${x.as_of}` : '';
+      return `<div class="src"><span class="sd" style="background:${c}"></span><div><div class="sn">${x.name}</div><div class="sr">${x.res} · ${x.role}${asOf}</div></div><span class="st" style="background:${c}1c;color:${c}">${x.status}</span></div>`;
+    }
+
+    // ---------- Map (real gridded, geographic) ----------
+    const JK_BBOX = [32.0, 37.0, 73.0, 80.0];  // lat0,lat1,lon0,lon1
+    const DIST_LL = { Baramulla: [34.20, 74.35], Srinagar: [34.08, 74.80], Kishtwar: [33.31, 75.77], Doda: [33.15, 75.55], Anantnag: [33.73, 75.15], Udhampur: [32.93, 75.13], Rajouri: [33.38, 74.31], Kathua: [32.37, 75.52], Jammu: [32.73, 74.87] };
+    const GRID_VAR = { rain: 'rain', temp: 'tmean' };
+    const LEADS = [['Now', 0], ['+1 day', 1], ['+3 days', 3], ['+7 days', 7]];
+    let curLayer = 'rain', curGrid = null, curDistricts = [], curLead = 0, scaleRef = null, curRegion = 'jk';
+    let lmap = null, lOverlay = null, lMarkers = null, lastFit = null;
+
+    function initLeaflet() {
+      if (lmap) return;
+      lmap = L.map('map', { scrollWheelZoom: false, zoomSnap: 0.25, attributionControl: true });
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 18, attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics',
+      }).addTo(lmap);
+      // place-name + boundary reference labels on top of the satellite imagery
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 18, opacity: 0.9,
+      }).addTo(lmap);
+      lMarkers = L.layerGroup().addTo(lmap);
+      lmap.on('mousemove', onMapHover);
+      const bb = JK_BBOX; lmap.fitBounds([[bb[0], bb[2]], [bb[1], bb[3]]]);
+      setTimeout(() => lmap.invalidateSize(), 60);
+    }
+
+    async function loadMap() {
+      document.querySelectorAll('#v-map .toolbar .toggle[data-layer]').forEach(b => b.addEventListener('click', () => {
+        if (b.disabled || (b.dataset.layer === 'soil' && curRegion === 'india')) return;   // soil is J&K-only
+        document.querySelectorAll('#v-map .toolbar .toggle[data-layer]').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); curLayer = b.dataset.layer; curLead = 0; fetchLayer();
+      }));
+      document.querySelectorAll('#regionCtl .toggle').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('#regionCtl .toggle').forEach(x => x.classList.remove('active'));
+        b.classList.add('active'); curRegion = b.dataset.region; curLead = 0;
+        // soil is J&K-only; fall back to rainfall for the national view
+        if (curRegion === 'india' && curLayer === 'soil') {
+          curLayer = 'rain';
+          document.querySelectorAll('#v-map .toolbar .toggle[data-layer]').forEach(x => x.classList.toggle('active', x.dataset.layer === 'rain'));
+        }
+        const soilBtn = document.querySelector('#v-map .toggle[data-layer="soil"]');
+        soilBtn.disabled = curRegion === 'india';
+        soilBtn.style.opacity = curRegion === 'india' ? .4 : 1;
+        soilBtn.title = curRegion === 'india' ? 'Soil moisture is modelled for the J&K pilot only' : '';
+        fetchLayer();
+      }));
+      fetchLayer();
+    }
+    let mapView = 'stylized';
+    function ns(t) { return document.createElementNS('http://www.w3.org/2000/svg', t); }
+    function _projS(lat, lon, W, H, bb, pad) {
+      const px = pad * W, py = pad * H;
+      return [px + (lon - bb[2]) / (bb[3] - bb[2]) * (W - 2 * px), py + (bb[1] - lat) / (bb[1] - bb[0]) * (H - 2 * py)];
+    }
+    function _hull(P) {
+      if (P.length < 3) return P;
+      P = P.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+      const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+      const lo = []; for (const p of P) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], p) <= 0) lo.pop(); lo.push(p); }
+      const up = []; for (let i = P.length - 1; i >= 0; i--) { const p = P[i]; while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], p) <= 0) up.pop(); up.push(p); }
+      up.pop(); lo.pop(); return lo.concat(up);
+    }
+    function renderStylized() {
+      const svg = el('mapStyled'), W = 900, H = 560; svg.innerHTML = '';
+      const dd = curDistricts.filter(d => d.lat != null);
+      let a0 = Math.min(...dd.map(d => d.lat)), a1 = Math.max(...dd.map(d => d.lat)),
+          o0 = Math.min(...dd.map(d => d.lon)), o1 = Math.max(...dd.map(d => d.lon));
+      if (a1 - a0 < 0.5) { a0 -= 0.5; a1 += 0.5; } if (o1 - o0 < 0.5) { o0 -= 0.5; o1 += 0.5; }
+      const bb = dd.length ? [a0, a1, o0, o1] : (curGrid && curGrid.bbox) || JK_BBOX;
+      const marks = dd.map(d => ({ d, xy: _projS(d.lat, d.lon, W, H, bb, 0.1) }));
+      if (marks.length >= 3) {
+        let hull = _hull(marks.map(m => m.xy));
+        const cx = hull.reduce((s, p) => s + p[0], 0) / hull.length, cy = hull.reduce((s, p) => s + p[1], 0) / hull.length;
+        hull = hull.map(([x, y]) => { const dx = x - cx, dy = y - cy, d = Math.hypot(dx, dy) || 1; return [x + dx / d * 46, y + dy / d * 46]; });
+        const poly = ns('path');
+        poly.setAttribute('d', 'M' + hull.map(p => p.map(v => v.toFixed(0)).join(',')).join(' L') + ' Z');
+        poly.setAttribute('fill', '#efe7d6'); poly.setAttribute('stroke', '#d8ccae'); poly.setAttribute('stroke-width', '2'); poly.setAttribute('stroke-linejoin', 'round');
+        svg.appendChild(poly);
+      }
+      const absmax = scaleRef || (curGrid ? Math.max(Math.abs(curGrid.amin), Math.abs(curGrid.amax)) : 1) || 1;
+      const big = marks.length > 10;
+      marks.forEach(({ d, xy }) => {
+        const col = curGrid ? anomColor(d.anomaly, curLayer, absmax) : scales.soil(d.value);
+        const base = big ? 12 : 22, r = base + (curGrid ? Math.min(big ? 8 : 16, Math.abs(d.anomaly) / absmax * (big ? 8 : 16)) : 6);
+        const g = ns('g'); g.style.cursor = 'pointer';
+        const ring = ns('circle'); ring.setAttribute('cx', xy[0]); ring.setAttribute('cy', xy[1]); ring.setAttribute('r', r);
+        ring.setAttribute('fill', col); ring.setAttribute('fill-opacity', '.28'); ring.setAttribute('stroke', col); ring.setAttribute('stroke-width', '2'); g.appendChild(ring);
+        const core = ns('circle'); core.setAttribute('cx', xy[0]); core.setAttribute('cy', xy[1]); core.setAttribute('r', big ? 3.5 : 5); core.setAttribute('fill', col); g.appendChild(core);
+        const t = ns('text'); t.setAttribute('x', xy[0]); t.setAttribute('y', xy[1] + r + (big ? 13 : 18)); t.setAttribute('text-anchor', 'middle');
+        t.setAttribute('font-family', "'JetBrains Mono',monospace"); t.setAttribute('font-size', big ? 11 : 14); t.setAttribute('fill', '#4a4433'); t.textContent = d.name; g.appendChild(t);
+        g.addEventListener('mouseenter', () => stylizedInfo(d)); g.addEventListener('click', () => stylizedInfo(d));
+        svg.appendChild(g);
+      });
+    }
+    function stylizedInfo(d) {
+      const u = curLayer === 'rain' ? ' mm/day' : curLayer === 'temp' ? '°C' : '';
+      const val = curGrid ? d.anomaly : d.value; const s = (val > 0 && curGrid) ? '+' : '';
+      const nm = curLayer === 'rain' ? 'Rainfall' : curLayer === 'temp' ? 'Temperature' : 'Soil moisture';
+      el('distinfo').innerHTML = curGrid
+        ? `<b>${d.name}</b> — ${nm} anomaly: <b style="color:${anomColor(d.anomaly, curLayer, scaleRef || 1)}">${s}${val}${u}</b>`
+        : `<b>${d.name}</b> — Soil moisture: <b>${val}</b>`;
+    }
+    function buildTimeCtl() {
+      if (curLayer === 'soil') { el('timeCtl').innerHTML = ''; return; }
+      el('timeCtl').innerHTML = LEADS.map(([lbl, L]) =>
+        `<button class="toggle ${L === curLead ? 'active' : ''}" data-lead="${L}">${lbl}</button>`).join('');
+      el('timeCtl').querySelectorAll('.toggle').forEach(b => b.addEventListener('click', () => setLead(+b.dataset.lead)));
+    }
+    async function setLead(L) {
+      if (curLayer === 'soil') return;               // soil has no gridded forecast
+      curLead = L; buildTimeCtl();
+      if (L === 0) await loadAnalysis(); else await loadMapForecast(L);
+    }
+    // Each map request gets a sequence number; a response is applied only if no newer
+    // request (layer / region / lead change) has been issued since — prevents a slow,
+    // stale response from overwriting the current selection.
+    let mapReq = 0;
+    function proj(lat, lon, W, H, bb) { return [(lon - bb[2]) / (bb[3] - bb[2]) * W, (bb[1] - lat) / (bb[1] - bb[0]) * H]; }
+    function invproj(x, y, W, H, bb) { return [bb[1] - (y / H) * (bb[1] - bb[0]), bb[2] + (x / W) * (bb[3] - bb[2])]; }
+    function lerp3(a, b, f) { return [Math.round(a[0] + (b[0] - a[0]) * f), Math.round(a[1] + (b[1] - a[1]) * f), Math.round(a[2] + (b[2] - a[2]) * f)]; }
+    function anomColor(v, layer, absmax) {
+      if (v == null) return '#e9e0cc';
+      const t = Math.max(-1, Math.min(1, v / (absmax || 1)));
+      const neg = layer === 'temp' ? [47, 125, 154] : [214, 154, 72];   // temp−: blue · rain−: ochre (dry)
+      const pos = layer === 'temp' ? [210, 105, 74] : [47, 125, 154];   // temp+: terracotta · rain+: blue (wet)
+      const mid = [243, 237, 224];
+      const c = t < 0 ? lerp3(mid, neg, -t) : lerp3(mid, pos, t);
+      return `rgb(${c[0]},${c[1]},${c[2]})`;
+    }
+    async function fetchLayer() {
+      buildTimeCtl();
+      if (curLayer === 'soil') {
+        const my = ++mapReq;
+        const r = await api('/api/climate/districts?layer=soil');
+        if (my !== mapReq) return;
+        curGrid = null; scaleRef = null;
+        curDistricts = r.districts.map(d => ({ name: d.name, value: d.value, anomaly: null, lat: (DIST_LL[d.name] || [null])[0], lon: (DIST_LL[d.name] || [null, null])[1] }));
+        el('mapCaption').textContent = 'Soil moisture · modelled (gridded soil not yet ingested)';
+        drawMap(); renderLegend(); renderRanking(); return;
+      }
+      await loadAnalysis();
+    }
+    async function loadAnalysis() {
+      const my = ++mapReq;
+      const a = await api(`/api/gridded/anomaly?var=${GRID_VAR[curLayer]}&region=${curRegion}`);
+      if (my !== mapReq) return;
+      curGrid = a; curDistricts = a.districts;
+      scaleRef = Math.max(Math.abs(a.amin), Math.abs(a.amax)) || 1;
+      el('mapCaption').textContent = `${a.source} · ${a.res_deg}° grid · ${a.period} · per-cell anomaly vs climatology`;
+      drawMap(); renderLegend(); renderRanking();
+    }
+    async function loadMapForecast(L) {
+      const my = ++mapReq;
+      const f = await api(`/api/gridded/forecast?var=${GRID_VAR[curLayer]}&lead=${L}&region=${curRegion}`);
+      if (my !== mapReq) return;
+      curGrid = f; curDistricts = f.districts;
+      const sk = f.skill ? `skill ${f.skill.skill_vs_clim_pct > 0 ? '+' : ''}${f.skill.skill_vs_clim_pct}% vs climatology` : '';
+      el('mapCaption').textContent = [`Forecast +${L}d`, f.target_date, f.method || 'forecast', sk].filter(Boolean).join(' · ');
+      drawMap(); renderLegend(); renderRanking();
+    }
+    function _gridBounds(g) {
+      const r = g.res_deg, la = g.lats, lo = g.lons;
+      return [[la[0] - r / 2, lo[0] - r / 2], [la[la.length - 1] + r / 2, lo[lo.length - 1] + r / 2]];
+    }
+    function _overlayURL(g) {
+      const rows = g.anomaly.length, cols = g.anomaly[0].length;
+      const cv = document.createElement('canvas'); cv.width = cols; cv.height = rows;
+      const ctx = cv.getContext('2d');
+      const absmax = scaleRef || (Math.max(Math.abs(g.amin), Math.abs(g.amax)) || 1);
+      for (let i = 0; i < rows; i++) for (let j = 0; j < cols; j++) {
+        const v = g.anomaly[i][j]; if (v == null) continue;
+        ctx.fillStyle = anomColor(v, curLayer, absmax);
+        ctx.fillRect(j, rows - 1 - i, 1, 1);   // north (highest lat index) at top
+      }
+      return cv.toDataURL();
+    }
+    function drawMap() {
+      el('mapStyled').style.display = '';
+      renderStylized();
+    }
+    function onMapHover(e) {
+      const lat = e.latlng.lat, lon = e.latlng.lng;
+      if (curGrid) {
+        const a = curGrid; let ci = 0, cj = 0, bi = 1e9, bj = 1e9;
+        a.lats.forEach((la, i) => { const dd = Math.abs(la - lat); if (dd < bi) { bi = dd; ci = i; } });
+        a.lons.forEach((lo, j) => { const dd = Math.abs(lo - lon); if (dd < bj) { bj = dd; cj = j; } });
+        const v = a.value[ci][cj], an = a.anomaly[ci][cj], absmax = scaleRef || Math.max(Math.abs(a.amin), Math.abs(a.amax));
+        const nm = curLayer === 'rain' ? 'Rainfall' : 'Temperature', u = curLayer === 'rain' ? ' mm/day' : '°C';
+        el('distinfo').innerHTML = `<b>${lat.toFixed(2)}°N, ${lon.toFixed(2)}°E</b> — ${nm}: <b>${v == null ? '—' : v}${u}</b> · anomaly <b style="color:${anomColor(an, curLayer, absmax)}">${an == null ? '—' : (an > 0 ? '+' : '') + an}</b>`;
+      }
+    }
+    function renderLegend() {
+      if (!curGrid) { el('legend').innerHTML = legends.soil.map(([l, c]) => `<div class="legrow"><span class="sw" style="background:${c}"></span>${l}</div>`).join(''); return; }
+      const absmax = scaleRef || (Math.max(Math.abs(curGrid.amin), Math.abs(curGrid.amax)) || 1);
+      const stops = [-1, -.5, 0, .5, 1].map(t => anomColor(t * absmax, curLayer, absmax));
+      const unit = curLayer === 'rain' ? 'mm/day' : '°C';
+      el('legend').innerHTML = `<div style="height:12px;border-radius:6px;background:linear-gradient(90deg,${stops.join(',')})"></div>
+        <div style="display:flex;justify-content:space-between;font-family:var(--fm);font-size:11px;color:var(--muted);margin-top:6px"><span>−${absmax.toFixed(1)} ${unit}</span><span>0</span><span>+${absmax.toFixed(1)}</span></div>
+        <div class="cs" style="margin-top:8px">Anomaly = grid value − per-cell climatology</div>`;
+    }
+    function renderRanking() {
+      el('monHead').textContent = curRegion === 'india' ? 'Cities monitored' : 'Districts monitored';
+      el('monSub').textContent = 'Sampled from the grid';
+      el('monitored').textContent = curDistricts.map(d => d.name).join(' · ');
+    }
+
+    // ---------- Forecast ----------
+    let fcRain, fcTemp;
+    async function loadForecast() {
+      const [r, t] = await Promise.all([api('/api/climate/forecast?var=rainfall'), api('/api/climate/forecast?var=temperature')]);
+      fcRain = buildForecast('rainFc', r, C.ocean); fcTemp = buildForecast('tempFc', t, C.clay);
+      const fmt = iso => new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      if (t.horizon) {
+        el('fcMeta').innerHTML = `<span class="dot" style="display:inline-block;margin-right:6px"></span>Live outlook issued <b>${fmt(t.issued)}</b> · valid ${fmt(t.horizon.start)} → ${fmt(t.horizon.end)} (${t.horizon.days} days)`;
+        el('rainFcSub').textContent = `mm/day · observed vs predicted · ±1σ · ${fmt(r.horizon.start)} → ${fmt(r.horizon.end)}`;
+        el('tempFcSub').textContent = `°C · observed vs predicted · ±1σ · ${fmt(t.horizon.start)} → ${fmt(t.horizon.end)}`;
+      }
+      el('skill').innerHTML = `
+        <div class="m"><div class="n">${t.skill.rmse}<small>°C</small></div><div class="t">Temperature RMSE · ${t.skill.skill_pct}% better than climatology (baseline ${t.skill.clim_rmse}°C)</div></div>
+        <div class="m"><div class="n">${t.skill.mae}<small>°C</small></div><div class="t">Temperature MAE</div></div>
+        <div class="m"><div class="n">${r.skill.rmse}<small>mm</small></div><div class="t">Rainfall RMSE · +${r.skill.skill_pct}% skill (baseline ${r.skill.clim_rmse})</div></div>
+        <div class="m"><div class="n">14</div><div class="t">Day horizon · ${t.skill.model}. ${t.skill.backtest}.</div></div>`;
+      try {
+        const [gt, gr] = await Promise.all([api('/api/gridded/forecast/skill?var=tmean'), api('/api/gridded/forecast/skill?var=rain')]);
+        const sk = (o) => (o >= 0 ? '+' : '') + o + '%';
+        const gl = gt.leads;
+        el('gridSkill').innerHTML = `
+          <div class="m"><div class="n">${sk(gl['1'].skill_vs_clim_pct)}</div><div class="t">Temp +1-day vs climatology · ${sk(gl['1'].skill_vs_persist_pct)} vs naive persistence (RMSE ${gl['1'].rmse}°C)</div></div>
+          <div class="m"><div class="n">${sk(gl['3'].skill_vs_clim_pct)}</div><div class="t">Temp +3-day vs climatology · ${sk(gl['3'].skill_vs_persist_pct)} vs naive persistence</div></div>
+          <div class="m"><div class="n">${sk(gl['7'].skill_vs_clim_pct)}</div><div class="t">Temp +7-day — converges to climatology (predictability limit)</div></div>
+          <div class="m"><div class="n">${gt.test_days}</div><div class="t">Backtest days · ${gt.model}</div></div>`;
+      } catch { el('gridSkill').innerHTML = '<div class="cs">Ingest a multi-year grid to enable spatial validation.</div>'; }
+    }
+    function buildForecast(canvas, d, color) {
+      const ctx = el(canvas).getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 0, 260); grad.addColorStop(0, color + '38'); grad.addColorStop(1, color + '04');
+      const labels = [...d.observed.map(o => o.label), ...d.predicted.map(p => p.label)];
+      const obs = [...d.observed.map(o => o.value), ...d.predicted.map(() => null)];
+      const pad = d.observed.map(() => null);
+      const pred = [...pad.slice(0, -1), d.observed.at(-1).value, ...d.predicted.map(p => p.value)];
+      const up = [...pad, ...d.predicted.map(p => p.upper)];
+      const lo = [...pad, ...d.predicted.map(p => p.lower)];
+      return new Chart(ctx, { type: 'line',
+        data: { labels, datasets: [
+          { label: 'Upper', data: up, borderWidth: 0, pointRadius: 0, fill: '+1', backgroundColor: grad },
+          { label: 'Lower', data: lo, borderWidth: 0, pointRadius: 0, fill: false },
+          { label: 'Predicted', data: pred, borderColor: color, borderDash: [5, 4], pointRadius: 0, tension: .38, borderWidth: 2 },
+          { label: 'Observed', data: obs, borderColor: '#1b2b27', backgroundColor: '#1b2b27', pointRadius: 3, tension: .38, borderWidth: 2 },
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+          plugins: { legend: { labels: { filter: i => i.text === 'Predicted' || i.text === 'Observed', boxWidth: 12 } } },
+          scales: { x: { grid: { color: GRID }, ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }, y: { grid: { color: GRID }, border: { display: false } } } } });
+    }
+
+    // ---------- Simulator ----------
+    let simChart, simTimer;
+    function loadSimulator() {
+      simChart = new Chart(el('simChart'), { type: 'bar',
+        data: { labels: ['Soil moisture', 'Drought risk', 'Crop stress', 'Reservoir inflow'], datasets: [
+          { label: 'Baseline', data: [], backgroundColor: '#e0d8c6', borderRadius: 5 },
+          { label: 'Scenario', data: [], backgroundColor: C.algae, borderRadius: 5 } ] },
+        options: { maintainAspectRatio: false, plugins: { legend: { labels: { boxWidth: 12 } } }, scales: { x: { grid: { display: false } }, y: { grid: { color: GRID }, border: { display: false } } } } });
+      el('rainS').addEventListener('input', simUpdate); el('tempS').addEventListener('input', simUpdate);
+      el('simPresets').querySelectorAll('.toggle').forEach(b => b.addEventListener('click', () => {
+        el('rainS').value = b.dataset.r; el('tempS').value = b.dataset.t;
+        el('simPresets').querySelectorAll('.toggle').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        simUpdate();
+      }));
+      simUpdate();
+    }
+    function simUpdate() {
+      const rain = parseFloat(el('rainS').value), temp = parseFloat(el('tempS').value);
+      el('rainV').textContent = (rain > 0 ? '+' : '') + rain + '%';
+      el('tempV').textContent = (temp >= 0 ? '+' : '') + temp.toFixed(1) + '°C';
+      clearTimeout(simTimer);
+      simTimer = setTimeout(async () => {
+        const s = await fetch('/api/climate/whatif', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rain_pct: rain, temp_c: temp }) }).then(r => r.json());
+        const col = v => v ? C.clay : C.seaweed;
+        el('iSoil').textContent = s.soil_moisture_index; el('iSoil').style.color = s.soil_moisture_index < 0.35 ? C.clay : C.seaweed;
+        el('iDrought').textContent = s.drought_risk_score; el('iDrought').style.color = s.drought_risk_score > 55 ? C.clay : s.drought_risk_score < 30 ? C.seaweed : C.ochre;
+        el('iCrop').textContent = s.crop_water_stress; el('iCrop').style.color = ['High', 'Severe'].includes(s.crop_water_stress) ? C.clay : s.crop_water_stress === 'Low' ? C.seaweed : C.ochre;
+        el('iWater').textContent = (s.reservoir_inflow_change_pct >= 0 ? '+' : '') + s.reservoir_inflow_change_pct + '%'; el('iWater').style.color = s.reservoir_inflow_change_pct < -15 ? C.clay : s.reservoir_inflow_change_pct > 10 ? C.ocean : C.ochre;
+        const b = s.baseline;
+        simChart.data.datasets[0].data = [b.soil_moisture_index * 100, b.drought_risk_score, b.crop_water_stress_score, 50 + b.reservoir_inflow_change_pct];
+        simChart.data.datasets[1].data = [s.soil_moisture_index * 100, s.drought_risk_score, s.crop_water_stress_score, 50 + s.reservoir_inflow_change_pct];
+        simChart.update();
+
+        // narrative + water balance
+        el('simNarrative').textContent = s.narrative || '';
+        const bi = s.baseline_info;
+        if (bi) el('simBaseline').textContent =
+          `Live baseline · this season's normal (${bi.season}): rain ${bi.normal_rain_mm_day} mm/day, ` +
+          `ET demand ${bi.normal_et_mm_day} mm/day, ${bi.normal_tmean_c}°C · starting from today's soil moisture ` +
+          `${bi.live_soil_moisture}${bi.soil_as_of ? ' (as of ' + bi.soil_as_of + ')' : ''}`;
+        const wb = s.water_balance;
+        if (wb) {
+          el('wbRain').textContent = wb.rain_in_mm;
+          el('wbEt').textContent = wb.et_out_mm;
+          el('wbNet').textContent = (wb.net_mm > 0 ? '+' : '') + wb.net_mm;
+          el('wbNet').style.color = wb.net_mm >= 0 ? C.seaweed : C.clay;
+          const shift = Math.round((wb.net_mm - wb.baseline_net_mm) * 10) / 10;
+          el('wbDelta').textContent = (shift > 0 ? '+' : '') + shift;
+          el('wbDelta').style.color = shift >= 0 ? C.ocean : C.clay;
+        }
+        // sector impact tiles
+        const lvlCol = l => ({ Low: C.seaweed, Moderate: C.ochre, High: C.clay, Severe: '#b23b1e' }[l] || C.ochre);
+        el('simSectors').innerHTML = (s.sectors || []).map(x => `
+          <div class="imp">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div class="k">${x.name}</div>
+              <span class="pill" style="font-size:11px;background:${lvlCol(x.risk_label)}22;color:${lvlCol(x.risk_label)}">${x.risk_label}</span>
+            </div>
+            <div style="font-size:12.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5">${x.note}</div>
+          </div>`).join('');
+      }, 120);
+    }
+
+    // ---------- Data & Models ----------
+    async function loadData() {
+      const d = await api('/api/climate/data');
+      el('dataSpan').textContent = `${d.record_days.toLocaleString()} daily records · ${d.record_span}`;
+      el('srcFull').innerHTML = d.sources.map(srcRow).join('');
+      el('models').innerHTML = d.models.map(m => `<tr><td><b>${m.variable}</b></td><td style="color:var(--muted)">${m.type}</td><td class="mono">${m.rmse != null ? m.rmse + ' ' + m.unit + ' <span style="color:var(--muted)">(' + m.baseline_rmse + ')</span>' : '—'}</td><td class="mono" style="color:var(--seaweed)">${m.skill_pct != null ? '+' + m.skill_pct + '%' : '—'}</td></tr>`).join('');
+
+      // --- real-time provenance KPIs ---------------------------------------- #
+      const activeSrc = d.sources.filter(s => (s.status || '').toLowerCase() === 'active').length;
+      const skills = d.models.map(m => m.skill_pct).filter(v => v != null);
+      const meanSkill = skills.length ? Math.round(skills.reduce((a, b) => a + b, 0) / skills.length) : null;
+      const years = Math.round(d.record_days / 365);
+      const kpis = [
+        { lbl: 'Daily records', ic: '📅', col: C.ocean, val: (d.record_days / 1000).toFixed(1), unit: 'k', meta: `${years}+ years · ${d.record_span}` },
+        { lbl: 'Data sources', ic: '🛰️', col: C.algae, val: d.sources.length, unit: '', meta: `${activeSrc} active · IMD · NASA POWER · Open-Meteo · ISRO` },
+        { lbl: 'AI models', ic: '🧠', col: C.seaweed, val: d.models.length, unit: '', meta: 'validated on held-out time split' },
+        { lbl: 'Mean forecast skill', ic: '🎯', col: C.seaweed, val: meanSkill != null ? '+' + meanSkill : '—', unit: meanSkill != null ? '%' : '', meta: 'vs climatology baseline' },
+      ];
+      el('dataKpis').innerHTML = kpis.map(k => `
+        <div class="card kpi">
+          <div class="top"><span class="lbl">${k.lbl}</span><span class="ic" style="background:${k.col}1c;color:${k.col}">${k.ic}</span></div>
+          <div class="val" style="color:${k.col}">${k.val}<small>${k.unit}</small></div>
+          <div class="meta">${k.meta}</div>
+        </div>`).join('');
+
+      loadGridded();
+      loadFusion();
+    }
+
+    // ---------- Multi-source data assimilation ----------
+    async function loadFusion() {
+      let s; try { s = await api('/api/fusion/status'); } catch { return; }
+      if (!s.vars.length) { el('fuseSources').innerHTML = '<div class="cs">Ingest a second source (openmeteo) to enable fusion.</div>'; return; }
+      el('fuseTabs').innerHTML = s.vars.map((v, i) => `<button class="toggle ${i === 0 ? 'active' : ''}" data-fv="${v}">${v === 'rain' ? 'Rainfall' : 'Temperature'}</button>`).join('');
+      el('fuseTabs').querySelectorAll('.toggle').forEach(b => b.addEventListener('click', () => {
+        el('fuseTabs').querySelectorAll('.toggle').forEach(x => x.classList.remove('active')); b.classList.add('active'); drawFusion(b.dataset.fv);
+      }));
+      drawFusion(s.vars[0]);
+    }
+    async function drawFusion(v) {
+      const f = await api('/api/fusion/field?var=' + v);
+      el('fuseSources').innerHTML = f.sources.map(src => `
+        <div style="margin-bottom:12px">
+          <div class="flex between" style="display:flex;justify-content:space-between;font-size:13px"><b>${src.name}</b><span class="mono" style="color:var(--muted)">RMSE ${src.rmse} · weight ${(src.weight * 100).toFixed(0)}%</span></div>
+          <div class="conf-bar" style="height:7px;background:var(--line);border-radius:5px;margin-top:5px;overflow:hidden"><i style="display:block;height:100%;width:${src.weight * 100}%;background:var(--algae)"></i></div>
+        </div>`).join('');
+      const better = f.reduction_vs_best_pct >= 0;
+      el('fuseVal').innerHTML = `
+        <div class="m"><div class="n" style="color:${better ? 'var(--seaweed)' : 'var(--ochre)'}">${f.fused_rmse}</div><div class="t">Fused RMSE (${f.units}) vs ${f.validated_against}</div></div>
+        <div class="m"><div class="n" style="color:${better ? 'var(--seaweed)' : 'var(--ochre)'}">${f.reduction_vs_best_pct >= 0 ? '−' : '+'}${Math.abs(f.reduction_vs_best_pct)}%</div><div class="t">Error ${better ? 'reduction' : 'change'} vs best single source</div></div>
+        <div class="m"><div class="n">±${f.spread_mean}</div><div class="t">Mean inter-source spread (max ±${f.spread_max} ${f.units})</div></div>`;
+      // spread heatmap (light → terracotta = high disagreement), smoothly interpolated
+      const smax = f.spread_max || 1;
+      const spreadRamp = [[0, '#f3ede0'], [1, '#d2694a']];
+      smoothField(el('fuseHeat'), f.spread, v => rampRGB(spreadRamp, Math.min(1, v / smax)));
+      el('fuseSpreadScale').innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px">0 <span style="display:inline-block;width:110px;height:10px;border-radius:5px;background:linear-gradient(90deg,#f3edE0,#d2694a)"></span> ±${f.spread_max} ${f.units} · |POWER − ERA5|</span>`;
+
+      // method / period meta
+      el('fuseMeta').innerHTML = `${f.method}<br>${f.period} · ${f.res_deg}° grid`;
+
+      // per-district fused field — real assimilated values
+      const ds = (f.districts || []).slice().sort((a, b) => a.name.localeCompare(b.name));
+      // grade agreement relative to the district spread range so the column is informative
+      const dmx = Math.max(1e-6, ...ds.map(x => x.spread));
+      const agree = sp => { const r = sp / dmx; return r < 0.34 ? ['High', C.seaweed] : r < 0.67 ? ['Fair', C.ochre] : ['Low', C.clay]; };
+      el('fuseDistricts').innerHTML = ds.length ? `
+        <table class="dtable">
+          <thead><tr><th>District</th><th class="r">Fused (${f.units})</th><th class="r">Anomaly</th><th class="r">Agreement</th></tr></thead>
+          <tbody>${ds.map(x => { const [lbl, col] = agree(x.spread); return `
+            <tr>
+              <td><b>${x.name}</b></td>
+              <td class="r mono">${x.value}</td>
+              <td class="r mono" style="color:${x.anomaly > 0 ? 'var(--clay)' : 'var(--ocean)'}">${x.anomaly > 0 ? '+' : ''}${x.anomaly}</td>
+              <td class="r"><span class="agree" style="background:${col}1c;color:${col}">${lbl} · ±${x.spread}</span></td>
+            </tr>`; }).join('')}
+          </tbody>
+        </table>
+        <div class="cs" style="margin-top:10px">Agreement = inter-source spread between POWER &amp; ERA5 at each district centroid — lower is more certain.</div>` : '<div class="cs">No district samples.</div>';
+    }
+
+    // ---------- Live gridded ingestion ----------
+    const RAMPS = {
+      tmean: [[0, '#2f7d9a'], [0.5, '#dd9138'], [1, '#d2694a']],
+      tmax: [[0, '#2f7d9a'], [0.5, '#dd9138'], [1, '#d2694a']],
+      tmin: [[0, '#2f7d9a'], [0.5, '#dd9138'], [1, '#d2694a']],
+      rain: [[0, '#efe3c8'], [0.5, '#7cc9b3'], [1, '#2f7d9a']],
+    };
+    const VAR_LABEL = { tmean: 'Mean temp', tmax: 'Max temp', tmin: 'Min temp', rain: 'Rainfall', lst: 'Surface temp (LST)', sst: 'Sea-surface temp' };
+    function lerp(a, b, t) { return Math.round(a + (b - a) * t); }
+    function hex2rgb(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
+    function rampRGB(stops, t) {
+      t = Math.max(0, Math.min(1, t));
+      for (let i = 1; i < stops.length; i++) {
+        if (t <= stops[i][0]) {
+          const [p0, c0] = stops[i - 1], [p1, c1] = stops[i];
+          const f = (t - p0) / (p1 - p0 || 1); const a = hex2rgb(c0), b = hex2rgb(c1);
+          return [lerp(a[0], b[0], f), lerp(a[1], b[1], f), lerp(a[2], b[2], f)];
+        }
+      }
+      return hex2rgb(stops[stops.length - 1][1]);
+    }
+    function rampColor(stops, t) { const [r, g, b] = rampRGB(stops, t); return `rgb(${r},${g},${b})`; }
+    // Render a 2-D field to a canvas via a native-resolution offscreen buffer, then
+    // upscale with bilinear smoothing so the map reads as a continuous field, not blocks.
+    function smoothField(cv, values, colorFn, nullRGB = [239, 231, 214]) {
+      const rows = values.length, cols = values[0].length;
+      const off = document.createElement('canvas'); off.width = cols; off.height = rows;
+      const octx = off.getContext('2d'), img = octx.createImageData(cols, rows);
+      for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+        const v = values[r][c];
+        const [rr, gg, bb] = (v == null || !isFinite(v)) ? nullRGB : colorFn(v);
+        const px = ((rows - 1 - r) * cols + c) * 4;   // north on top
+        img.data[px] = rr; img.data[px + 1] = gg; img.data[px + 2] = bb; img.data[px + 3] = 255;
+      }
+      octx.putImageData(img, 0, 0);
+      const ctx = cv.getContext('2d');
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(off, 0, 0, cv.width, cv.height);
+    }
+    async function loadGridded() {
+      let s; try { s = await api('/api/gridded/status'); } catch { return; }
+      const statusCol2 = { power: C.seaweed, imd: C.ochre, mosdac: C.ocean };
+      el('gridSources').innerHTML = Object.entries(s.sources).map(([k, v]) =>
+        `<div class="lg"><span class="sw" style="background:${statusCol2[k]}"></span><b style="color:var(--ink);text-transform:uppercase">${k}</b> — ${v}</div>`).join('');
+      const daily = s.datasets.filter(d => d.kind !== 'climatology');
+      if (!daily.length) { el('gridList').innerHTML = '<div class="cs">No grids ingested yet. Run <span class="mono">python -m ingest.pipeline …</span></div>'; return; }
+      el('gridList').innerHTML = daily.map(d => `
+        <div class="drow"><span class="sw" style="background:${statusCol2[d.source.toLowerCase().includes('power') ? 'power' : d.source.toLowerCase().includes('imd') ? 'imd' : 'mosdac']}"></span>
+          <div><div class="dnm">${d.var} · ${d.region.toUpperCase()}</div><div class="rd">${d.source} · ${d.grid_shape[0]}×${d.grid_shape[1]} @ ${d.res_deg}° · ${d.days}d</div></div>
+          <span class="dvl">${d.mean} ${d.units}</span></div>`).join('');
+      // One tab per variable (dedup repeats): pick the best grid — prefer the J&K pilot
+      // region, then the longest / most recent record — as the representative for each var.
+      const best = {};
+      for (const d of daily) {
+        // prefer the J&K pilot region, then the most recent grid (its live end-date)
+        const score = (d.region === 'jk' ? 1e12 : 0) + Number(d.end || d.days || 0);
+        if (!best[d.var] || score > best[d.var]._score) best[d.var] = { ...d, _score: score };
+      }
+      const vars = Object.values(best);
+      el('gridTabs').innerHTML = vars.map((d, i) =>
+        `<button class="toggle ${i === 0 ? 'active' : ''}" data-gid="${d.id}" data-var="${d.var}">${VAR_LABEL[d.var] || d.var}</button>`).join('');
+      el('gridTabs').querySelectorAll('.toggle').forEach(b => b.addEventListener('click', () => {
+        el('gridTabs').querySelectorAll('.toggle').forEach(x => x.classList.remove('active')); b.classList.add('active');
+        drawHeat(b.dataset.gid, b.dataset.var);
+      }));
+      drawHeat(vars[0].id, vars[0].var);
+    }
+    async function drawHeat(id, varName) {
+      const f = await api('/api/gridded/field?id=' + id);
+      const cv = el('gridHeat');
+      const cols = f.values[0].length, rows = f.values.length;
+      const ramp = RAMPS[varName] || RAMPS.tmean, rng = (f.vmax - f.vmin) || 1;
+      smoothField(cv, f.values, v => rampRGB(ramp, (v - f.vmin) / rng));
+      el('gridTitle').textContent = `${VAR_LABEL[f.var] || f.var} · ${f.source} · ${f.res_deg}° grid (${cols}×${rows})`;
+      el('gridScale').innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px">${f.vmin}
+        <span style="display:inline-block;width:120px;height:10px;border-radius:5px;background:linear-gradient(90deg,${ramp.map(s => s[1]).join(',')})"></span>
+        ${f.vmax} ${f.units} · mean ${f.mean}</span>`;
+    }
+
+    // ---------- Reports ----------
+    async function loadReports() {
+      const r = await api('/api/climate/insights');
+      const col = { alert: C.clay, warning: C.ochre, info: C.ocean };
+      el('reports').innerHTML = r.items.map(it => `
+        <div class="rep"><div class="bar" style="background:${col[it.level]}"></div>
+          <div style="flex:1"><h4>${it.title}</h4><p>${it.body}</p>
+            <div class="tags">${it.districts.map(d => `<span class="tg">${d}</span>`).join('')}</div></div></div>`).join('');
+      loadWeather();
+    }
+    async function loadWeather() {
+      const rnd = x => x == null ? '—' : Math.round(x);
+      try {
+        const w = await api('/api/weather/live');
+        el('wxSub').textContent = 'Real-time conditions · ' + w.source;
+        el('wxUpdated').textContent = w.updated_at ? 'Live · ' + w.updated_at.replace('T', ' ') + ' IST' : 'Live';
+        el('wxGrid').innerHTML = w.stations.map(s => `
+          <div class="wx">
+            <div class="top"><div class="nm">${s.name}</div><div class="ico">${s.icon}</div></div>
+            <div class="t">${rnd(s.temp_c)}°C</div>
+            <div class="cond">${s.condition} · feels ${rnd(s.feels_c)}°</div>
+            <div class="meta">
+              <span>H ${rnd(s.high_c)}° / L ${rnd(s.low_c)}°</span>
+              <span>Humidity ${s.humidity_pct != null ? s.humidity_pct + '%' : '—'}</span>
+              <span>Rain ${s.rain_chance_pct != null ? s.rain_chance_pct + '%' : '—'}</span>
+              <span>Wind ${rnd(s.wind_kmh)} km/h</span>
+            </div>
+          </div>`).join('');
+      } catch (e) {
+        el('wxUpdated').textContent = 'offline';
+        el('wxGrid').innerHTML = '<div class="cs">Live weather is momentarily unavailable (upstream offline or rate-limited). It refreshes automatically.</div>';
+      }
+      loadNews();
+    }
+    // News is third-party/untrusted text — escape it before inserting into the DOM.
+    const esc = s => (s == null ? '' : String(s)).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    async function loadNews() {
+      try {
+        const n = await api('/api/weather/news');
+        if (!n.configured) {
+          el('newsUpdated').textContent = 'not configured';
+          el('newsList').innerHTML = `<div class="cs">Live headlines aren't configured yet. Add a free news API key (NewsAPI or GNews) to <span class="mono">Backend/.env</span> as <span class="mono">NEWS_API_KEY</span> to enable this feed.</div>`;
+          return;
+        }
+        el('newsSub').textContent = 'Live weather news · ' + esc(n.provider);
+        if (!n.articles.length) { el('newsUpdated').textContent = 'live'; el('newsList').innerHTML = '<div class="cs">No recent J&amp;K weather headlines right now.</div>'; return; }
+        el('newsUpdated').textContent = 'Live · ' + n.count + ' stories';
+        const when = iso => { try { return new Date(iso).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch { return ''; } };
+        el('newsList').innerHTML = n.articles.map(a => {
+          const url = /^https?:\/\//i.test(a.url || '') ? a.url : '#';
+          const img = /^https?:\/\//i.test(a.image || '') ? a.image : '';
+          return `<div class="news-item">
+            <div class="ni-text">
+              <div class="nt"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(a.title)}</a></div>
+              ${a.summary ? `<div class="ns">${esc(a.summary)}</div>` : ''}
+              <div class="nm">${esc(a.source) || 'News'}${a.published_at ? ' · ' + esc(when(a.published_at)) : ''}</div>
+            </div>
+            ${img ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="ni-img"><img src="${esc(img)}" alt="" loading="lazy" onerror="this.closest('.ni-img').style.display='none'"></a>` : ''}
+          </div>`;
+        }).join('');
+      } catch (e) {
+        el('newsUpdated').textContent = 'offline';
+        el('newsList').innerHTML = '<div class="cs">Headlines are momentarily unavailable (upstream offline or rate-limited).</div>';
+      }
+    }
+
+    // ---------- Hazards ----------
+    let drChart, hwChart, mnChart, wtChart, erChart, cwChart;
+    async function loadHazards() {
+      const [h, a] = await Promise.all([api('/api/hazards'), api('/api/hazards/analytics')]);
+      const d = h.drought;
+      el('drSub').textContent = `${d.index} · as of ${d.as_of}`;
+      el('drVal').textContent = (d.value > 0 ? '+' : '') + d.value; el('drVal').style.color = d.color;
+      el('drClass').textContent = d.class; el('drClass').style.background = d.color + '22'; el('drClass').style.color = d.color;
+      const spiCol = v => v <= -1.5 ? '#d2694a' : v < 0 ? '#dd9138' : v < 1 ? '#2aa38a' : '#2f7d9a';
+      if (drChart) drChart.destroy();
+      drChart = new Chart(el('drChart'), {
+        type: 'bar',
+        data: { labels: d.series.map(s => s.t), datasets: [{ data: d.series.map(s => s.spi), backgroundColor: d.series.map(s => spiCol(s.spi)), borderRadius: 2 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => 'SPI ' + c.parsed.y } } }, scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 6 } }, y: { grid: { color: GRID }, suggestedMin: -2.5, suggestedMax: 2.5 } } }
+      });
+      const hw = h.heatwave;
+      el('hwStatus').textContent = hw.status; const hwc = hw.active ? '#d2694a' : '#2aa38a';
+      el('hwStatus').style.background = hwc + '22'; el('hwStatus').style.color = hwc;
+      el('hwAnom').textContent = (hw.recent_tmax_anomaly_c > 0 ? '+' : '') + hw.recent_tmax_anomaly_c + '°C';
+      el('hwSub').textContent = `Heatwave days / year · ≥ +${hw.threshold_c}°C over normal`;
+      if (hwChart) hwChart.destroy();
+      hwChart = new Chart(el('hwChart'), {
+        type: 'bar',
+        data: { labels: hw.per_year.map(y => y.year), datasets: [{ data: hw.per_year.map(y => y.days), backgroundColor: '#d2694a', borderRadius: 4 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: GRID }, title: { display: true, text: 'days' } } } }
+      });
+      const mn = h.monsoon;
+      el('mnProg').textContent = mn.progress_pct + '%';
+      el('mnProg').style.color = mn.progress_pct < 80 ? '#d2694a' : mn.progress_pct > 110 ? '#2f7d9a' : '#2aa38a';
+      el('mnSub').textContent = `${mn.season} ${mn.year} · onset ${mn.onset_date || '—'}`;
+      el('mnDetail').textContent = `${mn.received_mm} mm of ${mn.seasonal_normal_mm} mm normal received`;
+      if (mnChart) mnChart.destroy();
+      mnChart = new Chart(el('mnChart'), {
+        type: 'line',
+        data: { labels: mn.curve.map(c => 'D' + c.d), datasets: [
+          { label: 'Normal', data: mn.curve.map(c => c.normal), borderColor: '#b9ae97', borderDash: [5, 4], pointRadius: 0, tension: .3, borderWidth: 2 },
+          { label: 'This year', data: mn.curve.map(c => c.current), borderColor: '#2aa38a', backgroundColor: 'rgba(42,163,138,.12)', fill: true, pointRadius: 0, tension: .3, borderWidth: 2 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { labels: { boxWidth: 12 } } }, scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 6 } }, y: { grid: { color: GRID }, title: { display: true, text: 'mm' } } } }
+      });
+
+      // ----- Warming trend -----
+      const w = a.warming;
+      el('wtVal').textContent = (w.total_change_c > 0 ? '+' : '') + w.total_change_c + '°C';
+      el('wtSub').textContent = `Annual mean temperature · ${w.span}`;
+      el('wtDetail').innerHTML = `<b>${w.slope_c_per_decade > 0 ? '+' : ''}${w.slope_c_per_decade}°C</b> per decade · warming since 1973`;
+      if (wtChart) wtChart.destroy();
+      wtChart = new Chart(el('wtChart'), {
+        type: 'line',
+        data: { labels: w.series.map(s => s.year), datasets: [
+          { label: 'Annual mean', data: w.series.map(s => s.mean_c), borderColor: '#c9773f', backgroundColor: 'rgba(201,119,63,.10)', fill: true, pointRadius: 0, tension: .3, borderWidth: 2 },
+          { label: 'Trend', data: w.series.map(s => s.trend_c), borderColor: '#8a5a2b', borderDash: [5, 4], pointRadius: 0, borderWidth: 2 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { labels: { boxWidth: 12 } } }, scales: { x: { grid: { display: false }, ticks: { maxTicksLimit: 6 } }, y: { grid: { color: GRID }, title: { display: true, text: '°C' } } } }
+      });
+
+      // ----- Extreme rainfall -----
+      const er = a.extreme_rain;
+      el('erVal').textContent = er.latest_days;
+      el('erSub').textContent = `Heavy-rain days / year · ≥ ${er.threshold_mm} mm`;
+      el('erDetail').innerHTML = `${er.latest_year} vs <b>${er.baseline_days}</b> / year average`;
+      if (erChart) erChart.destroy();
+      erChart = new Chart(el('erChart'), {
+        type: 'bar',
+        data: { labels: er.per_year.map(y => y.year), datasets: [{ data: er.per_year.map(y => y.days), backgroundColor: '#2f7d9a', borderRadius: 4 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: GRID }, title: { display: true, text: 'days' } } } }
+      });
+
+      // ----- Cold wave & frost -----
+      const cw = a.coldwave;
+      const cwc = cw.active ? '#3b9be6' : '#2aa38a';
+      el('cwStatus').textContent = cw.status; el('cwStatus').style.background = cwc + '22'; el('cwStatus').style.color = cwc;
+      el('cwVal').textContent = cw.latest_days + ' frost days';
+      el('cwSub').textContent = `Frost days / year · min ≤ 0°C`;
+      if (cwChart) cwChart.destroy();
+      cwChart = new Chart(el('cwChart'), {
+        type: 'bar',
+        data: { labels: cw.per_year.map(y => y.year), datasets: [{ data: cw.per_year.map(y => y.days), backgroundColor: '#5b8fb0', borderRadius: 4 }] },
+        options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: GRID }, title: { display: true, text: 'days' } } } }
+      });
+
+      // ----- Climate records -----
+      const rc = a.records;
+      el('rcSub').textContent = `All-time daily extremes · ${rc.record_days.toLocaleString()} days (${rc.span})`;
+      el('rcHot').textContent = rc.hottest.value + '°C'; el('rcHotD').textContent = rc.hottest.date;
+      el('rcCold').textContent = rc.coldest.value + '°C'; el('rcColdD').textContent = rc.coldest.date;
+      el('rcWet').textContent = rc.wettest.value + ' mm'; el('rcWetD').textContent = rc.wettest.date;
+    }
+
+    const loaders = { overview: loadOverview, map: loadMap, forecast: loadForecast, hazards: loadHazards, simulator: loadSimulator, data: loadData, reports: loadReports };
+    loadOverview(); loaded.overview = true;
+
+    // ---------- Near-real-time data refresh ----------
+    let liveBase = 'Assimilating…';
+    function setLive(base, suffix) {
+      liveBase = base;
+      el('liveText').textContent = suffix ? base + ' · ' + suffix : base;
+    }
+    async function refreshFeed() {
+      const badge = el('liveBadge'), txt = el('liveText');
+      if (!badge || badge.dataset.busy === '1') return;
+      badge.dataset.busy = '1';
+      const base = liveBase;                 // canonical label, never the stacked text
+      txt.textContent = 'Pulling latest data…';
+      try {
+        const r = await api('/api/ingest/refresh', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+        if (r.status === 'ok' || r.status === 'partial') {
+          const e = (r.window || '').split('–').pop();
+          const end = e.length === 8 ? `${e.slice(0, 4)}-${e.slice(4, 6)}-${e.slice(6)}` : e;
+          setLive('Live · ' + end, r.status === 'partial' ? `${r.updated.length} layers updated` : '');
+          loadOverview();                    // re-pull views that depend on gridded data
+          if (loaded.map) fetchLayer();      // re-fetch only — loadMap() would re-bind listeners
+        } else if (r.status === 'busy') {
+          setLive(base, 'refresh already running');
+        } else {
+          setLive(base, 'refresh unavailable');
+        }
+      } catch (e) {
+        setLive(base, 'offline');
+      } finally {
+        badge.dataset.busy = '0';
+      }
+    }
+    async function updateLiveBadge() {
+      try {
+        const s = await api('/api/ingest/status');
+        if (s && s.last_result && s.last_result.window) {
+          setLive('Live · ' + s.last_result.window.split('–').pop());
+          return;
+        }
+      } catch (e) { }
+      try { const c = await api('/api/climate/current'); setLive('Assimilated · ' + c.as_of); }
+      catch (e) { setLive('Data feed'); }
+    }
+    (function initFeed() {
+      const badge = el('liveBadge');
+      if (badge) badge.addEventListener('click', refreshFeed);
+      updateLiveBadge();
+    })();
+  </script>
+</body>
+
+</html>

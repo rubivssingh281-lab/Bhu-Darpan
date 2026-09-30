@@ -1,0 +1,16 @@
+{
+  "model": "LSTM (PyTorch, 30d\u219214d sequence, anomaly target)",
+  "train_days": 17138,
+  "test_days": 1080,
+  "trained_at": "2026-09-18 14:24:30",
+  "temp_rmse": 2.31,
+  "temp_mae": 1.79,
+  "temp_clim_rmse": 2.74,
+  "temp_skill_pct": 15.7,
+  "temp_resid_std": 2.16,
+  "precip_rmse": 6.2,
+  "precip_mae": 3.82,
+  "precip_clim_rmse": 5.8,
+  "precip_skill_pct": -7.0,
+  "precip_resid_std": 6.09
+}

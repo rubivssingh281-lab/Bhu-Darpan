@@ -1,0 +1,105 @@
+{
+  "dataset": "EuroSAT RGB (Sentinel-2, 10 classes)",
+  "backbone": "ResNet-lite (4 stages, 17 conv layers, residual) + GAP",
+  "arch": "resnet_lite",
+  "n_params_k": 2799,
+  "n_train": 21600,
+  "n_val": 2700,
+  "n_test": 2700,
+  "epochs": 28,
+  "best_epoch": 28,
+  "recipe": "SGD-Nesterov OneCycle, label smoothing 0.1, CutMix, dihedral+crop+jitter aug, EMA 0.999",
+  "tta": "4-way rotation (0/90/180/270\u00b0) \u2014 as used by the app at inference",
+  "test_accuracy_pct": 98.33,
+  "grouped_accuracy_pct": 99.59,
+  "test_accuracy_no_tta_pct": 97.59,
+  "grouped_accuracy_no_tta_pct": 99.37,
+  "test_accuracy_tta8_pct": 98.48,
+  "grouped_accuracy_tta8_pct": 99.63,
+  "best_val_accuracy_pct": 98.3,
+  "app_classes": [
+    "Forest",
+    "Water",
+    "Agriculture",
+    "Urban",
+    "Others"
+  ],
+  "per_class": {
+    "Forest": {
+      "support": 300,
+      "recall_pct": 99.7,
+      "precision_pct": 99.3
+    },
+    "Water": {
+      "support": 550,
+      "recall_pct": 99.6,
+      "precision_pct": 99.6
+    },
+    "Agriculture": {
+      "support": 1050,
+      "recall_pct": 99.5,
+      "precision_pct": 99.5
+    },
+    "Urban": {
+      "support": 800,
+      "recall_pct": 99.6,
+      "precision_pct": 99.7
+    },
+    "Others": {
+      "support": 0,
+      "recall_pct": null,
+      "precision_pct": null
+    }
+  },
+  "confusion_app": [
+    [
+      299,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      548,
+      1,
+      1,
+      0
+    ],
+    [
+      2,
+      2,
+      1045,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      3,
+      797,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "eurosat_to_app": {
+    "AnnualCrop": "Agriculture",
+    "Forest": "Forest",
+    "HerbaceousVegetation": "Agriculture",
+    "Highway": "Urban",
+    "Industrial": "Urban",
+    "Pasture": "Agriculture",
+    "PermanentCrop": "Agriculture",
+    "Residential": "Urban",
+    "River": "Water",
+    "SeaLake": "Water"
+  },
+  "trained_at": "2026-09-27 15:56:40",
+  "train_seconds": 3379
+}

@@ -1,0 +1,149 @@
+{
+  "eurosat_pipeline": {
+    "n_tiles": 2700,
+    "cnn_only": {
+      "grouped_accuracy_pct": 98.52,
+      "recall_pct": {
+        "Forest": 99.0,
+        "Water": 96.7,
+        "Agriculture": 99.5,
+        "Urban": 98.2
+      },
+      "confusion": [
+        [
+          297,
+          0,
+          3,
+          0,
+          0
+        ],
+        [
+          3,
+          532,
+          12,
+          3,
+          0
+        ],
+        [
+          0,
+          4,
+          1045,
+          1,
+          0
+        ],
+        [
+          1,
+          2,
+          11,
+          786,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "pipeline": {
+      "grouped_accuracy_pct": 84.78,
+      "recall_pct": {
+        "Forest": 97.3,
+        "Water": 90.7,
+        "Agriculture": 72.6,
+        "Urban": 92.0
+      },
+      "confusion": [
+        [
+          292,
+          7,
+          1,
+          0,
+          0
+        ],
+        [
+          4,
+          499,
+          37,
+          7,
+          3
+        ],
+        [
+          0,
+          23,
+          762,
+          7,
+          258
+        ],
+        [
+          1,
+          9,
+          9,
+          736,
+          45
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  },
+  "real_scenes": {
+    "cnn_only": {
+      "probe_pixel_accuracy_pct": 54.99,
+      "n_probes": 31,
+      "composition_pass": "8/21",
+      "composition_fails": [
+        "dal_lake_srinagar: Water 10.1% (want 15-100%)",
+        "jammu_city: Urban 19.2% (want 35-100%)",
+        "wildfire_scene: Urban 21.0% (want 0-3%)",
+        "world_drought_sahara: Others 0.0% (want 85-100%)",
+        "world_drought_thar: Others 0.0% (want 60-100%)",
+        "world_snow_alps: Urban 5.6% (want 0-3%)",
+        "world_snow_everest: Others 0.0% (want 70-100%)",
+        "world_snow_everest: Urban 8.6% (want 0-3%)",
+        "world_snow_everest: Water 7.8% (want 0-5%)",
+        "world_snow_karakoram: Others 0.0% (want 60-100%)",
+        "world_snow_karakoram: Urban 13.3% (want 0-3%)",
+        "world_snow_karakoram: Water 7.0% (want 0-5%)",
+        "world_water_reservoir: Water 2.7% (want 25-100%)"
+      ]
+    },
+    "pipeline": {
+      "probe_pixel_accuracy_pct": 66.69,
+      "n_probes": 31,
+      "composition_pass": "16/21",
+      "composition_fails": [
+        "dal_lake_srinagar: Water 11.2% (want 15-100%)",
+        "jammu_city: Urban 33.6% (want 35-100%)",
+        "wildfire_scene: Urban 20.1% (want 0-3%)",
+        "world_flood_venice: Water 54.6% (want 55-100%)",
+        "world_water_reservoir: Water 15.7% (want 25-100%)"
+      ]
+    }
+  },
+  "model": {
+    "type": "EuroSAT-CNN + spectral-texture land-cover segmentation",
+    "test_accuracy": 99.59,
+    "test_accuracy_10class": 98.33,
+    "n_train": 21600,
+    "n_test": 2700,
+    "classes": [
+      "Forest",
+      "Water",
+      "Agriculture",
+      "Urban",
+      "Others"
+    ],
+    "backbone": "ResNet-lite (4 stages, 17 conv layers, residual) + GAP",
+    "arch": "resnet_lite"
+  },
+  "generated_at": "2026-09-27 17:51:01",
+  "seconds": 574
+}
