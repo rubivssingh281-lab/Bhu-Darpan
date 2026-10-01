@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://bhu-darpan-backend.onrender.com/api/:path*"
+    },
+    {
+      "source": "/storage/:path*",
+      "destination": "https://bhu-darpan-backend.onrender.com/storage/:path*"
+    }
+  ]
+}
