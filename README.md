@@ -175,11 +175,10 @@ Bhu-Darpan/
 │  ├─ requirements.txt
 │  ├─ run.py                # dev entrypoint: python run.py
 │  └─ .env.example
-├─ frontend/                # OPTIONAL standalone Vite frontend (not required to run;
-│                           #   the backend already serves the UI)
+├─ frontend/                # Standalone static webapp for Vercel deployment
 ├─ docs/                    # project documentation
 ├─ start-backend.ps1        # Windows one-command setup + run
-├─ start-frontend.ps1       # optional Vite dev server
+├─ start-frontend.ps1       # Static local web server (http://localhost:8010)
 └─ README.md
 ```
 

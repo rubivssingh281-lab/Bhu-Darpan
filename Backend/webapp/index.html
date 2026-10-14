@@ -651,7 +651,10 @@
     Chart.defaults.borderColor = '#e6dfce';
     const GRID = '#efe7d6';
     const el = id => document.getElementById(id);
-    const api = (p, o) => fetch('http://localhost:8000' + p, o).then(r => r.json());
+    const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '8010')
+      ? 'http://localhost:8000'
+      : '';
+    const api = (p, o) => fetch((p.startsWith('http') ? p : API_BASE + (p.startsWith('/') ? p : '/' + p)), o).then(r => r.json());
 
     // Anomaly colour scales (teal / ochre / terracotta / water)
     const C = { clay: '#d2694a', ochre: '#dd9138', seaweed: '#2aa38a', ocean: '#2f7d9a', algae: '#0e9c8a' };
@@ -1031,7 +1034,7 @@
       el('tempV').textContent = (temp >= 0 ? '+' : '') + temp.toFixed(1) + '°C';
       clearTimeout(simTimer);
       simTimer = setTimeout(async () => {
-        const s = await fetch('http://localhost:8000/api/climate/whatif', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rain_pct: rain, temp_c: temp }) }).then(r => r.json());
+        const s = await api('/api/climate/whatif', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rain_pct: rain, temp_c: temp }) });
         const col = v => v ? C.clay : C.seaweed;
         el('iSoil').textContent = s.soil_moisture_index; el('iSoil').style.color = s.soil_moisture_index < 0.35 ? C.clay : C.seaweed;
         el('iDrought').textContent = s.drought_risk_score; el('iDrought').style.color = s.drought_risk_score > 55 ? C.clay : s.drought_risk_score < 30 ? C.seaweed : C.ochre;

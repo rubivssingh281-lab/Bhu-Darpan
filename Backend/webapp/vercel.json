@@ -1,5 +1,10 @@
 {
+  "cleanUrls": true,
   "rewrites": [
+    {
+      "source": "/satellite",
+      "destination": "/satellite.html"
+    },
     {
       "source": "/api/:path*",
       "destination": "https://bhu-darpan-backend.onrender.com/api/:path*"

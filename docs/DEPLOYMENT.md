@@ -9,15 +9,16 @@ This guide walks you through deploying **Bhū-Darpan** to production using **Ren
 ```
 ┌─────────────────────────────────┐           ┌─────────────────────────────────┐
 │         Vercel (Frontend)       │           │          Render (Backend)       │
-│  - Vite + React + Leaflet SPA   │  HTTPS    │  - FastAPI + Python 3.12       │
-│  - Hosted at:                   │ ────────> │  - Uvicorn ASGI Server          │
-│    https://<your-app>.vercel.app│   /api/*  │  - CPU PyTorch CNN + Analytics  │
-│  - Env: VITE_API_BASE           │           │  - Hosted at:                   │
-│                                 │           │    https://<app>.onrender.com   │
+│  - Static Web App (HTML/JS/CSS) │  HTTPS    │  - FastAPI + Python 3.12        │
+│  - Dual Modules:                │ ────────> │  - Uvicorn ASGI Server          │
+│    • / (Climate Digital Twin)   │  /api/*   │  - CPU PyTorch CNN + Analytics  │
+│    • /satellite (Satellite EO)  │ /storage/*│  - Hosted at:                   │
+│  - Hosted at:                   │           │    https://<app>.onrender.com   │
+│    https://<your-app>.vercel.app│           │                                 │
 └─────────────────────────────────┘           └─────────────────────────────────┘
 ```
 
-- **Frontend on Vercel**: High-speed CDN edge hosting for static assets and single-page application routing.
+- **Frontend on Vercel**: Zero-build static CDN hosting for `index.html` (Climate Twin) and `satellite.html` (Satellite EO). `vercel.json` proxies API and storage requests to Render.
 - **Backend on Render**: Linux container running FastAPI with CPU-optimized PyTorch models, scientific libraries (SciPy, OpenCV headless, xarray), and SQLite storage.
 
 ---
@@ -31,7 +32,7 @@ Bhu-Darpan/
 ├── .gitignore                  # Git exclusions (excludes .env, venvs, large temporary files)
 ├── README.md                   # Main project documentation
 ├── start-backend.ps1           # Local dev startup for backend
-├── start-frontend.ps1          # Local dev startup for frontend
+├── start-frontend.ps1          # Local dev startup for frontend (http.server 8010)
 │
 ├── Backend/                    # FASTAPI BACKEND (Deploys to Render)
 │   ├── app/                    # Application source code
@@ -46,28 +47,19 @@ Bhu-Darpan/
 │   ├── data/                   # Climate caches and regional GeoTIFF/NetCDF data
 │   ├── models/                 # Pretrained weights (*.pt, *.csv, *.json)
 │   ├── storage/                # Runtime user uploads, masks, and generated reports
-│   ├── webapp/                 # Built-in fallback HTML single-page apps
+│   ├── webapp/                 # Complete single-page apps (index.html, satellite.html)
 │   ├── .env.example            # Reference environment variables for backend
 │   ├── .python-version         # Python version lock for Render
 │   ├── Procfile                # Web process definition for Render/PaaS
 │   ├── requirements.txt        # Python dependencies (with PyTorch CPU index)
 │   └── run.py                  # Local entrypoint script
 │
-├── frontend/                   # REACT + VITE FRONTEND (Deploys to Vercel)
-│   ├── public/                 # Static public assets (icons, maps, logos)
-│   ├── src/                    # React source code
-│   │   ├── components/         # Reusable UI widgets, charts, and maps
-│   │   ├── pages/              # Route views (Overview, Forecast, Satellite, etc.)
-│   │   ├── api.js              # Axios client configured with VITE_API_BASE
-│   │   ├── App.jsx             # Main layout, navbar, and route tree
-│   │   ├── auth.jsx            # Authentication context & login guards
-│   │   ├── index.css           # Styling system & dark-theme tokens
-│   │   └── main.jsx            # React DOM bootstrap
-│   ├── .env.example            # Reference environment variables for frontend
-│   ├── index.html              # HTML shell
-│   ├── package.json            # Node scripts & dependencies
-│   ├── vercel.json             # Vercel SPA rewrite rules (prevents 404 on refresh)
-│   └── vite.config.js          # Vite build config & local proxy
+├── frontend/                   # STATIC WEBAPP (Deploys to Vercel)
+│   ├── index.html              # Climate Digital Twin application
+│   ├── satellite.html          # Satellite Image Analysis application
+│   ├── logo.png                # Brand logo & favicon
+│   ├── jk_satellite.jpg        # Region imagery
+│   └── vercel.json             # Proxy rewrites (/api/* and /storage/* to Render)
 │
 └── docs/                       # Project documentation & slide decks
     └── DEPLOYMENT.md           # This deployment guide
@@ -135,17 +127,14 @@ If creating the service manually:
 3. Import your GitHub repository (`Bhu-Darpan`).
 4. In the **Configure Project** screen:
    - **Project Name**: `bhu-darpan` (or your chosen name)
-   - **Framework Preset**: `Vite`
-   - **Root Directory**: Click **Edit** and select **`frontend`** (Crucial!).
+   - **Framework Preset**: `Other`
+   - **Root Directory**: Click **Edit** and select **`frontend`** (or `Backend/webapp`).
 5. Under **Build and Output Settings**:
-   - Build Command: `npm run build` (Default)
-   - Output Directory: `dist` (Default)
-   - Install Command: `npm install` (Default)
-6. Under **Environment Variables**, add:
-   - **Key**: `VITE_API_BASE`
-   - **Value**: `https://<your-backend-name>.onrender.com` *(use your actual Render backend URL without trailing slash)*
+   - No build command needed — the app is a fast, pure HTML5/JavaScript application! Leave build and output settings at default.
+6. Check `vercel.json`:
+   - `vercel.json` already proxies `/api/*` and `/storage/*` to your backend on Render. If your Render backend URL is different from `https://bhu-darpan-backend.onrender.com`, update the destination URL in `frontend/vercel.json`.
 7. Click **Deploy**.
-8. In ~30-60 seconds, your frontend will be live at `https://<your-project>.vercel.app`.
+8. In ~15 seconds, your frontend will be live at `https://<your-project>.vercel.app`.
 
 ---
 
