@@ -63,8 +63,9 @@ class Settings:
         self.masks_dir: Path = self.storage_dir / "masks"
         self.reports_dir: Path = self.storage_dir / "reports"
 
-        origins = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173")
+        origins = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173,http://localhost:8010")
         self.cors_origins: list[str] = [o.strip() for o in origins.split(",") if o.strip()]
+        self.cors_origin_regex: str | None = os.getenv("CORS_ORIGIN_REGEX", r"^https:\/\/.*\.vercel\.app$")
 
         # Ensure storage directories exist
         for d in (self.uploads_dir, self.masks_dir, self.reports_dir):

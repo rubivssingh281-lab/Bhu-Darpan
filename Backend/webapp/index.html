@@ -293,7 +293,7 @@
 </head>
 
 <body>
-  <a class="login-cta" href="/satellite" title="Sign in or create an account">Log in / Sign up →</a>
+  <a class="login-cta" href="/satellite.html" title="Sign in or create an account">Log in / Sign up →</a>
   <aside class="sidebar">
     <div class="brand">
       <img class="logo" src="/logo.png" alt="Bhū-Darpan" />
@@ -312,7 +312,7 @@
       <button class="tab" data-tab="reports">Insights</button>
     </nav>
     <div class="status">
-      <a class="sat-link" href="/satellite" title="Satellite image analysis module">Satellite module →</a>
+      <a class="sat-link" href="/satellite.html" title="Satellite image analysis module">Satellite module →</a>
       <div class="live" id="liveBadge" style="cursor:pointer" title="Pull the latest available data (near-real-time)"><span class="dot"></span><span id="liveText">Assimilating…</span></div>
     </div>
   </aside>
@@ -329,7 +329,7 @@
             land-cover segmentation, object detection, change monitoring and reports.</p>
           <div class="ov-ctas">
             <button class="ov-btn ov-btn-primary" data-tab="map">Explore the twin →</button>
-            <a class="ov-btn ov-btn-ghost" href="/satellite">Analyse a scene</a>
+            <a class="ov-btn ov-btn-ghost" href="/satellite.html">Analyse a scene</a>
           </div>
           <div class="mission-bar" id="ovMission"></div>
           <div class="provenance">
@@ -651,7 +651,7 @@
     Chart.defaults.borderColor = '#e6dfce';
     const GRID = '#efe7d6';
     const el = id => document.getElementById(id);
-    const api = (p, o) => fetch(p, o).then(r => r.json());
+    const api = (p, o) => fetch('http://localhost:8000' + p, o).then(r => r.json());
 
     // Anomaly colour scales (teal / ochre / terracotta / water)
     const C = { clay: '#d2694a', ochre: '#dd9138', seaweed: '#2aa38a', ocean: '#2f7d9a', algae: '#0e9c8a' };
@@ -1031,7 +1031,7 @@
       el('tempV').textContent = (temp >= 0 ? '+' : '') + temp.toFixed(1) + '°C';
       clearTimeout(simTimer);
       simTimer = setTimeout(async () => {
-        const s = await fetch('/api/climate/whatif', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rain_pct: rain, temp_c: temp }) }).then(r => r.json());
+        const s = await fetch('http://localhost:8000/api/climate/whatif', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ rain_pct: rain, temp_c: temp }) }).then(r => r.json());
         const col = v => v ? C.clay : C.seaweed;
         el('iSoil').textContent = s.soil_moisture_index; el('iSoil').style.color = s.soil_moisture_index < 0.35 ? C.clay : C.seaweed;
         el('iDrought').textContent = s.drought_risk_score; el('iDrought').style.color = s.drought_risk_score > 55 ? C.clay : s.drought_risk_score < 30 ? C.seaweed : C.ochre;

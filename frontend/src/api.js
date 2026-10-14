@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // When VITE_API_BASE is empty we rely on the Vite dev proxy (/api, /storage).
-const BASE = import.meta.env.VITE_API_BASE || "";
+const rawBase = import.meta.env.VITE_API_BASE || "";
+const BASE = rawBase.endsWith("/") ? rawBase.slice(0, -1) : rawBase;
 
 export const api = axios.create({ baseURL: BASE });
 
@@ -16,7 +17,8 @@ api.interceptors.request.use((config) => {
 export function mediaUrl(path) {
   if (!path) return "";
   if (/^https?:\/\//.test(path)) return path;
-  return `${BASE}${path}`;
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  return `${BASE}${cleanPath}`;
 }
 
 export default api;

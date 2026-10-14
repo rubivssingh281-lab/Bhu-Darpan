@@ -78,7 +78,7 @@ def run(source: str, var: str, region: str, start: str, end: str) -> dict:
     m = _load_manifest()
     m["datasets"] = [d for d in m["datasets"] if d["id"] != ds_id] + [entry]
     _save_manifest(m)
-    print(f"✓ ingested {ds_id}: {nlat}×{nlon} grid, {entry['days']} days, "
+    print(f"[OK] ingested {ds_id}: {nlat}×{nlon} grid, {entry['days']} days, "
           f"mean {entry['mean']} {entry['units']}")
     return entry
 
@@ -109,7 +109,7 @@ def run_climatology(source: str, var: str, region: str) -> dict:
     m = _load_manifest()
     m["datasets"] = [d for d in m["datasets"] if d["id"] != ds_id] + [entry]
     _save_manifest(m)
-    print(f"✓ ingested climatology {ds_id}: {nlat}×{nlon} × 13 months")
+    print(f"[OK] ingested climatology {ds_id}: {nlat}×{nlon} × 13 months")
     return entry
 
 

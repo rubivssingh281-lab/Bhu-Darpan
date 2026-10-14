@@ -438,7 +438,7 @@
     <div class="auth-visual">
       <svg class="map-svg" viewBox="0 0 900 1040" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <!-- Real Esri satellite imagery of the J&K pilot region -->
-        <image href="/auth-map.jpg" xlink:href="/auth-map.jpg" x="0" y="0" width="900" height="1040"
+        <image href="/jk_satellite.jpg" xlink:href="/jk_satellite.jpg" x="0" y="0" width="900" height="1040"
                preserveAspectRatio="xMidYMid slice"/>
         <!-- pilot points, geo-aligned to the imagery (dots only, labels omitted to keep text clear) -->
         <g class="map-point"><circle class="halo map-ping" cx="327" cy="324" r="13"/><circle class="core" cx="327" cy="324" r="6"/></g>
@@ -1038,7 +1038,8 @@
       let payload;
       if (form) payload = form;
       else if (body) { headers['Content-Type'] = 'application/json'; payload = JSON.stringify(body); }
-      const res = await fetch(path, { method, headers, body: payload });
+      const fullPath = path.startsWith('http') ? path : 'http://localhost:8000' + (path.startsWith('/') ? path : '/' + path);
+      const res = await fetch(fullPath, { method, headers, body: payload });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.detail || ('Request failed (' + res.status + ')'));
       return data;

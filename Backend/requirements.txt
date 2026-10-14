@@ -1,5 +1,6 @@
 # Bhu-Darpan — Satellite Image Analysis System (FastAPI backend)
 # Tested on Python 3.12
+--extra-index-url https://download.pytorch.org/whl/cpu
 
 fastapi==0.115.6
 uvicorn[standard]==0.34.0

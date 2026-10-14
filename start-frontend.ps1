@@ -1,11 +1,7 @@
-# Start the Bhu-Darpan React frontend (Windows PowerShell)
+# Start the Bhu-Darpan frontend (Windows PowerShell)
 $ErrorActionPreference = "Stop"
-Set-Location "$PSScriptRoot\frontend"
+Set-Location "$PSScriptRoot\Backend\webapp"
 
-if (-not (Test-Path ".\node_modules")) {
-    Write-Host "Installing frontend dependencies..." -ForegroundColor Cyan
-    npm install
-}
+Write-Host "Starting static web server on http://localhost:8010" -ForegroundColor Green
+python -m http.server 8010
 
-Write-Host "Starting dev server on http://localhost:5173" -ForegroundColor Green
-npm run dev
