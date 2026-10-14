@@ -157,7 +157,7 @@ def start_scheduler() -> None:
     still warms). Never blocks startup."""
     hours = getattr(settings, "auto_refresh_hours", 6)
     if not hours or hours <= 0:
-        threading.Thread(target=warm, daemon=True, name="cache-warmup").start()
+        log.info("near-real-time refresh and cache warmup disabled (AUTO_REFRESH_HOURS <= 0)")
         return
 
     def _loop():
