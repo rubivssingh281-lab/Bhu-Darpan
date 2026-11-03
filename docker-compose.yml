@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  bhu-darpan-backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: bhu_darpan_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - AUTO_REFRESH_HOURS=6
+    volumes:
+      - ./Backend/storage:/app/storage
