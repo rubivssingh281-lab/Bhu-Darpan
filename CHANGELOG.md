@@ -22,7 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Pretrained EuroSAT CNN deep learning classifier achieving 95.9% test accuracy across 10 land-cover classes.
   - K-Means spectral clustering and texture segmentation for automated spatial partitioning.
   - Pairwise temporal difference analysis for vegetative and urban land-cover change detection.
+  - Automated PDF assessment report compilation via ReportLab with embedded classification tables.
 - **Backend Architecture & APIs**:
   - Single-process FastAPI server with zero-build front-end mounting.
   - JWT token and email OTP authentication system with offline dev-OTP fallback mode.
   - Local SQLite metadata storage and NetCDF gridded data cache.
+- **DevOps & Tooling**:
+  - Multi-stage production `Dockerfile` and `docker-compose.yml` service orchestration.
+  - Pre-commit formatting hygiene with Ruff and GitHub Actions CI workflow.
