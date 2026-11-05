@@ -1,5 +1,11 @@
 # Bhū-Darpan (भू-दर्पण) — AI Climate Digital Twin for Jammu & Kashmir
 
+[![CI](https://github.com/rubivssingh281-lab/Bhu-Darpan/actions/workflows/ci.yml/badge.svg)](https://github.com/rubivssingh281-lab/Bhu-Darpan/actions)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
 > **Bhū-Darpan** ("Earth-Mirror") is an AI-powered **climate digital twin** for the
 > Jammu & Kashmir region, bundled with a **satellite image-analysis** module
 > (land-cover segmentation, change detection, and drought/flood/fire disaster
