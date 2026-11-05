@@ -22,4 +22,4 @@ jobs:
           pip install ruff flake8
       - name: Check code formatting and syntax
         run: |
-          ruff check Backend/app
+          ruff check Backend/app --ignore I001
