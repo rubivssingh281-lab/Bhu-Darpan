@@ -32,8 +32,10 @@ class Settings:
         self.max_image_dim: int = int(os.getenv("MAX_IMAGE_DIM", "900"))
 
         # Near-real-time refresh: >0 enables the background scheduler (hours). On by
-        # default so every live layer stays within a few days of today; 0 disables.
-        self.auto_refresh_hours: float = float(os.getenv("AUTO_REFRESH_HOURS", "6"))
+        # default in local dev, but defaulted to 0 on Render / low-memory containers.
+        is_render = os.getenv("RENDER", "").lower() in ("1", "true", "yes")
+        default_refresh = "0" if is_render else "6"
+        self.auto_refresh_hours: float = float(os.getenv("AUTO_REFRESH_HOURS", default_refresh))
 
         # --- Email / OTP (SMTP) --------------------------------------------- #
         self.app_name: str = os.getenv("APP_NAME", "Bhū-Darpan")
