@@ -5,11 +5,16 @@ services:
     rootDir: Backend
     plan: free
     region: oregon
-    buildCommand: "pip install --upgrade pip && pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt"
-    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /api/health
+    buildCommand: "pip install --no-cache-dir --upgrade pip setuptools wheel && pip install --no-cache-dir torch==2.14.0 torchvision==0.29.0 --index-url https://download.pytorch.org/whl/cpu && pip install --no-cache-dir -r requirements.txt"
+    startCommand: "sh -c 'uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000}'"
     envVars:
       - key: PYTHON_VERSION
         value: "3.12.0"
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: HOST
+        value: "0.0.0.0"
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ORIGINS
