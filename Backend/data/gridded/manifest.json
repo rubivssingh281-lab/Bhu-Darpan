@@ -26,7 +26,7 @@
       "min": 0.312,
       "max": 7.479,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_jk_20230601_20230630.nc",
+      "path": "data/gridded/power_rain_jk_20230601_20230630.nc",
       "created_at": "2026-09-17T11:49:31+00:00",
       "status": "ingested"
     },
@@ -56,7 +56,7 @@
       "min": -4.3,
       "max": 34.625,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_jk_20230601_20230630.nc",
+      "path": "data/gridded/power_tmean_jk_20230601_20230630.nc",
       "created_at": "2026-09-17T11:49:34+00:00",
       "status": "ingested"
     },
@@ -79,7 +79,7 @@
         29
       ],
       "n_cells": 609,
-      "path": "data\\gridded\\power_tmean_jk_clim.nc",
+      "path": "data/gridded/power_tmean_jk_clim.nc",
       "created_at": "2026-09-17T11:59:58+00:00",
       "status": "ingested"
     },
@@ -102,7 +102,7 @@
         29
       ],
       "n_cells": 609,
-      "path": "data\\gridded\\power_rain_jk_clim.nc",
+      "path": "data/gridded/power_rain_jk_clim.nc",
       "created_at": "2026-09-17T12:00:01+00:00",
       "status": "ingested"
     },
@@ -132,7 +132,7 @@
       "min": -13.302,
       "max": 25.112,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_jk_20210101_20231231.nc",
+      "path": "data/gridded/power_tmean_jk_20210101_20231231.nc",
       "created_at": "2026-09-17T12:11:07+00:00",
       "status": "ingested"
     },
@@ -162,7 +162,7 @@
       "min": 0.214,
       "max": 4.653,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_jk_20210101_20231231.nc",
+      "path": "data/gridded/power_rain_jk_20210101_20231231.nc",
       "created_at": "2026-09-17T12:11:15+00:00",
       "status": "ingested"
     },
@@ -185,7 +185,7 @@
         68
       ],
       "n_cells": 4420,
-      "path": "data\\gridded\\power_tmean_india_clim.nc",
+      "path": "data/gridded/power_tmean_india_clim.nc",
       "created_at": "2026-09-17T13:52:44+00:00",
       "status": "ingested"
     },
@@ -208,7 +208,7 @@
         68
       ],
       "n_cells": 4420,
-      "path": "data\\gridded\\power_rain_india_clim.nc",
+      "path": "data/gridded/power_rain_india_clim.nc",
       "created_at": "2026-09-17T13:53:18+00:00",
       "status": "ingested"
     },
@@ -238,7 +238,7 @@
       "min": -6.413,
       "max": 38.125,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_india_20230601_20230615.nc",
+      "path": "data/gridded/power_tmean_india_20230601_20230615.nc",
       "created_at": "2026-09-17T13:54:10+00:00",
       "status": "ingested"
     },
@@ -268,7 +268,7 @@
       "min": 0.0,
       "max": 28.897,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_india_20230601_20230615.nc",
+      "path": "data/gridded/power_rain_india_20230601_20230615.nc",
       "created_at": "2026-09-17T13:55:05+00:00",
       "status": "ingested"
     },
@@ -298,7 +298,7 @@
       "min": -12.46,
       "max": 32.41,
       "native_res_deg": 0.25,
-      "path": "data\\gridded\\openmeteo_tmean_jk_20230601_20230630.nc",
+      "path": "data/gridded/openmeteo_tmean_jk_20230601_20230630.nc",
       "created_at": "2026-09-17T14:37:45+00:00",
       "status": "ingested"
     },
@@ -328,7 +328,7 @@
       "min": 0.083,
       "max": 6.397,
       "native_res_deg": 0.25,
-      "path": "data\\gridded\\openmeteo_rain_jk_20230601_20230630.nc",
+      "path": "data/gridded/openmeteo_rain_jk_20230601_20230630.nc",
       "created_at": "2026-09-17T14:37:57+00:00",
       "status": "ingested"
     },
@@ -358,7 +358,7 @@
       "min": -0.505,
       "max": 37.102,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_lst_jk_20260816_20260915.nc",
+      "path": "data/gridded/power_lst_jk_20260816_20260915.nc",
       "created_at": "2026-09-18T09:06:18+00:00",
       "status": "ingested"
     },
@@ -381,7 +381,7 @@
         29
       ],
       "n_cells": 609,
-      "path": "data\\gridded\\power_lst_jk_clim.nc",
+      "path": "data/gridded/power_lst_jk_clim.nc",
       "created_at": "2026-09-18T09:06:20+00:00",
       "status": "ingested"
     },
@@ -411,7 +411,7 @@
       "min": 0.087,
       "max": 4.827,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_jk_20260816_20260915.nc",
+      "path": "data/gridded/power_rain_jk_20260816_20260915.nc",
       "created_at": "2026-09-18T09:09:41+00:00",
       "status": "ingested"
     },
@@ -441,7 +441,7 @@
       "min": -0.416,
       "max": 35.798,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_jk_20260816_20260915.nc",
+      "path": "data/gridded/power_tmean_jk_20260816_20260915.nc",
       "created_at": "2026-09-18T09:09:42+00:00",
       "status": "ingested"
     },
@@ -471,7 +471,7 @@
       "min": 0.107,
       "max": 5.523,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_jk_20260822_20260921.nc",
+      "path": "data/gridded/power_rain_jk_20260822_20260921.nc",
       "created_at": "2026-09-24T17:32:17+00:00",
       "status": "ingested"
     },
@@ -501,7 +501,7 @@
       "min": -2.253,
       "max": 34.002,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_jk_20260822_20260921.nc",
+      "path": "data/gridded/power_tmean_jk_20260822_20260921.nc",
       "created_at": "2026-09-24T17:32:19+00:00",
       "status": "ingested"
     },
@@ -531,7 +531,7 @@
       "min": 0.11,
       "max": 5.283,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_jk_20260823_20260922.nc",
+      "path": "data/gridded/power_rain_jk_20260823_20260922.nc",
       "created_at": "2026-09-24T23:08:27+00:00",
       "status": "ingested"
     },
@@ -561,7 +561,7 @@
       "min": -2.333,
       "max": 34.059,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_jk_20260823_20260922.nc",
+      "path": "data/gridded/power_tmean_jk_20260823_20260922.nc",
       "created_at": "2026-09-24T23:08:28+00:00",
       "status": "ingested"
     },
@@ -591,7 +591,7 @@
       "min": 0.124,
       "max": 4.511,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_jk_20260825_20260924.nc",
+      "path": "data/gridded/power_rain_jk_20260825_20260924.nc",
       "created_at": "2026-09-27T12:26:59+00:00",
       "status": "ingested"
     },
@@ -621,7 +621,7 @@
       "min": -2.788,
       "max": 34.145,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_jk_20260825_20260924.nc",
+      "path": "data/gridded/power_tmean_jk_20260825_20260924.nc",
       "created_at": "2026-09-27T12:27:00+00:00",
       "status": "ingested"
     },
@@ -651,7 +651,7 @@
       "min": -3.379,
       "max": 35.212,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_lst_jk_20260825_20260924.nc",
+      "path": "data/gridded/power_lst_jk_20260825_20260924.nc",
       "created_at": "2026-09-27T12:27:02+00:00",
       "status": "ingested"
     },
@@ -681,7 +681,7 @@
       "min": 0.129,
       "max": 6.6,
       "native_res_deg": 0.25,
-      "path": "data\\gridded\\openmeteo_rain_jk_20260825_20260924.nc",
+      "path": "data/gridded/openmeteo_rain_jk_20260825_20260924.nc",
       "created_at": "2026-09-27T12:27:09+00:00",
       "status": "ingested"
     },
@@ -711,7 +711,7 @@
       "min": -11.203,
       "max": 30.132,
       "native_res_deg": 0.25,
-      "path": "data\\gridded\\openmeteo_tmean_jk_20260825_20260924.nc",
+      "path": "data/gridded/openmeteo_tmean_jk_20260825_20260924.nc",
       "created_at": "2026-09-27T12:27:16+00:00",
       "status": "ingested"
     },
@@ -741,7 +741,7 @@
       "min": 0.001,
       "max": 49.437,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_india_20260825_20260924.nc",
+      "path": "data/gridded/power_rain_india_20260825_20260924.nc",
       "created_at": "2026-09-27T12:27:49+00:00",
       "status": "ingested"
     },
@@ -771,7 +771,7 @@
       "min": -2.788,
       "max": 36.779,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_india_20260825_20260924.nc",
+      "path": "data/gridded/power_tmean_india_20260825_20260924.nc",
       "created_at": "2026-09-27T12:28:22+00:00",
       "status": "ingested"
     },
@@ -801,7 +801,7 @@
       "min": 0.103,
       "max": 3.375,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_jk_20260829_20260928.nc",
+      "path": "data/gridded/power_rain_jk_20260829_20260928.nc",
       "created_at": "2026-10-01T04:08:49+00:00",
       "status": "ingested"
     },
@@ -831,7 +831,7 @@
       "min": -3.42,
       "max": 34.144,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_jk_20260829_20260928.nc",
+      "path": "data/gridded/power_tmean_jk_20260829_20260928.nc",
       "created_at": "2026-10-01T04:08:51+00:00",
       "status": "ingested"
     },
@@ -861,7 +861,7 @@
       "min": -4.407,
       "max": 35.228,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_lst_jk_20260829_20260928.nc",
+      "path": "data/gridded/power_lst_jk_20260829_20260928.nc",
       "created_at": "2026-10-01T04:08:53+00:00",
       "status": "ingested"
     },
@@ -891,7 +891,7 @@
       "min": 0.197,
       "max": 6.619,
       "native_res_deg": 0.25,
-      "path": "data\\gridded\\openmeteo_rain_jk_20260829_20260928.nc",
+      "path": "data/gridded/openmeteo_rain_jk_20260829_20260928.nc",
       "created_at": "2026-10-01T04:09:01+00:00",
       "status": "ingested"
     },
@@ -921,7 +921,7 @@
       "min": -12.129,
       "max": 29.29,
       "native_res_deg": 0.25,
-      "path": "data\\gridded\\openmeteo_tmean_jk_20260829_20260928.nc",
+      "path": "data/gridded/openmeteo_tmean_jk_20260829_20260928.nc",
       "created_at": "2026-10-01T04:09:08+00:00",
       "status": "ingested"
     },
@@ -951,7 +951,7 @@
       "min": 0.001,
       "max": 55.839,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_india_20260829_20260928.nc",
+      "path": "data/gridded/power_rain_india_20260829_20260928.nc",
       "created_at": "2026-10-01T04:09:57+00:00",
       "status": "ingested"
     },
@@ -981,7 +981,7 @@
       "min": -3.42,
       "max": 36.559,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_india_20260829_20260928.nc",
+      "path": "data/gridded/power_tmean_india_20260829_20260928.nc",
       "created_at": "2026-10-01T04:10:45+00:00",
       "status": "ingested"
     },
@@ -1011,7 +1011,7 @@
       "min": 0.023,
       "max": 2.933,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_jk_20260907_20261007.nc",
+      "path": "data/gridded/power_rain_jk_20260907_20261007.nc",
       "created_at": "2026-10-09T20:20:54+00:00",
       "status": "ingested"
     },
@@ -1041,7 +1041,7 @@
       "min": -5.185,
       "max": 33.384,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_jk_20260907_20261007.nc",
+      "path": "data/gridded/power_tmean_jk_20260907_20261007.nc",
       "created_at": "2026-10-09T20:20:56+00:00",
       "status": "ingested"
     },
@@ -1071,7 +1071,7 @@
       "min": -7.6,
       "max": 34.233,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_lst_jk_20260907_20261007.nc",
+      "path": "data/gridded/power_lst_jk_20260907_20261007.nc",
       "created_at": "2026-10-09T20:20:58+00:00",
       "status": "ingested"
     },
@@ -1101,7 +1101,7 @@
       "min": 0.09,
       "max": 3.716,
       "native_res_deg": 0.25,
-      "path": "data\\gridded\\openmeteo_rain_jk_20260907_20261007.nc",
+      "path": "data/gridded/openmeteo_rain_jk_20260907_20261007.nc",
       "created_at": "2026-10-09T20:21:06+00:00",
       "status": "ingested"
     },
@@ -1131,7 +1131,7 @@
       "min": -13.626,
       "max": 28.468,
       "native_res_deg": 0.25,
-      "path": "data\\gridded\\openmeteo_tmean_jk_20260907_20261007.nc",
+      "path": "data/gridded/openmeteo_tmean_jk_20260907_20261007.nc",
       "created_at": "2026-10-09T20:21:14+00:00",
       "status": "ingested"
     },
@@ -1161,7 +1161,7 @@
       "min": 0.0,
       "max": 54.737,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_rain_india_20260907_20261007.nc",
+      "path": "data/gridded/power_rain_india_20260907_20261007.nc",
       "created_at": "2026-10-09T20:21:43+00:00",
       "status": "ingested"
     },
@@ -1191,7 +1191,7 @@
       "min": -5.374,
       "max": 35.906,
       "native_res_deg": 0.5,
-      "path": "data\\gridded\\power_tmean_india_20260907_20261007.nc",
+      "path": "data/gridded/power_tmean_india_20260907_20261007.nc",
       "created_at": "2026-10-09T20:22:13+00:00",
       "status": "ingested"
     }
