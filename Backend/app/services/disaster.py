@@ -223,12 +223,18 @@ def detect(data: bytes, before: bytes | None = None,
     # keep only the strongest detection per disaster family (avoid near-duplicates)
     def _family(t):
         t = t.lower()
-        if "fire" in t and "burn" not in t: return "fire"
-        if "burn" in t: return "burn"
-        if "flood" in t or "water" in t: return "flood"
-        if "landslide" in t or "land loss" in t: return "landslide"
-        if "snow" in t or "avalanche" in t: return "snow"
-        if "drought" in t or "stress" in t: return "drought"
+        if "fire" in t and "burn" not in t:
+            return "fire"
+        if "burn" in t:
+            return "burn"
+        if "flood" in t or "water" in t:
+            return "flood"
+        if "landslide" in t or "land loss" in t:
+            return "landslide"
+        if "snow" in t or "avalanche" in t:
+            return "snow"
+        if "drought" in t or "stress" in t:
+            return "drought"
         return t
     _best: dict = {}
     for d in detections:

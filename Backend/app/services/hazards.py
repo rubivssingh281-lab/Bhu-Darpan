@@ -151,7 +151,7 @@ def _data():
 # --------------------------------------------------------------------------- #
 def _monthly_precip(D):
     """Return (ym list 'YYYY-MM', totals) monthly precipitation totals."""
-    keys, tot = {}, {}
+    tot = {}
     for d, p in zip(D["dates"], D["precip"]):
         k = (d.year, d.month)
         tot[k] = tot.get(k, 0.0) + p
@@ -173,11 +173,16 @@ def _spi(series_3mo, months):
 
 
 def _spi_class(x):
-    if x <= -2: return ("Extreme drought", "#b23b1e")
-    if x <= -1.5: return ("Severe drought", "#d2694a")
-    if x <= -1.0: return ("Moderate drought", "#dd9138")
-    if x < 1.0: return ("Near normal", "#2aa38a")
-    if x < 1.5: return ("Moderately wet", "#3b9be6")
+    if x <= -2:
+        return ("Extreme drought", "#b23b1e")
+    if x <= -1.5:
+        return ("Severe drought", "#d2694a")
+    if x <= -1.0:
+        return ("Moderate drought", "#dd9138")
+    if x < 1.0:
+        return ("Near normal", "#2aa38a")
+    if x < 1.5:
+        return ("Moderately wet", "#3b9be6")
     return ("Very wet", "#2f7d9a")
 
 
@@ -287,7 +292,6 @@ def warming_trend() -> dict:
     full = np.array([int((D["year"] == y).sum()) >= 330 for y in years])
     yf, af = years[full], ann[full]
     slope, intercept = np.polyfit(yf, af, 1)
-    fit = slope * years + intercept
     span = int(yf[-1] - yf[0]) if yf.size > 1 else 0
     return {
         "series": [{"year": int(y), "mean_c": round(float(a), 2), "trend_c": round(float(f), 2)}

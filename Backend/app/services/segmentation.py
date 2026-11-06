@@ -10,9 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import numpy as np
-from sklearn.cluster import KMeans
 
-from ..config import settings
 from .constants import CLASS_COLORS, CLASSES
 
 
@@ -192,7 +190,13 @@ def _hybrid_segment(arr: np.ndarray, p5: np.ndarray, p10: np.ndarray) -> np.ndar
     from .landcover_model import EUROSAT_CLASSES
     idx = {n: i for i, n in enumerate(CLASSES)}
     eu = {n: i for i, n in enumerate(EUROSAT_CLASSES)}
-    W, U, A, FO, O = idx["Water"], idx["Urban"], idx["Agriculture"], idx["Forest"], idx["Others"]
+    W, U, A, FO, OTHERS = (
+        idx["Water"],
+        idx["Urban"],
+        idx["Agriculture"],
+        idx["Forest"],
+        idx["Others"],
+    )
 
     f = arr.astype(np.float32) / 255.0
     r, g, b = f[..., 0], f[..., 1], f[..., 2]
@@ -234,7 +238,7 @@ def _hybrid_segment(arr: np.ndarray, p5: np.ndarray, p10: np.ndarray) -> np.ndar
     nongreen_veg = ((cls == A) | (cls == FO)) & ~green & ~canopy
     green_frac = cv2.blur(((green | canopy) & (cls != W)).astype(np.float32), (201, 201))
     bare = nongreen_veg & ((sat < 0.10) | ((sat > 0.40) & (bright > 0.60)) | (green_frac < 0.05))
-    cls[bare | snow] = O
+    cls[bare | snow] = OTHERS
 
     # dense built-up the model under-calls (non-European towns): urban fabric is a density
     # of roofs/roads among street trees, so it is decided over a neighbourhood

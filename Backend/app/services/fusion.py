@@ -27,7 +27,8 @@ def _daily(var, region, source):
 
 
 def _rmse(a, b):
-    e = (a - b); e = e[np.isfinite(e)]
+    e = a - b
+    e = e[np.isfinite(e)]
     return float(np.sqrt(np.mean(e ** 2))) if e.size else float("nan")
 
 

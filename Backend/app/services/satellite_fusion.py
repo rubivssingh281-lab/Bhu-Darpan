@@ -49,7 +49,8 @@ def fuse_surface_temperature(region: str = "jk") -> dict | None:
     # Grids share the region/resolution; if the LST grid differs, sample it onto the
     # air-temp grid nearest-neighbour so observations align.
     if lst_val.shape != air_val.shape:
-        li = np.asarray(lst["lats"], float); lo = np.asarray(lst["lons"], float)
+        li = np.asarray(lst["lats"], float)
+        lo = np.asarray(lst["lons"], float)
         resampled = np.full_like(air_val, np.nan)
         for i, la in enumerate(lats):
             ii = int(np.abs(li - la).argmin())

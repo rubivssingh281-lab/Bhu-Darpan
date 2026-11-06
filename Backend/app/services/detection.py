@@ -59,7 +59,6 @@ def detect_objects(arr: np.ndarray, class_map: np.ndarray):
     """Run detection; return (objects, counts, annotated_overlay_rgb)."""
     h, w = class_map.shape
     total = float(h * w)
-    diag = float(np.hypot(h, w))
     objects: list[dict] = []
 
     f = arr.astype(np.float32) / 255.0

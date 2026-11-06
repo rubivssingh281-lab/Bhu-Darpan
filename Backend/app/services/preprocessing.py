@@ -35,10 +35,10 @@ def enhance(arr: np.ndarray) -> np.ndarray:
     """Denoise (edge-preserving bilateral) + mild contrast enhancement (CLAHE on luminance)."""
     arr = cv2.bilateralFilter(arr, d=5, sigmaColor=45, sigmaSpace=45)
     lab = cv2.cvtColor(arr, cv2.COLOR_RGB2LAB)
-    l, a, b = cv2.split(lab)
+    lightness, a, b = cv2.split(lab)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    l = clahe.apply(l)
-    return cv2.cvtColor(cv2.merge((l, a, b)), cv2.COLOR_LAB2RGB)
+    lightness = clahe.apply(lightness)
+    return cv2.cvtColor(cv2.merge((lightness, a, b)), cv2.COLOR_LAB2RGB)
 
 
 def preprocess(data: bytes, max_dim: int | None = None) -> np.ndarray:

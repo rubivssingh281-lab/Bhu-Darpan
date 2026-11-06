@@ -27,7 +27,6 @@ from datetime import datetime, timedelta
 from functools import lru_cache
 
 import numpy as np
-from scipy.optimize import nnls
 from sklearn.ensemble import HistGradientBoostingRegressor
 
 from ingest.config import GRIDDED_DIR
@@ -101,7 +100,7 @@ def train(var: str, region: str = "jk"):
     anom = R["obs"] - R["table"][R["doy"]]
     T, ny, nx = anom.shape
     LA, LO = _grid_xy(R["lats"], R["lons"])
-    t_tr, t_va = int(T * 0.60), int(T * 0.75)
+    _, t_va = int(T * 0.60), int(T * 0.75)
 
     blocks = []                                  # (lead, t, X, y, seed)
     for lead in LEADS:
@@ -114,7 +113,8 @@ def train(var: str, region: str = "jk"):
         sel = [b for b in blocks if pred(b)]
         if not sel:
             return None
-        X = np.concatenate([b[2] for b in sel]); y = np.concatenate([b[3] for b in sel])
+        X = np.concatenate([b[2] for b in sel])
+        y = np.concatenate([b[3] for b in sel])
         s = np.concatenate([b[4] for b in sel])
         ok = np.isfinite(y) & np.isfinite(X).all(1)
         return X[ok], y[ok], s[ok]
