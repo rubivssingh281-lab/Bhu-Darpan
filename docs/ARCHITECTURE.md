@@ -77,15 +77,31 @@ flowchart LR
 | Path | Responsibility |
 |---|---|
 | `Backend/app/main.py` | FastAPI app; serves the two SPAs + static assets |
-| `Backend/app/routers/` | HTTP endpoints (auth, analysis, change, climate, gridded, hazards, fusion, dashboard) |
+| `Backend/app/routers/` | HTTP endpoints (auth, analysis, change, climate, demo, gridded, hazards, fusion, dashboard) |
 | `Backend/app/services/` | Business logic (climate, ML forecast, gridded analysis, fusion, hazards, CV, land-cover CNN, email) |
 | `Backend/ingest/` | Multi-source ETL: download → decode → regrid → NetCDF + manifest |
 | `Backend/scripts/` | Dev utilities (model training, demo seeding) |
-| `Backend/tests/` | End-to-end + offline test suites |
+| `Backend/tests/` | End-to-end + offline test suites (health, auth, indices, demo) |
 | `Backend/webapp/` | The two single-page front-ends + assets |
 | `Backend/models/` | 50-yr climate record + trained CNN weights & metrics |
 | `Backend/data/gridded/` | Ingested NetCDF grids + manifest |
+| `Backend/data/demo_presets/` | Pre-packaged offline viva examination scenarios (flood, urban sprawl, wildfire) |
 | `Backend/storage/` | Uploads/masks/reports + SQLite database |
+
+---
+
+## 4.1 Viva Demonstration Suite
+
+The platform includes an embedded, zero-latency **Viva Demonstration Controller** designed for academic evaluations and faculty presentations:
+- **Interactive Scenarios**:
+  - `dal_lake_flood_2014`: High-water inundation and urban infrastructure submergence (2014 Jhelum mega-flood).
+  - `jammu_expansion_2023`: Decadal urban expansion and loss of agricultural buffer zones in the Tawi basin.
+  - `chenab_wildfire_burn`: Forest burn scar delineation with associated slope destabilization alerts.
+- **FastAPI Endpoints**:
+  - `GET /api/demo/presets`: Lists registered demonstration scenarios.
+  - `POST /api/demo/load/{preset_id}`: Auto-provisions image assets, hydrates SQLite records, and returns full UI state.
+  - `POST /api/demo/reset`: Clears demonstration data.
+- **Client Floating Controller**: Allows faculty evaluators to switch scenarios instantly with sub-50ms execution times and zero internet connection required.
 
 ---
 
