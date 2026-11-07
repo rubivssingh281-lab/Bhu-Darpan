@@ -11,7 +11,20 @@ from fastapi.staticfiles import StaticFiles
 from . import __version__
 from .config import settings
 from .database import db
-from .routers import analysis, auth, change, climate, dashboard, disaster, fusion, gridded, hazards, ingest, weather
+from .routers import (
+    analysis,
+    auth,
+    change,
+    climate,
+    dashboard,
+    demo,
+    disaster,
+    fusion,
+    gridded,
+    hazards,
+    ingest,
+    weather,
+)
 
 
 @asynccontextmanager
@@ -53,6 +66,7 @@ app.include_router(ingest.router)
 app.include_router(fusion.router)
 app.include_router(weather.router)
 app.include_router(disaster.router)
+app.include_router(demo.router)
 
 
 @app.get("/api/health", tags=["system"])
