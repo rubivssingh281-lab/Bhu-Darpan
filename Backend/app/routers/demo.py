@@ -2,8 +2,6 @@
 from __future__ import annotations
 
 import json
-import shutil
-from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, HTTPException, status
@@ -34,7 +32,7 @@ def _ensure_demo_assets(preset_id: str) -> None:
         if src_jpg.exists() and not orig_target.exists():
             img = Image.open(src_jpg).convert("RGB")
             img.save(orig_target, format="PNG")
-            
+
             # Generate representative segmentation mask (Water=Blue, Urban=Red, Forest=Green, Agri=Yellow)
             import numpy as np
             arr = np.array(img)
@@ -135,12 +133,11 @@ def load_preset(preset_id: str) -> dict[str, Any]:
     # Ensure associated image files exist
     try:
         _ensure_demo_assets(preset_id)
-    except Exception as exc:
+    except Exception:
         # Asset auto-creation is non-fatal if images aren't present
         pass
 
     category = payload.get("category", "analysis")
-    doc_id = payload["id"]
     payload["owner"] = "demo_examiner"
 
     # Persist in SQLite under the appropriate collection
