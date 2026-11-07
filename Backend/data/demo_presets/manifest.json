@@ -1,0 +1,34 @@
+{
+  "presets": [
+    {
+      "id": "dal_lake_flood_2014",
+      "title": "2014 Srinagar Jhelum Flood Inundation",
+      "category": "analysis",
+      "region": "Srinagar & Dal Lake, J&K",
+      "coordinates": { "lat": 34.0836, "lon": 74.8378 },
+      "badge": "🌊 Flood Inundation & Exposure",
+      "summary": "Historical Sentinel-2 capture showing catastrophic submergence of Jhelum floodplains and urban residential belts.",
+      "metrics_highlight": "Water: 58.4% | Inundation: SEVERE | Confidence: 97.2%"
+    },
+    {
+      "id": "jammu_expansion_2023",
+      "title": "Jammu Decadal Urban Expansion (2012–2023)",
+      "category": "change",
+      "region": "Jammu Outer Ring Road & Tawi Basin",
+      "coordinates": { "lat": 32.7266, "lon": 74.8570 },
+      "badge": "🏙️ Decadal Land-Use Shift",
+      "summary": "Bi-temporal change detection showing rapid expansion of impervious concrete over historical agricultural land.",
+      "metrics_highlight": "Urban Growth: +31.4% | Agri Loss: -18.7% | Shift: 24.8%"
+    },
+    {
+      "id": "chenab_wildfire_burn",
+      "title": "Chenab Valley Forest Fire & Landslide Risk",
+      "category": "disaster",
+      "region": "Kishtwar / Chenab Gorge",
+      "coordinates": { "lat": 33.1463, "lon": 75.5412 },
+      "badge": "🔥 Wildfire Burn & Hazard Triage",
+      "summary": "Multi-spectral triage of high-altitude forest burn scar with slope destabilization and landslide hazard alerts.",
+      "metrics_highlight": "Affected Area: 19.3% | Severity: HIGH | Alert: SDRF Grade 2"
+    }
+  ]
+}

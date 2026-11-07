@@ -1,0 +1,68 @@
+{
+  "id": "demo_dal_lake_flood_2014",
+  "name": "2014 Srinagar Jhelum Flood Inundation",
+  "category": "analysis",
+  "created_at": "2014-09-08 11:30:00 UTC",
+  "detected_at": "2014-09-08 11:30:00 UTC",
+  "original_url": "/storage/uploads/demo_dal_lake_flood_2014.png",
+  "segmentation_url": "/storage/masks/demo_dal_lake_flood_2014_seg.png",
+  "detection_url": "/storage/masks/demo_dal_lake_flood_2014_det.png",
+  "overlay_url": "/storage/masks/demo_dal_lake_flood_2014_det.png",
+  "width": 768,
+  "height": 768,
+  "location": {
+    "lat": 34.0836,
+    "lon": 74.8378
+  },
+  "land_cover": {
+    "Water": 58.4,
+    "Urban": 18.2,
+    "Forest": 12.1,
+    "Agriculture": 7.8,
+    "Others": 3.5
+  },
+  "objects": [
+    { "type": "Water Body", "box": [80, 110, 520, 680], "confidence": 0.98 },
+    { "type": "Building", "box": [45, 60, 120, 140], "confidence": 0.92 },
+    { "type": "Building", "box": [110, 20, 180, 90], "confidence": 0.89 },
+    { "type": "Building", "box": [590, 410, 680, 510], "confidence": 0.87 },
+    { "type": "Vegetation", "box": [210, 310, 390, 480], "confidence": 0.95 }
+  ],
+  "object_counts": {
+    "Water Body": 6,
+    "Building": 84,
+    "Vegetation": 31,
+    "Road": 12
+  },
+  "confidence": 97.2,
+  "model_type": "EuroSAT-CNN (ResNet-Lite 17-layer) + Spectral Saliency",
+  "model_accuracy": 98.33,
+  "report_url": null,
+  "primary": "Severe Flood Inundation",
+  "severity": "Severe",
+  "affected_area_pct": 58.4,
+  "mode": "single",
+  "region": "Srinagar & Jhelum Basin",
+  "detections": [
+    {
+      "type": "Extreme Inundation",
+      "confidence": 0.98,
+      "evidence": "Water fraction exceeds historical baseline by +184.2%; major submergence along Jhelum river banks."
+    },
+    {
+      "type": "Urban Submergence",
+      "confidence": 0.91,
+      "evidence": "42.6% of built-up urban structures detected within high-water boundary footprint."
+    }
+  ],
+  "authority_alert": "CRITICAL DISASTER NOTICE: Widespread Severe Flood Inundation identified across Srinagar/Jhelum Basin (34.0836°N, 74.8378°E). Standing surface water covers 58.4% of monitored scene with severe residential infrastructure submergence. Immediate evacuation & SDRF asset deployment recommended.",
+  "exposure": {
+    "builtup_pct": 18.2,
+    "builtup_in_impact_pct": 42.6,
+    "note": "Dense urban clusters submerged along Rajbagh, Jawahar Nagar, and Dal Lake perimeter."
+  },
+  "limitations": [
+    "Turbid flood waters with suspended silt may exhibit spectral properties intermediate between water and wet soil.",
+    "Cloud shadows over urban areas can cause minor water misclassification; verified via NDWI spectral threshold."
+  ]
+}

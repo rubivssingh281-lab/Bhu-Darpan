@@ -1,0 +1,41 @@
+{
+  "id": "demo_chenab_wildfire_burn",
+  "name": "Chenab Valley Forest Fire & Landslide Risk",
+  "category": "disaster",
+  "created_at": "2024-06-22 09:15:00 UTC",
+  "detected_at": "2024-06-22 09:15:00 UTC",
+  "primary": "Wildfire Burn Scar & Slope Destabilization",
+  "severity": "High",
+  "affected_area_pct": 19.3,
+  "mode": "single",
+  "region": "Chenab Gorge / Kishtwar",
+  "location": {
+    "lat": 33.1463,
+    "lon": 75.5412
+  },
+  "overlay_url": "/storage/masks/demo_chenab_wildfire_det.png",
+  "original_url": "/storage/uploads/demo_chenab_wildfire.png",
+  "segmentation_url": "/storage/masks/demo_chenab_wildfire_seg.png",
+  "detections": [
+    {
+      "type": "Active Burn Scar",
+      "confidence": 0.94,
+      "evidence": "Severe loss of NIR reflectance combined with elevated SWIR thermal emission index across steep slopes."
+    },
+    {
+      "type": "Landslide Runoff Risk",
+      "confidence": 0.88,
+      "evidence": "Burned canopy situated on >35° slope gradients above major transport artery and riverbed."
+    }
+  ],
+  "authority_alert": "HIGH HAZARD ALERT: Post-Wildfire Burn Scar and Severe Slope Destabilization detected across Chenab Valley (33.1463°N, 75.5412°E). 19.3% of catchment shows destroyed vegetative anchor. In case of forecasted monsoon rainfall, probability of debris flows and highway obstruction is CRITICAL.",
+  "exposure": {
+    "builtup_pct": 4.1,
+    "builtup_in_impact_pct": 18.5,
+    "note": "Down-slope settlements and National Highway 244 corridor located directly beneath the unstable drainage gully."
+  },
+  "limitations": [
+    "Steep topography and terrain relief shadows may mask acute flame fronts on northern slope faces.",
+    "Post-burn ash spectral profile shares signatures with bare dark slate rock; verified with baseline NDVI diff."
+  ]
+}
