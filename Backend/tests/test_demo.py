@@ -71,6 +71,21 @@ def test_load_invalid_preset_returns_404(client: TestClient):
     assert "detail" in data
 
 
+def test_load_malformed_preset_id_returns_404(client: TestClient):
+    """Rejects path-like identifiers before constructing a filesystem path."""
+    response = client.post("/api/demo/load/not-valid-id")
+    assert response.status_code == 404
+
+
+def test_loading_same_preset_is_repeatable(client: TestClient):
+    """Repeated hydration remains successful and returns the same preset document."""
+    first = client.post("/api/demo/load/chenab_wildfire_burn")
+    second = client.post("/api/demo/load/chenab_wildfire_burn")
+
+    assert first.status_code == second.status_code == 200
+    assert first.json()["document"]["id"] == second.json()["document"]["id"]
+
+
 def test_demo_reset(client: TestClient):
     """Verifies that the demo reset endpoint cleans up injected demonstration records."""
     # Load one first
