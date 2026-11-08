@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import json
+import logging
 from typing import Any
 
+import numpy as np
 from fastapi import APIRouter, HTTPException, status
 from PIL import Image
 
@@ -11,6 +13,7 @@ from ..config import settings
 from ..database import db
 
 router = APIRouter(prefix="/api/demo", tags=["demo"])
+logger = logging.getLogger(__name__)
 
 PRESETS_DIR = settings.base_dir / "data" / "demo_presets"
 MANIFEST_PATH = PRESETS_DIR / "manifest.json"
@@ -34,7 +37,6 @@ def _ensure_demo_assets(preset_id: str) -> None:
             img.save(orig_target, format="PNG")
 
             # Generate representative segmentation mask (Water=Blue, Urban=Red, Forest=Green, Agri=Yellow)
-            import numpy as np
             arr = np.array(img)
             h, w = arr.shape[:2]
             mask = np.zeros((h, w, 3), dtype=np.uint8)
@@ -64,7 +66,6 @@ def _ensure_demo_assets(preset_id: str) -> None:
             img = Image.open(src_jpg).convert("RGB")
             img.save(after_target, format="PNG")
             # Create synthetic "before" image (more green/vegetation, less urban)
-            import numpy as np
             arr = np.array(img)
             before_arr = arr.copy()
             # Boost green in outskirts to represent historical farmland
@@ -89,7 +90,6 @@ def _ensure_demo_assets(preset_id: str) -> None:
             img = Image.open(src_jpg).convert("RGB")
             img.save(orig_target, format="PNG")
 
-            import numpy as np
             arr = np.array(img)
             h, w = arr.shape[:2]
             det_overlay = arr.copy()
