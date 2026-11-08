@@ -20,6 +20,13 @@ MANIFEST_PATH = PRESETS_DIR / "manifest.json"
 TEST_IMAGES_DIR = settings.base_dir.parent / "test_images"
 
 
+def _preset_path(preset_id: str):
+    """Return a preset path only for simple, repository-local identifiers."""
+    if not preset_id or any(char not in "abcdefghijklmnopqrstuvwxyz0123456789_" for char in preset_id):
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"Preset '{preset_id}' not found.")
+    return PRESETS_DIR / f"{preset_id}.json"
+
+
 def _ensure_demo_assets(preset_id: str) -> None:
     """Ensures static image assets for the preset exist in storage/uploads and storage/masks."""
     settings.uploads_dir.mkdir(parents=True, exist_ok=True)
@@ -118,7 +125,7 @@ def load_preset(preset_id: str) -> dict[str, Any]:
     Instantly provisions demo assets, hydrates the local database,
     and returns the fully hydrated payload ready for client-side rendering.
     """
-    preset_path = PRESETS_DIR / f"{preset_id}.json"
+    preset_path = _preset_path(preset_id)
     if not preset_path.exists():
         raise HTTPException(
             status.HTTP_404_NOT_FOUND,
@@ -135,7 +142,7 @@ def load_preset(preset_id: str) -> dict[str, Any]:
         _ensure_demo_assets(preset_id)
     except Exception:
         # Asset auto-creation is non-fatal if images aren't present
-        pass
+        logger.warning("Unable to create demo assets for preset %s", preset_id, exc_info=True)
 
     category = payload.get("category", "analysis")
     payload["owner"] = "demo_examiner"
