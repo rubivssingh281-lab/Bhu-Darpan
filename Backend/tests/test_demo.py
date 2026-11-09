@@ -1,4 +1,6 @@
 """Automated test suite for the Viva Demo Controller endpoints."""
+import re
+
 from fastapi.testclient import TestClient
 
 
@@ -14,6 +16,7 @@ def test_list_demo_presets(client: TestClient):
     assert "dal_lake_flood_2014" in preset_ids
     assert "jammu_expansion_2023" in preset_ids
     assert "chenab_wildfire_burn" in preset_ids
+    assert all(re.fullmatch(r"[a-z0-9_]+", preset_id) for preset_id in preset_ids)
 
 
 def test_load_dal_lake_flood_preset(client: TestClient):
@@ -74,6 +77,12 @@ def test_load_invalid_preset_returns_404(client: TestClient):
 def test_load_malformed_preset_id_returns_404(client: TestClient):
     """Rejects path-like identifiers before constructing a filesystem path."""
     response = client.post("/api/demo/load/not-valid-id")
+    assert response.status_code == 404
+
+
+def test_load_path_traversal_like_preset_id_returns_404(client: TestClient):
+    """Rejects traversal-like identifiers before they reach the filesystem."""
+    response = client.post("/api/demo/load/%2E%2E%2Fmanifest")
     assert response.status_code == 404
 
 
