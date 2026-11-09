@@ -30,6 +30,13 @@ def _preset_path(preset_id: str) -> Path:
     return PRESETS_DIR / f"{preset_id}.json"
 
 
+def _read_json(path: Path, error_message: str) -> dict[str, Any]:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, f"{error_message}: {exc}") from exc
+
+
 def _ensure_demo_assets(preset_id: str) -> None:
     """Ensures static image assets for the preset exist in storage/uploads and storage/masks."""
     settings.uploads_dir.mkdir(parents=True, exist_ok=True)
@@ -115,11 +122,7 @@ def list_presets() -> dict[str, Any]:
     """Returns the manifest of pre-packaged examination demonstration scenarios."""
     if not MANIFEST_PATH.exists():
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Demo presets manifest not found.")
-    try:
-        manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
-        return manifest
-    except Exception as exc:
-        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, f"Failed to load manifest: {exc}")
+    return _read_json(MANIFEST_PATH, "Failed to load manifest")
 
 
 @router.post("/load/{preset_id}")
@@ -135,10 +138,7 @@ def load_preset(preset_id: str) -> dict[str, Any]:
             f"Preset '{preset_id}' not found. Available: dal_lake_flood_2014, jammu_expansion_2023, chenab_wildfire_burn",
         )
 
-    try:
-        payload = json.loads(preset_path.read_text(encoding="utf-8"))
-    except Exception as exc:
-        raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, f"Corrupt preset payload: {exc}")
+    payload = _read_json(preset_path, "Corrupt preset payload")
 
     # Ensure associated image files exist
     try:
