@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import json
 import logging
+import re
+from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -18,11 +20,12 @@ logger = logging.getLogger(__name__)
 PRESETS_DIR = settings.base_dir / "data" / "demo_presets"
 MANIFEST_PATH = PRESETS_DIR / "manifest.json"
 TEST_IMAGES_DIR = settings.base_dir.parent / "test_images"
+_PRESET_ID_RE = re.compile(r"^[a-z0-9_]+$")
 
 
-def _preset_path(preset_id: str):
+def _preset_path(preset_id: str) -> Path:
     """Return a preset path only for simple, repository-local identifiers."""
-    if not preset_id or any(char not in "abcdefghijklmnopqrstuvwxyz0123456789_" for char in preset_id):
+    if not _PRESET_ID_RE.fullmatch(preset_id):
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Preset '{preset_id}' not found.")
     return PRESETS_DIR / f"{preset_id}.json"
 
