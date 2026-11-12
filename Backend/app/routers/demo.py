@@ -21,6 +21,7 @@ PRESETS_DIR = settings.base_dir / "data" / "demo_presets"
 MANIFEST_PATH = PRESETS_DIR / "manifest.json"
 TEST_IMAGES_DIR = settings.base_dir.parent / "test_images"
 _PRESET_ID_RE = re.compile(r"^[a-z0-9_]+$")
+_DEMO_OWNER = "demo_examiner"
 
 
 def _preset_path(preset_id: str) -> Path:
@@ -148,7 +149,7 @@ def load_preset(preset_id: str) -> dict[str, Any]:
         logger.warning("Unable to create demo assets for preset %s", preset_id, exc_info=True)
 
     category = payload.get("category", "analysis")
-    payload["owner"] = "demo_examiner"
+    payload["owner"] = _DEMO_OWNER
 
     # Persist in SQLite under the appropriate collection
     if category == "analysis":
@@ -172,7 +173,7 @@ def load_preset(preset_id: str) -> dict[str, Any]:
 @router.post("/reset")
 def reset_demo() -> dict[str, str]:
     """Removes injected demo records from the database."""
-    db.analyses.delete_one({"owner": "demo_examiner"})
-    db.changes.delete_one({"owner": "demo_examiner"})
-    db.disasters.delete_one({"owner": "demo_examiner"})
+    db.analyses.delete_one({"owner": _DEMO_OWNER})
+    db.changes.delete_one({"owner": _DEMO_OWNER})
+    db.disasters.delete_one({"owner": _DEMO_OWNER})
     return {"status": "success", "message": "Demo data reset successfully."}
