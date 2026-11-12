@@ -33,6 +33,7 @@ def test_load_dal_lake_flood_preset(client: TestClient):
     assert "Water" in doc["land_cover"]
     assert doc["land_cover"]["Water"] > 50.0
     assert doc["severity"] == "Severe"
+    assert doc["owner"] == "demo_examiner"
 
 
 def test_load_jammu_expansion_preset(client: TestClient):
@@ -105,3 +106,4 @@ def test_demo_reset(client: TestClient):
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "success"
+    assert client.post("/api/demo/reset").json()["status"] == "success"
