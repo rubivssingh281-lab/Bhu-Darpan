@@ -38,6 +38,10 @@ def _read_json(path: Path, error_message: str) -> dict[str, Any]:
         raise HTTPException(status.HTTP_500_INTERNAL_SERVER_ERROR, f"{error_message}: {exc}") from exc
 
 
+def _save_png(array: np.ndarray, target: Path) -> None:
+    Image.fromarray(array).save(target, format="PNG")
+
+
 def _ensure_demo_assets(preset_id: str) -> None:
     """Ensures static image assets for the preset exist in storage/uploads and storage/masks."""
     settings.uploads_dir.mkdir(parents=True, exist_ok=True)
@@ -66,12 +70,12 @@ def _ensure_demo_assets(preset_id: str) -> None:
             y, x = np.ogrid[:h, :w]
             dal_lake_zone = ((x - center_x) ** 2) / (0.22 * w) ** 2 + ((y - center_y) ** 2) / (0.42 * h) ** 2 <= 1
             mask[dal_lake_zone] = [21, 101, 192]  # Water
-            Image.fromarray(mask).save(seg_target, format="PNG")
+            _save_png(mask, seg_target)
 
             # Detection overlay
             overlay = arr.copy()
             overlay[dal_lake_zone] = (overlay[dal_lake_zone] * 0.5 + np.array([30, 144, 255]) * 0.5).astype(np.uint8)
-            Image.fromarray(overlay).save(det_target, format="PNG")
+            _save_png(overlay, det_target)
 
     # 2. Jammu Decadal Expansion Preset
     elif preset_id == "jammu_expansion_2023":
@@ -88,14 +92,14 @@ def _ensure_demo_assets(preset_id: str) -> None:
             before_arr = arr.copy()
             # Boost green in outskirts to represent historical farmland
             before_arr[:, :, 1] = np.clip(before_arr[:, :, 1].astype(int) + 25, 0, 255).astype(np.uint8)
-            Image.fromarray(before_arr).save(before_target, format="PNG")
+            _save_png(before_arr, before_target)
 
             # Change map: red for changed pixels
             diff = np.abs(arr.astype(int) - before_arr.astype(int)).sum(axis=-1)
             change_mask = np.zeros_like(arr)
             change_mask[diff > 20] = [229, 57, 53]  # Red = changed
             change_mask[diff <= 20] = [46, 125, 50]  # Green = stable
-            Image.fromarray(change_mask).save(change_target, format="PNG")
+            _save_png(change_mask, change_target)
 
     # 3. Chenab Wildfire Preset
     elif preset_id == "chenab_wildfire_burn":
@@ -114,8 +118,8 @@ def _ensure_demo_assets(preset_id: str) -> None:
             # Overlay hazard burn zone
             burn_zone = (arr[:, :, 0] > 70) & (arr[:, :, 1] < 120)
             det_overlay[burn_zone] = (det_overlay[burn_zone] * 0.4 + np.array([255, 69, 0]) * 0.6).astype(np.uint8)
-            Image.fromarray(det_overlay).save(det_target, format="PNG")
-            Image.fromarray(arr).save(seg_target, format="PNG")
+            _save_png(det_overlay, det_target)
+            _save_png(arr, seg_target)
 
 
 @router.get("/presets")
