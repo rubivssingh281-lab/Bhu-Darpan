@@ -133,7 +133,7 @@ If creating the service manually:
 5. Under **Build and Output Settings**:
    - No build command needed — the app is a fast, pure HTML5/JavaScript application! Leave build and output settings at default.
 6. Check `vercel.json`:
-   - `vercel.json` already proxies `/api/*` and `/storage/*` to your backend on Render. If your Render backend URL is different from `https://bhu-darpan-backend.onrender.com`, update the destination URL in `frontend/vercel.json`.
+   - `vercel.json` already proxies `/api/*` and `/storage/*` to `https://bhu-darpan-backend.onrender.com`. If your Render service has a different name, update both Vercel rewrite destinations.
 7. Click **Deploy**.
 8. In ~15 seconds, your frontend will be live at `https://<your-project>.vercel.app`.
 
