@@ -112,8 +112,9 @@ class _SqliteStore:
         self.path = path
         self.lock = threading.RLock()
         path.parent.mkdir(parents=True, exist_ok=True)
-        self.conn = sqlite3.connect(str(path), check_same_thread=False)
+        self.conn = sqlite3.connect(str(path), check_same_thread=False, timeout=10)
         self.conn.execute("PRAGMA journal_mode=WAL")
+        self.conn.execute("PRAGMA busy_timeout=10000")
         self.conn.commit()
 
     def collection(self, name: str) -> _SqliteCollection:
