@@ -44,6 +44,10 @@ def _now() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def _normalize_email(email: str) -> str:
+    return email.strip().lower()
+
+
 def _issue(user: dict) -> dict:
     token = create_access_token(user["id"], {"email": user["email"]})
     return {"token": token, "user": _public(user)}
@@ -108,7 +112,7 @@ def _start_otp(email: str, purpose: str, name: str = "", password_hash: str = ""
 def register(body: RegisterRequest):
     """Step 1 of sign-up: validate, stash a pending record, email a verification code.
     The account is only created after the code is verified (POST /verify-otp)."""
-    email = body.email.lower()
+    email = _normalize_email(body.email)
     if db.users.find_one({"email": email}):
         raise HTTPException(status.HTTP_409_CONFLICT, "Email already registered")
     return _start_otp(email, "register", name=body.name.strip(),
@@ -119,7 +123,7 @@ def register(body: RegisterRequest):
 @router.post("/request-otp", response_model=OtpStartResponse)
 def request_otp(body: RequestOtpRequest):
     """Email a one-time sign-in code to an existing user."""
-    email = body.email.lower()
+    email = _normalize_email(body.email)
     if not db.users.find_one({"email": email}):
         raise HTTPException(status.HTTP_404_NOT_FOUND,
                             "No account for that email — create one first.")
@@ -129,7 +133,7 @@ def request_otp(body: RequestOtpRequest):
 @router.post("/verify-otp", response_model=AuthResponse)
 def verify_otp(body: VerifyOtpRequest):
     """Step 2: verify the code and complete registration or sign-in."""
-    email = body.email.lower()
+    email = _normalize_email(body.email)
     rec = db.otps.find_one({"email": email})
     if not rec:
         raise HTTPException(status.HTTP_400_BAD_REQUEST,
@@ -176,7 +180,7 @@ def verify_otp(body: VerifyOtpRequest):
 
 @router.post("/login", response_model=AuthResponse)
 def login(body: LoginRequest):
-    user = db.users.find_one({"email": body.email.lower()})
+    user = db.users.find_one({"email": _normalize_email(body.email)})
     if not user or not verify_password(body.password, user["password_hash"]):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid email or password")
     return _issue(user)

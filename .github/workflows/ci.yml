@@ -23,3 +23,4 @@ jobs:
       - name: Check code formatting and syntax
         run: |
           ruff check Backend/app --ignore I001
+          python -m compileall -q Backend/app
