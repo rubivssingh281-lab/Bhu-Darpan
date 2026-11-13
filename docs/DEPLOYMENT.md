@@ -78,7 +78,7 @@ Deploy the Backend first so you have your Render URL ready to plug into Vercel.
 4. Connect your GitHub repository.
 5. Render detects `render.yaml` automatically and configures:
    - Root Directory: `Backend`
-   - Build Command: `pip install --upgrade pip && pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt`
+   - Build Command: `pip install --no-cache-dir --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements.txt`
    - Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 6. Click **Apply**.
 
@@ -95,7 +95,7 @@ If creating the service manually:
    - **Runtime**: `Python 3`
    - **Build Command**:
      ```bash
-     pip install --upgrade pip && pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt
+     pip install --no-cache-dir --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements.txt
      ```
    - **Start Command**:
      ```bash
