@@ -97,7 +97,7 @@ If creating the service manually:
      ```bash
      pip install --no-cache-dir --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements.txt
      ```
-   - **Start Command**:
+   - **Start Command** (Render supplies `$PORT`):
      ```bash
      uvicorn app.main:app --host 0.0.0.0 --port $PORT
      ```
@@ -113,7 +113,7 @@ If creating the service manually:
 
 5. Click **Create Web Service**.
 6. Once the deploy completes (status: **Live**), copy your Render service URL (e.g., `https://bhu-darpan-backend.onrender.com`).
-7. Render uses `/api/health` as the service health check. Verify it works by opening `https://<your-render-app>.onrender.com/api/health` in your browser. Expected response:
+7. Render uses `/api/health` as the service health check, and the production process starts with `uvicorn app.main:app --host 0.0.0.0 --port $PORT`. Verify it works by opening `https://<your-render-app>.onrender.com/api/health` in your browser. Expected response:
    ```json
    {"status":"ok","version":"1.0.0","database":"...","classes":["Forest","Water","Agriculture","Urban","Others"]}
    ```
