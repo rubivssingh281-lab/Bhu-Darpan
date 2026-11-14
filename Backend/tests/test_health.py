@@ -7,3 +7,5 @@ def test_health_check(client):
     data = response.json()
     assert data.get("status") == "ok"
     assert "version" in data
+    assert data["database"]["backend"] == "sqlite"
+    assert data["classes"] == ["Forest", "Water", "Agriculture", "Urban", "Others"]
