@@ -9,12 +9,14 @@ https://open-meteo.com/en/docs
 from __future__ import annotations
 
 import time
+from threading import Lock
 
 import requests
 
 _FORECAST = "https://api.open-meteo.com/v1/forecast"
 _TTL = 600  # seconds — cache a pull for 10 minutes
 _cache: dict = {"at": 0.0, "data": None}
+_cache_lock = Lock()
 
 # Representative J&K stations across the valley, plains, high Himalaya and Ladakh.
 STATIONS = [
@@ -49,8 +51,9 @@ def _describe(code):
 
 def current(region: str = "jk") -> dict:
     now = time.time()
-    if _cache["data"] is not None and now - _cache["at"] < _TTL:
-        return _cache["data"]
+    with _cache_lock:
+        if _cache["data"] is not None and now - _cache["at"] < _TTL:
+            return _cache["data"]
 
     lat = ",".join(f"{s[1]:.4f}" for s in STATIONS)
     lon = ",".join(f"{s[2]:.4f}" for s in STATIONS)
@@ -96,5 +99,6 @@ def current(region: str = "jk") -> dict:
         "updated_at": stations[0]["observed_at"] if stations else None,
         "stations": stations,
     }
-    _cache.update(at=now, data=out)
+    with _cache_lock:
+        _cache.update(at=now, data=out)
     return out
