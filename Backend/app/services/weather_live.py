@@ -66,6 +66,10 @@ def current(region: str = "jk") -> dict:
     r.raise_for_status()
     payload = r.json()
     locs = payload if isinstance(payload, list) else [payload]
+    if len(locs) != len(STATIONS):
+        raise RuntimeError(
+            f"Open-Meteo returned {len(locs)} locations for {len(STATIONS)} requested stations"
+        )
 
     stations = []
     for (name, la, lo), loc in zip(STATIONS, locs):
