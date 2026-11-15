@@ -59,6 +59,7 @@ def _fetch_gnews(key: str, limit: int) -> list[dict]:
 
 
 def headlines(region: str = "jk", limit: int = 8) -> dict:
+    limit = max(1, min(int(limit), 20))
     if not settings.news_configured:
         return {"configured": False, "provider": settings.news_provider, "articles": [],
                 "hint": "Set NEWS_API_KEY in Backend/.env (NewsAPI or GNews) to enable "
