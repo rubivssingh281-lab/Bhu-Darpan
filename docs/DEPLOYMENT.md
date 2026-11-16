@@ -115,7 +115,11 @@ If creating the service manually:
 6. Once the deploy completes (status: **Live**), copy your Render service URL (e.g., `https://bhu-darpan-backend.onrender.com`).
 7. Render uses `/api/health` as the service health check, and the production process starts with `uvicorn app.main:app --host 0.0.0.0 --port $PORT`. Verify it works by opening `https://<your-render-app>.onrender.com/api/health` in your browser. Expected response:
    ```json
-   {"status":"ok","version":"1.0.0","database":"...","classes":["Forest","Water","Agriculture","Urban","Others"]}
+   {"status":"ok","service":"bhu-darpan-backend","version":"1.0.0","database":"...","classes":["Forest","Water","Agriculture","Urban","Others"]}
+   ```
+   From a terminal, the same smoke check is:
+   ```bash
+   curl --fail --silent https://<your-render-app>.onrender.com/api/health
    ```
 8. The service stores SQLite data and generated files under `Backend/storage`. Treat this as instance-local storage on the free tier and use an external backup or persistent disk before relying on it for production records.
 
