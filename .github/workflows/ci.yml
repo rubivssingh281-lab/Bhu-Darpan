@@ -22,5 +22,6 @@ jobs:
           pip install ruff flake8
       - name: Check code formatting and syntax
         run: |
+          git diff --check
           ruff check Backend/app --ignore I001
           python -m compileall -q Backend/app Backend/tests
