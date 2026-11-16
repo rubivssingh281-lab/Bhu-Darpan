@@ -135,12 +135,14 @@ class Database:
         self.backend = "sqlite"
         self.db_path = settings.storage_dir / "bhudarpan.db"
         self._store = _SqliteStore(self.db_path)
+        self._collections_lock = threading.Lock()
         self._collections: dict[str, Any] = {}
 
     def collection(self, name: str):
-        if name not in self._collections:
-            self._collections[name] = self._store.collection(name)
-        return self._collections[name]
+        with self._collections_lock:
+            if name not in self._collections:
+                self._collections[name] = self._store.collection(name)
+            return self._collections[name]
 
     @property
     def users(self):
