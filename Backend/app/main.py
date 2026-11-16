@@ -73,6 +73,7 @@ app.include_router(demo.router)
 def health() -> dict:
     return {
         "status": "ok",
+        "service": "bhu-darpan-backend",
         "version": __version__,
         "database": db.info(),
         "classes": ["Forest", "Water", "Agriculture", "Urban", "Others"],
