@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 from . import __version__
@@ -70,7 +70,8 @@ app.include_router(demo.router)
 
 
 @app.get("/api/health", tags=["system"])
-def health() -> dict:
+def health(response: Response) -> dict:
+    response.headers["Cache-Control"] = "no-store"
     return {
         "status": "ok",
         "service": "bhu-darpan-backend",
