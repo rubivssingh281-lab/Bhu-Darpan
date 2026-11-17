@@ -28,6 +28,8 @@ _JOBS = (("power", "rain", "jk"), ("power", "tmean", "jk"), ("power", "lst", "jk
          ("openmeteo", "rain", "jk"), ("openmeteo", "tmean", "jk"),
          ("power", "rain", "india"), ("power", "tmean", "india"))
 _lock = threading.Lock()
+_scheduler_lock = threading.Lock()
+_scheduler_started = False
 _state: dict = {"last_refresh": None, "last_result": None, "running": False}
 
 
@@ -155,10 +157,16 @@ def start_scheduler() -> None:
     """Background loop: refresh at startup when the data is stale, warm the caches, then
     refresh every settings.auto_refresh_hours hours (default 6; 0 disables refreshing but
     still warms). Never blocks startup."""
+    global _scheduler_started
     hours = getattr(settings, "auto_refresh_hours", 6)
     if not hours or hours <= 0:
         log.info("near-real-time refresh and cache warmup disabled (AUTO_REFRESH_HOURS <= 0)")
         return
+    with _scheduler_lock:
+        if _scheduler_started:
+            log.debug("near-real-time refresh scheduler already running")
+            return
+        _scheduler_started = True
 
     def _loop():
         import time
