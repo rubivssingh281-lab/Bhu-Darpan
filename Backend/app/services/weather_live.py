@@ -55,50 +55,51 @@ def current(region: str = "jk") -> dict:
         if _cache["data"] is not None and now - _cache["at"] < _TTL:
             return _cache["data"]
 
-    lat = ",".join(f"{s[1]:.4f}" for s in STATIONS)
-    lon = ",".join(f"{s[2]:.4f}" for s in STATIONS)
-    params = {
-        "latitude": lat, "longitude": lon,
-        "current": "temperature_2m,relative_humidity_2m,apparent_temperature,"
-                   "precipitation,weather_code,wind_speed_10m",
-        "daily": "weather_code,temperature_2m_max,temperature_2m_min,"
-                 "precipitation_sum,precipitation_probability_max",
-        "timezone": "Asia/Kolkata", "forecast_days": 1,
-    }
-    r = requests.get(_FORECAST, params=params, timeout=30)
-    r.raise_for_status()
-    payload = r.json()
-    locs = payload if isinstance(payload, list) else [payload]
-    if len(locs) != len(STATIONS):
-        raise RuntimeError(
-            f"Open-Meteo returned {len(locs)} locations for {len(STATIONS)} requested stations"
-        )
+        # Keep the upstream request inside the cache lock so concurrent dashboard
+        # polls share one fetch instead of sending a burst to Open-Meteo.
+        lat = ",".join(f"{s[1]:.4f}" for s in STATIONS)
+        lon = ",".join(f"{s[2]:.4f}" for s in STATIONS)
+        params = {
+            "latitude": lat, "longitude": lon,
+            "current": "temperature_2m,relative_humidity_2m,apparent_temperature,"
+                       "precipitation,weather_code,wind_speed_10m",
+            "daily": "weather_code,temperature_2m_max,temperature_2m_min,"
+                     "precipitation_sum,precipitation_probability_max",
+            "timezone": "Asia/Kolkata", "forecast_days": 1,
+        }
+        r = requests.get(_FORECAST, params=params, timeout=30)
+        r.raise_for_status()
+        payload = r.json()
+        locs = payload if isinstance(payload, list) else [payload]
+        if len(locs) != len(STATIONS):
+            raise RuntimeError(
+                f"Open-Meteo returned {len(locs)} locations for {len(STATIONS)} requested stations"
+            )
 
-    stations = []
-    for (name, la, lo), loc in zip(STATIONS, locs):
-        cur = loc.get("current", {})
-        day = loc.get("daily", {})
-        label, emoji = _describe(cur.get("weather_code"))
-        stations.append({
-            "name": name, "lat": la, "lon": lo,
-            "temp_c": cur.get("temperature_2m"),
-            "feels_c": cur.get("apparent_temperature"),
-            "humidity_pct": cur.get("relative_humidity_2m"),
-            "precip_mm": cur.get("precipitation"),
-            "wind_kmh": cur.get("wind_speed_10m"),
-            "condition": label, "icon": emoji,
-            "high_c": (day.get("temperature_2m_max") or [None])[0],
-            "low_c": (day.get("temperature_2m_min") or [None])[0],
-            "rain_chance_pct": (day.get("precipitation_probability_max") or [None])[0],
-            "observed_at": cur.get("time"),
-        })
+        stations = []
+        for (name, la, lo), loc in zip(STATIONS, locs):
+            cur = loc.get("current", {}) if isinstance(loc, dict) else {}
+            day = loc.get("daily", {}) if isinstance(loc, dict) else {}
+            label, emoji = _describe(cur.get("weather_code"))
+            stations.append({
+                "name": name, "lat": la, "lon": lo,
+                "temp_c": cur.get("temperature_2m"),
+                "feels_c": cur.get("apparent_temperature"),
+                "humidity_pct": cur.get("relative_humidity_2m"),
+                "precip_mm": cur.get("precipitation"),
+                "wind_kmh": cur.get("wind_speed_10m"),
+                "condition": label, "icon": emoji,
+                "high_c": (day.get("temperature_2m_max") or [None])[0],
+                "low_c": (day.get("temperature_2m_min") or [None])[0],
+                "rain_chance_pct": (day.get("precipitation_probability_max") or [None])[0],
+                "observed_at": cur.get("time"),
+            })
 
-    out = {
-        "region": "Jammu & Kashmir",
-        "source": "Open-Meteo (live forecast API)",
-        "updated_at": stations[0]["observed_at"] if stations else None,
-        "stations": stations,
-    }
-    with _cache_lock:
+        out = {
+            "region": "Jammu & Kashmir",
+            "source": "Open-Meteo (live forecast API)",
+            "updated_at": stations[0]["observed_at"] if stations else None,
+            "stations": stations,
+        }
         _cache.update(at=now, data=out)
-    return out
+        return out
