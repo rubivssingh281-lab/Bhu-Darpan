@@ -10,6 +10,7 @@ are treated purely as data for display — never as instructions.
 from __future__ import annotations
 
 import time
+from threading import Lock
 
 import requests
 
@@ -17,6 +18,7 @@ from ..config import settings
 
 _TTL = 1800  # 30 minutes — news changes slowly and free tiers cap at ~100 req/day
 _cache: dict = {"at": 0.0, "data": None}
+_cache_lock = Lock()
 
 # Focused query: a J&K place AND a weather term, so we don't pull unrelated regional news.
 # Kept compact — GNews caps the query at 200 characters.
@@ -65,24 +67,25 @@ def headlines(region: str = "jk", limit: int = 8) -> dict:
                 "hint": "Set NEWS_API_KEY in Backend/.env (NewsAPI or GNews) to enable "
                         "live weather headlines."}
 
-    now = time.time()
-    if _cache["data"] is not None and now - _cache["at"] < _TTL:
-        return _cache["data"]
+    with _cache_lock:
+        now = time.time()
+        if _cache["data"] is not None and now - _cache["at"] < _TTL:
+            return _cache["data"]
 
-    provider = settings.news_provider
-    fetch = _fetch_gnews if provider == "gnews" else _fetch_newsapi
-    articles = fetch(settings.news_api_key, limit)
+        provider = settings.news_provider
+        fetch = _fetch_gnews if provider == "gnews" else _fetch_newsapi
+        articles = fetch(settings.news_api_key, limit)
 
-    # keep only well-formed, de-duplicated items
-    seen, clean = set(), []
-    for a in articles:
-        t = (a.get("title") or "").strip()
-        if not t or not a.get("url") or t.lower() in seen:
-            continue
-        seen.add(t.lower())
-        clean.append(a)
+        # keep only well-formed, de-duplicated items
+        seen, clean = set(), []
+        for a in articles:
+            t = (a.get("title") or "").strip()
+            if not t or not a.get("url") or t.lower() in seen:
+                continue
+            seen.add(t.lower())
+            clean.append(a)
 
-    out = {"configured": True, "provider": provider, "region": "Jammu & Kashmir",
-           "count": len(clean), "articles": clean}
-    _cache.update(at=now, data=out)
-    return out
+        out = {"configured": True, "provider": provider, "region": "Jammu & Kashmir",
+               "count": len(clean), "articles": clean}
+        _cache.update(at=now, data=out)
+        return out
