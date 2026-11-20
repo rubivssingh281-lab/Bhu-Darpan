@@ -48,6 +48,14 @@ def _normalize_email(email: str) -> str:
     return email.strip().lower()
 
 
+def _parse_utc(value: str) -> datetime:
+    """Parse stored ISO timestamps, including legacy values with a Z suffix."""
+    parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
 def _issue(user: dict) -> dict:
     token = create_access_token(user["id"], {"email": user["email"]})
     return {"token": token, "user": _public(user)}
@@ -67,7 +75,7 @@ def _start_otp(email: str, purpose: str, name: str = "", password_hash: str = ""
     if existing:
         last = existing.get("last_sent_at")
         if last:
-            elapsed = (now - datetime.fromisoformat(last)).total_seconds()
+            elapsed = (now - _parse_utc(last)).total_seconds()
             if elapsed < settings.otp_resend_cooldown_seconds:
                 wait = math.ceil(settings.otp_resend_cooldown_seconds - elapsed)
                 raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS,
@@ -139,7 +147,7 @@ def verify_otp(body: VerifyOtpRequest):
         raise HTTPException(status.HTTP_400_BAD_REQUEST,
                             "No pending code for this email. Request a new one.")
 
-    if datetime.fromisoformat(rec["expires_at"]) < _now():
+    if _parse_utc(rec["expires_at"]) < _now():
         db.otps.delete_one({"email": email})
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Code expired. Request a new one.")
 

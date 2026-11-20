@@ -1,5 +1,5 @@
 """Authentication and security module tests."""
-from app.routers.auth import _normalize_email
+from app.routers.auth import _normalize_email, _parse_utc
 from app.security import create_access_token, decode_access_token, hash_password, verify_password
 
 
@@ -21,3 +21,10 @@ def test_token_encoding_decoding():
 
 def test_email_normalization():
     assert _normalize_email("  User@Example.COM ") == "user@example.com"
+
+
+def test_utc_timestamp_parsing_supports_z_and_naive_values():
+    from datetime import timezone
+
+    assert _parse_utc("2026-11-20T10:15:30Z").tzinfo == timezone.utc
+    assert _parse_utc("2026-11-20T10:15:30").tzinfo == timezone.utc
