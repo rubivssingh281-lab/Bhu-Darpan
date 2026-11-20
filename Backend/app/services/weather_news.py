@@ -17,7 +17,7 @@ import requests
 from ..config import settings
 
 _TTL = 1800  # 30 minutes — news changes slowly and free tiers cap at ~100 req/day
-_cache: dict = {"at": 0.0, "data": None}
+_cache: dict = {"at": 0.0, "key": None, "data": None}
 _cache_lock = Lock()
 
 # Focused query: a J&K place AND a weather term, so we don't pull unrelated regional news.
@@ -69,10 +69,13 @@ def headlines(region: str = "jk", limit: int = 8) -> dict:
 
     with _cache_lock:
         now = time.time()
-        if _cache["data"] is not None and now - _cache["at"] < _TTL:
+        provider = settings.news_provider
+        cache_key = (provider, limit)
+        if (_cache["data"] is not None
+                and _cache["key"] == cache_key
+                and now - _cache["at"] < _TTL):
             return _cache["data"]
 
-        provider = settings.news_provider
         fetch = _fetch_gnews if provider == "gnews" else _fetch_newsapi
         articles = fetch(settings.news_api_key, limit)
 
@@ -87,5 +90,5 @@ def headlines(region: str = "jk", limit: int = 8) -> dict:
 
         out = {"configured": True, "provider": provider, "region": "Jammu & Kashmir",
                "count": len(clean), "articles": clean}
-        _cache.update(at=now, data=out)
+        _cache.update(at=now, key=cache_key, data=out)
         return out
