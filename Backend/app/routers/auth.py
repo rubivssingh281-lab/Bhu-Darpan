@@ -48,6 +48,10 @@ def _normalize_email(email: str) -> str:
     return email.strip().lower()
 
 
+def _normalize_otp(code: str) -> str:
+    return "".join(code.strip().split())
+
+
 def _parse_utc(value: str) -> datetime:
     """Parse stored ISO timestamps, including legacy values with a Z suffix."""
     parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
@@ -142,6 +146,10 @@ def request_otp(body: RequestOtpRequest):
 def verify_otp(body: VerifyOtpRequest):
     """Step 2: verify the code and complete registration or sign-in."""
     email = _normalize_email(body.email)
+    code = _normalize_otp(body.code)
+    if len(code) != 6 or not code.isdigit():
+        raise HTTPException(status.HTTP_400_BAD_REQUEST,
+                            "Verification code must contain exactly 6 digits.")
     rec = db.otps.find_one({"email": email})
     if not rec:
         raise HTTPException(status.HTTP_400_BAD_REQUEST,
@@ -156,7 +164,7 @@ def verify_otp(body: VerifyOtpRequest):
         raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS,
                             "Too many attempts. Request a new code.")
 
-    if not verify_password(body.code.strip(), rec["code_hash"]):
+    if not verify_password(code, rec["code_hash"]):
         db.otps.update_one({"email": email}, {"$set": {"attempts": rec.get("attempts", 0) + 1}})
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Incorrect code.")
 
