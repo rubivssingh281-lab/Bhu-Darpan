@@ -115,6 +115,8 @@ class _SqliteStore:
         self.conn = sqlite3.connect(str(path), check_same_thread=False, timeout=10)
         self.conn.execute("PRAGMA journal_mode=WAL")
         self.conn.execute("PRAGMA busy_timeout=10000")
+        self.conn.execute("PRAGMA synchronous=NORMAL")
+        self.conn.execute("PRAGMA foreign_keys=ON")
         self.conn.commit()
 
     def collection(self, name: str) -> _SqliteCollection:
