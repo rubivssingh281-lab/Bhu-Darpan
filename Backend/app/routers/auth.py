@@ -79,11 +79,15 @@ def _start_otp(email: str, purpose: str, name: str = "", password_hash: str = ""
     if existing:
         last = existing.get("last_sent_at")
         if last:
-            elapsed = (now - _parse_utc(last)).total_seconds()
-            if elapsed < settings.otp_resend_cooldown_seconds:
-                wait = math.ceil(settings.otp_resend_cooldown_seconds - elapsed)
-                raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS,
-                                    f"Please wait {wait}s before requesting another code.")
+            try:
+                elapsed = (now - _parse_utc(last)).total_seconds()
+            except (TypeError, ValueError):
+                elapsed = settings.otp_resend_cooldown_seconds
+            else:
+                if elapsed < settings.otp_resend_cooldown_seconds:
+                    wait = math.ceil(settings.otp_resend_cooldown_seconds - elapsed)
+                    raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS,
+                                        f"Please wait {wait}s before requesting another code.")
         send_count = existing.get("send_count", 0)
         if send_count >= settings.otp_max_sends:
             raise HTTPException(status.HTTP_429_TOO_MANY_REQUESTS,

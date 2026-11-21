@@ -1,4 +1,6 @@
 """Authentication and security module tests."""
+import pytest
+
 from app.routers.auth import _normalize_email, _normalize_otp, _parse_utc
 from app.security import create_access_token, decode_access_token, hash_password, verify_password
 
@@ -32,3 +34,8 @@ def test_utc_timestamp_parsing_supports_z_and_naive_values():
 
 def test_otp_normalization_removes_copy_formatting():
     assert _normalize_otp(" 12 34 56 ") == "123456"
+
+
+def test_utc_timestamp_parser_rejects_malformed_values():
+    with pytest.raises(ValueError):
+        _parse_utc("not-a-timestamp")
