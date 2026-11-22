@@ -4,6 +4,7 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -41,6 +42,8 @@ app = FastAPI(
                 "object detection, change detection and automated reporting.",
     lifespan=lifespan,
 )
+
+app.add_middleware(GZipMiddleware, minimum_size=1024)
 
 @app.middleware("http")
 async def add_security_headers(request, call_next):
