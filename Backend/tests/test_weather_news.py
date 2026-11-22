@@ -36,3 +36,8 @@ def test_headlines_cache_key_includes_provider_and_limit(monkeypatch):
     weather_news.headlines(limit=7)
 
     assert calls == [5, 7]
+
+
+def test_article_url_accepts_only_http_links():
+    assert weather_news._valid_article_url("https://example.com/story")
+    assert not weather_news._valid_article_url("javascript:alert(1)")

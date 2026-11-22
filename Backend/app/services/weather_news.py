@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import time
 from threading import Lock
+from urllib.parse import urlparse
 
 import requests
 
@@ -25,6 +26,13 @@ _cache_lock = Lock()
 _PLACES = "Kashmir OR Jammu OR Ladakh OR Srinagar"
 _TOPICS = "weather OR rain OR snow OR flood OR avalanche OR heatwave OR forecast OR IMD OR monsoon"
 _QUERY = f"({_PLACES}) AND ({_TOPICS})"
+
+
+def _valid_article_url(value) -> bool:
+    if not isinstance(value, str):
+        return False
+    parsed = urlparse(value.strip())
+    return parsed.scheme in ("http", "https") and bool(parsed.netloc)
 
 
 def _fetch_newsapi(key: str, limit: int) -> list[dict]:
@@ -83,9 +91,11 @@ def headlines(region: str = "jk", limit: int = 8) -> dict:
         seen, clean = set(), []
         for a in articles:
             t = (a.get("title") or "").strip()
-            if not t or not a.get("url") or t.lower() in seen:
+            url = (a.get("url") or "").strip()
+            if not t or not _valid_article_url(url) or t.lower() in seen:
                 continue
             seen.add(t.lower())
+            a["url"] = url
             clean.append(a)
 
         out = {"configured": True, "provider": provider, "region": "Jammu & Kashmir",
