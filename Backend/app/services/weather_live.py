@@ -9,6 +9,7 @@ https://open-meteo.com/en/docs
 from __future__ import annotations
 
 import time
+import math
 from threading import Lock
 
 import requests
@@ -49,6 +50,14 @@ def _describe(code):
     return _WMO.get(int(code) if code is not None else -1, ("—", "\U0001f321️"))
 
 
+def _finite_number(value):
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return number if math.isfinite(number) else None
+
+
 def current(region: str = "jk") -> dict:
     now = time.time()
     with _cache_lock:
@@ -83,15 +92,17 @@ def current(region: str = "jk") -> dict:
             label, emoji = _describe(cur.get("weather_code"))
             stations.append({
                 "name": name, "lat": la, "lon": lo,
-                "temp_c": cur.get("temperature_2m"),
-                "feels_c": cur.get("apparent_temperature"),
-                "humidity_pct": cur.get("relative_humidity_2m"),
-                "precip_mm": cur.get("precipitation"),
-                "wind_kmh": cur.get("wind_speed_10m"),
+                "temp_c": _finite_number(cur.get("temperature_2m")),
+                "feels_c": _finite_number(cur.get("apparent_temperature")),
+                "humidity_pct": _finite_number(cur.get("relative_humidity_2m")),
+                "precip_mm": _finite_number(cur.get("precipitation")),
+                "wind_kmh": _finite_number(cur.get("wind_speed_10m")),
                 "condition": label, "icon": emoji,
-                "high_c": (day.get("temperature_2m_max") or [None])[0],
-                "low_c": (day.get("temperature_2m_min") or [None])[0],
-                "rain_chance_pct": (day.get("precipitation_probability_max") or [None])[0],
+                "high_c": _finite_number((day.get("temperature_2m_max") or [None])[0]),
+                "low_c": _finite_number((day.get("temperature_2m_min") or [None])[0]),
+                "rain_chance_pct": _finite_number(
+                    (day.get("precipitation_probability_max") or [None])[0]
+                ),
                 "observed_at": cur.get("time"),
             })
 
