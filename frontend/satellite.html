@@ -1036,7 +1036,12 @@
       const headers = {};
       if (store.token) headers.Authorization = 'Bearer ' + store.token;
       let payload;
-      if (form) payload = form;
+      if (form) {
+        payload = form;
+      } else if (body !== undefined) {
+        headers['Content-Type'] = 'application/json';
+        payload = JSON.stringify(body);
+      }
       const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '8010')
         ? 'http://localhost:8000'
         : '';

@@ -96,6 +96,7 @@ _WEBAPP_DIR = settings.base_dir / "webapp"
 
 
 @app.get("/", include_in_schema=False)
+@app.get("/index.html", include_in_schema=False)
 def root():
     """Serve the climate digital-twin single-page app."""
     page = _WEBAPP_DIR / "index.html"
@@ -105,6 +106,7 @@ def root():
 
 
 @app.get("/satellite", include_in_schema=False)
+@app.get("/satellite.html", include_in_schema=False)
 def satellite_app():
     """Serve the satellite image-analysis single-page app."""
     page = _WEBAPP_DIR / "satellite.html"
@@ -125,6 +127,7 @@ def favicon():
 
 
 @app.get("/auth-map.jpg", include_in_schema=False)
+@app.get("/jk_satellite.jpg", include_in_schema=False)
 def auth_map():
     """Real Esri satellite imagery of the Jammu & Kashmir pilot region (login background)."""
     return FileResponse(str(_WEBAPP_DIR / "jk_satellite.jpg"), media_type="image/jpeg")
