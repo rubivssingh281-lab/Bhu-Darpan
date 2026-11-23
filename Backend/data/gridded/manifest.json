@@ -1194,6 +1194,636 @@
       "path": "data/gridded/power_tmean_india_20260907_20261007.nc",
       "created_at": "2026-10-09T20:22:13+00:00",
       "status": "ingested"
+    },
+    {
+      "id": "power_rain_jk_20261018_20261117",
+      "source": "NASA POWER",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261018",
+      "end": "20261117",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": 0.585,
+      "min": 0.0,
+      "max": 2.723,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_rain_jk_20261018_20261117.nc",
+      "created_at": "2026-11-20T15:40:45+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_tmean_jk_20261018_20261117",
+      "source": "NASA POWER",
+      "var": "tmean",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261018",
+      "end": "20261117",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": -1.644,
+      "min": -17.265,
+      "max": 25.339,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_tmean_jk_20261018_20261117.nc",
+      "created_at": "2026-11-20T15:40:46+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_lst_jk_20261018_20261117",
+      "source": "NASA POWER",
+      "var": "lst",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261018",
+      "end": "20261117",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": -3.002,
+      "min": -23.043,
+      "max": 24.787,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_lst_jk_20261018_20261117.nc",
+      "created_at": "2026-11-20T15:40:48+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "openmeteo_rain_jk_20261018_20261117",
+      "source": "Open-Meteo (ERA5)",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261018",
+      "end": "20261117",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 609,
+      "mean": 0.736,
+      "min": 0.029,
+      "max": 4.071,
+      "native_res_deg": 0.25,
+      "path": "data\\gridded\\openmeteo_rain_jk_20261018_20261117.nc",
+      "created_at": "2026-11-20T15:40:54+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "openmeteo_tmean_jk_20261018_20261117",
+      "source": "Open-Meteo (ERA5)",
+      "var": "tmean",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261018",
+      "end": "20261117",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 609,
+      "mean": -4.231,
+      "min": -22.926,
+      "max": 22.255,
+      "native_res_deg": 0.25,
+      "path": "data\\gridded\\openmeteo_tmean_jk_20261018_20261117.nc",
+      "created_at": "2026-11-20T15:41:02+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_rain_india_20261018_20261117",
+      "source": "NASA POWER",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "india",
+      "bbox": [
+        6.5,
+        38.5,
+        66.5,
+        100.0
+      ],
+      "res_deg": 0.5,
+      "start": "20261018",
+      "end": "20261117",
+      "days": 31,
+      "grid_shape": [
+        65,
+        68
+      ],
+      "n_cells": 4420,
+      "valid_cells": 4355,
+      "mean": 3.743,
+      "min": 0.0,
+      "max": 35.761,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_rain_india_20261018_20261117.nc",
+      "created_at": "2026-11-20T15:41:30+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_tmean_india_20261018_20261117",
+      "source": "NASA POWER",
+      "var": "tmean",
+      "units": "degC",
+      "region": "india",
+      "bbox": [
+        6.5,
+        38.5,
+        66.5,
+        100.0
+      ],
+      "res_deg": 0.5,
+      "start": "20261018",
+      "end": "20261117",
+      "days": 31,
+      "grid_shape": [
+        65,
+        68
+      ],
+      "n_cells": 4420,
+      "valid_cells": 4355,
+      "mean": 18.437,
+      "min": -17.265,
+      "max": 30.041,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_tmean_india_20261018_20261117.nc",
+      "created_at": "2026-11-20T15:41:57+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_rain_jk_20261020_20261119",
+      "source": "NASA POWER",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261020",
+      "end": "20261119",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": 0.556,
+      "min": 0.0,
+      "max": 2.715,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_rain_jk_20261020_20261119.nc",
+      "created_at": "2026-11-22T13:11:17+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_tmean_jk_20261020_20261119",
+      "source": "NASA POWER",
+      "var": "tmean",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261020",
+      "end": "20261119",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": -1.954,
+      "min": -17.636,
+      "max": 24.964,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_tmean_jk_20261020_20261119.nc",
+      "created_at": "2026-11-22T13:11:19+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_lst_jk_20261020_20261119",
+      "source": "NASA POWER",
+      "var": "lst",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261020",
+      "end": "20261119",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": -3.546,
+      "min": -23.79,
+      "max": 24.354,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_lst_jk_20261020_20261119.nc",
+      "created_at": "2026-11-22T13:11:20+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "openmeteo_rain_jk_20261020_20261119",
+      "source": "Open-Meteo (ERA5)",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261020",
+      "end": "20261119",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 609,
+      "mean": 0.709,
+      "min": 0.029,
+      "max": 4.071,
+      "native_res_deg": 0.25,
+      "path": "data\\gridded\\openmeteo_rain_jk_20261020_20261119.nc",
+      "created_at": "2026-11-22T13:11:28+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "openmeteo_tmean_jk_20261020_20261119",
+      "source": "Open-Meteo (ERA5)",
+      "var": "tmean",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261020",
+      "end": "20261119",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 609,
+      "mean": -4.445,
+      "min": -23.081,
+      "max": 21.894,
+      "native_res_deg": 0.25,
+      "path": "data\\gridded\\openmeteo_tmean_jk_20261020_20261119.nc",
+      "created_at": "2026-11-22T13:11:34+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_rain_india_20261020_20261119",
+      "source": "NASA POWER",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "india",
+      "bbox": [
+        6.5,
+        38.5,
+        66.5,
+        100.0
+      ],
+      "res_deg": 0.5,
+      "start": "20261020",
+      "end": "20261119",
+      "days": 31,
+      "grid_shape": [
+        65,
+        68
+      ],
+      "n_cells": 4420,
+      "valid_cells": 4355,
+      "mean": 3.736,
+      "min": 0.0,
+      "max": 35.985,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_rain_india_20261020_20261119.nc",
+      "created_at": "2026-11-22T13:12:04+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_tmean_india_20261020_20261119",
+      "source": "NASA POWER",
+      "var": "tmean",
+      "units": "degC",
+      "region": "india",
+      "bbox": [
+        6.5,
+        38.5,
+        66.5,
+        100.0
+      ],
+      "res_deg": 0.5,
+      "start": "20261020",
+      "end": "20261119",
+      "days": 31,
+      "grid_shape": [
+        65,
+        68
+      ],
+      "n_cells": 4420,
+      "valid_cells": 4355,
+      "mean": 18.245,
+      "min": -17.636,
+      "max": 29.895,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_tmean_india_20261020_20261119.nc",
+      "created_at": "2026-11-22T13:12:28+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_rain_jk_20261021_20261120",
+      "source": "NASA POWER",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261021",
+      "end": "20261120",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": 0.57,
+      "min": 0.0,
+      "max": 2.804,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_rain_jk_20261021_20261120.nc",
+      "created_at": "2026-11-22T20:03:51+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_tmean_jk_20261021_20261120",
+      "source": "NASA POWER",
+      "var": "tmean",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261021",
+      "end": "20261120",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": -1.998,
+      "min": -17.656,
+      "max": 24.863,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_tmean_jk_20261021_20261120.nc",
+      "created_at": "2026-11-22T20:03:53+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_lst_jk_20261021_20261120",
+      "source": "NASA POWER",
+      "var": "lst",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261021",
+      "end": "20261120",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 588,
+      "mean": -3.597,
+      "min": -23.847,
+      "max": 24.245,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_lst_jk_20261021_20261120.nc",
+      "created_at": "2026-11-22T20:03:54+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "openmeteo_rain_jk_20261021_20261120",
+      "source": "Open-Meteo (ERA5)",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261021",
+      "end": "20261120",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 609,
+      "mean": 0.705,
+      "min": 0.023,
+      "max": 4.071,
+      "native_res_deg": 0.25,
+      "path": "data\\gridded\\openmeteo_rain_jk_20261021_20261120.nc",
+      "created_at": "2026-11-22T20:04:01+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "openmeteo_tmean_jk_20261021_20261120",
+      "source": "Open-Meteo (ERA5)",
+      "var": "tmean",
+      "units": "degC",
+      "region": "jk",
+      "bbox": [
+        32.0,
+        37.0,
+        73.0,
+        80.0
+      ],
+      "res_deg": 0.25,
+      "start": "20261021",
+      "end": "20261120",
+      "days": 31,
+      "grid_shape": [
+        21,
+        29
+      ],
+      "n_cells": 609,
+      "valid_cells": 609,
+      "mean": -4.5,
+      "min": -23.087,
+      "max": 21.694,
+      "native_res_deg": 0.25,
+      "path": "data\\gridded\\openmeteo_tmean_jk_20261021_20261120.nc",
+      "created_at": "2026-11-22T20:04:07+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_rain_india_20261021_20261120",
+      "source": "NASA POWER",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "india",
+      "bbox": [
+        6.5,
+        38.5,
+        66.5,
+        100.0
+      ],
+      "res_deg": 0.5,
+      "start": "20261021",
+      "end": "20261120",
+      "days": 31,
+      "grid_shape": [
+        65,
+        68
+      ],
+      "n_cells": 4420,
+      "valid_cells": 4355,
+      "mean": 3.75,
+      "min": 0.0,
+      "max": 37.09,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_rain_india_20261021_20261120.nc",
+      "created_at": "2026-11-22T20:04:34+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_tmean_india_20261021_20261120",
+      "source": "NASA POWER",
+      "var": "tmean",
+      "units": "degC",
+      "region": "india",
+      "bbox": [
+        6.5,
+        38.5,
+        66.5,
+        100.0
+      ],
+      "res_deg": 0.5,
+      "start": "20261021",
+      "end": "20261120",
+      "days": 31,
+      "grid_shape": [
+        65,
+        68
+      ],
+      "n_cells": 4420,
+      "valid_cells": 4355,
+      "mean": 18.204,
+      "min": -17.656,
+      "max": 29.889,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_tmean_india_20261021_20261120.nc",
+      "created_at": "2026-11-22T20:05:02+00:00",
+      "status": "ingested"
     }
   ]
 }
