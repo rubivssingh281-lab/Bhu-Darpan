@@ -108,9 +108,18 @@ The platform includes an embedded, zero-latency **Viva Demonstration Controller*
 ## 5. Tech stack
 
 - **Backend:** Python 3.12 · FastAPI · Uvicorn · Pydantic
-- **AI/ML:** PyTorch (EuroSAT land-cover CNN, 95.9% test accuracy) · scikit-learn (climate forecasters) · NumPy
-- **Geo / data:** xarray · netCDF4 · OpenCV · Leaflet (Esri imagery)
-- **Auth & storage:** PyJWT · passlib · SMTP OTP · **SQLite**
+- **AI/ML:** PyTorch (EuroSAT land-cover ResNet-Lite, 98.33% test accuracy) · scikit-learn (HistGradientBoosting climate forecasters) · OpenCV · NumPy
+- **Geo / data:** xarray · netCDF4 · Leaflet (Esri imagery)
+- **Auth & storage:** PyJWT · passlib (PBKDF2-SHA256) · SMTP OTP · **SQLite**
 - **Front-end:** vanilla JS + Chart.js + Leaflet (no build step)
+
+---
+
+## 6. Related Documentation
+
+- [AI/ML Architecture & Ingestion Pipelining](AI_ML_PIPELINE.md) — In-depth mathematical formulations, model cards, training recipes, and inference pipelines.
+- [Climate Data Pipeline](DATA_PIPELINE.md) — Gridded dataset ingestion, regridding, and climatology specifications.
+- [REST API Reference](API_REFERENCE.md) — Complete endpoint schemas and contract reference.
+- [Deployment Guide](DEPLOYMENT.md) — Local, Docker, and Render/Vercel hosting architecture.
 
 See the root [README.md](../README.md) for setup and run instructions.

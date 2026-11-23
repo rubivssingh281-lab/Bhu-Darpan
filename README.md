@@ -16,6 +16,12 @@ The **entire application (backend API + both web UIs) runs from a single Python
 process.** There is no separate frontend build step required — FastAPI serves the
 web app directly.
 
+Detailed technical documentation and architecture blueprints:
+- 🧠 **[AI/ML Architecture & Pipelining](docs/AI_ML_PIPELINE.md)**: Deep Learning ResNet-Lite CNN, EuroSAT benchmarks, TTA, morphological detection, and recursive time-series climate forecasting.
+- 📐 **[System Architecture](docs/ARCHITECTURE.md)**: High-level topology, component layouts, and end-to-end data pipelines.
+- 🛰️ **[Climate Data Ingestion Pipeline](docs/DATA_PIPELINE.md)**: IMD, NASA POWER, and ERA5 spatial regridding.
+- 🔌 **[REST API Reference](docs/API_REFERENCE.md)**: OpenAPI endpoints, request schemas, and payloads.
+
 ---
 
 ## TL;DR for an AI agent / first-time runner
