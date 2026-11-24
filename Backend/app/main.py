@@ -93,6 +93,10 @@ def health(response: Response) -> dict:
 
 
 _WEBAPP_DIR = settings.base_dir / "webapp"
+if (_WEBAPP_DIR / "css").is_dir():
+    app.mount("/css", StaticFiles(directory=str(_WEBAPP_DIR / "css")), name="webapp_css")
+if (_WEBAPP_DIR / "js").is_dir():
+    app.mount("/js", StaticFiles(directory=str(_WEBAPP_DIR / "js")), name="webapp_js")
 
 
 @app.get("/", include_in_schema=False)
