@@ -97,6 +97,8 @@ if (_WEBAPP_DIR / "css").is_dir():
     app.mount("/css", StaticFiles(directory=str(_WEBAPP_DIR / "css")), name="webapp_css")
 if (_WEBAPP_DIR / "js").is_dir():
     app.mount("/js", StaticFiles(directory=str(_WEBAPP_DIR / "js")), name="webapp_js")
+if (_WEBAPP_DIR / "images").is_dir():
+    app.mount("/images", StaticFiles(directory=str(_WEBAPP_DIR / "images")), name="webapp_images")
 
 
 @app.get("/", include_in_schema=False)
@@ -122,16 +124,25 @@ def satellite_app():
 @app.get("/logo.png", include_in_schema=False)
 def logo():
     """Bhū-Darpan mission-insignia logo (also used as the favicon)."""
-    return FileResponse(str(_WEBAPP_DIR / "logo.png"), media_type="image/png")
+    img = _WEBAPP_DIR / "images" / "logo.png"
+    if not img.exists():
+        img = _WEBAPP_DIR / "logo.png"
+    return FileResponse(str(img), media_type="image/png")
 
 
 @app.get("/favicon.ico", include_in_schema=False)
 def favicon():
-    return FileResponse(str(_WEBAPP_DIR / "logo.png"), media_type="image/png")
+    img = _WEBAPP_DIR / "images" / "logo.png"
+    if not img.exists():
+        img = _WEBAPP_DIR / "logo.png"
+    return FileResponse(str(img), media_type="image/png")
 
 
 @app.get("/auth-map.jpg", include_in_schema=False)
 @app.get("/jk_satellite.jpg", include_in_schema=False)
 def auth_map():
     """Real Esri satellite imagery of the Jammu & Kashmir pilot region (login background)."""
-    return FileResponse(str(_WEBAPP_DIR / "jk_satellite.jpg"), media_type="image/jpeg")
+    img = _WEBAPP_DIR / "images" / "jk_satellite.jpg"
+    if not img.exists():
+        img = _WEBAPP_DIR / "jk_satellite.jpg"
+    return FileResponse(str(img), media_type="image/jpeg")

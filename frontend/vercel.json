@@ -6,6 +6,18 @@
       "destination": "/satellite.html"
     },
     {
+      "source": "/logo.png",
+      "destination": "/images/logo.png"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/images/logo.png"
+    },
+    {
+      "source": "/jk_satellite.jpg",
+      "destination": "/images/jk_satellite.jpg"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://bhu-darpan-backend.onrender.com/api/:path*"
     },
