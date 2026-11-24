@@ -83,3 +83,4 @@ class ChangeOut(BaseModel):
     model_type: Optional[str] = None
     model_accuracy: Optional[float] = None
     transitions: list[dict[str, Any]] = []
+    ecological_impact: Optional[dict[str, Any]] = None

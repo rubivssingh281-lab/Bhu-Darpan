@@ -102,6 +102,12 @@ def analyze_change(before_bytes: bytes, after_bytes: bytes,
     _save_png(result.after_rgb, after_path)
     _save_png(result.change_map_rgb, map_path)
 
+    from . import biomass
+    h, w = result.before_rgb.shape[:2]
+    forest_delta = result.class_deltas.get("Forest", 0.0)
+    agri_delta = result.class_deltas.get("Agriculture", 0.0)
+    eco_impact = biomass.estimate_carbon_flux(forest_delta, agri_delta, total_pixels=h * w)
+
     return {
         "id": cid,
         "owner": owner,
@@ -116,4 +122,5 @@ def analyze_change(before_bytes: bytes, after_bytes: bytes,
         "model_type": model_info["type"],
         "model_accuracy": model_info.get("test_accuracy"),
         "transitions": result.transitions or [],
+        "ecological_impact": eco_impact,
     }
