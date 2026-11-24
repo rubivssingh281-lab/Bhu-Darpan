@@ -967,6 +967,15 @@
           </div>
           <div class="card"><h3>Land-cover shift</h3><div class="card-sub">Change in each class (after − before)</div><div class="chart-box"><canvas id="chDeltaChart"></canvas></div></div>
         </div>
+        <div class="card" id="chEcoCard" style="margin-top:16px;display:none;background:rgba(46,125,50,0.08);border:1px solid rgba(46,125,50,0.25);border-radius:12px;padding:14px 18px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:20px">🌿</span>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--forest);text-transform:uppercase;letter-spacing:0.04em">Ecological Biomass &amp; Carbon Accounting (IPCC / FSI)</div>
+              <div id="chEcoDetails" style="font-size:12.5px;margin-top:4px;color:var(--text)"></div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card" id="changeHistory" hidden style="margin-top:22px">
         <h3>Previous change analyses</h3><div class="rlist" id="changeHistoryList" style="margin-top:12px"></div>
@@ -1252,6 +1261,10 @@
       const ex = r.exposure || {};
       el('disExposure').innerHTML = `<div class="card-sub" style="margin-bottom:6px;color:var(--teal);font-weight:600">Exposure estimate</div>
         <div style="font-size:13px;color:var(--ink-soft);line-height:1.6">Built-up cover <b>${ex.builtup_pct ?? '—'}%</b>${ex.builtup_in_impact_pct > 0.5 ? `, <b>${ex.builtup_in_impact_pct}%</b> within the impact zone` : ''}. ${ex.note || ''}</div>`;
+      if (r.carbon_flux && r.carbon_flux.carbon_flux_tco2e > 0) {
+        const cf = r.carbon_flux;
+        el('disExposure').innerHTML += `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:12.5px;color:var(--forest)">🌿 <b>Ecological Carbon Flux:</b> ~${cf.carbon_flux_tco2e} tCO₂e (${cf.biomass_loss_tons} tons biomass over ~${cf.forest_loss_ha} ha)</div>`;
+      }
       el('disLimits').innerHTML = '<b>Limitations:</b><br>• ' + (r.limitations || []).join('<br>• ');
       el('disResult').hidden = false;
       el('disResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1712,6 +1725,19 @@
       chDeltaChart = new Chart(el('chDeltaChart'), { type: 'bar',
         data: { labels, datasets: [{ data: vals, backgroundColor: vals.map(v => v >= 0 ? '#2E7D32' : '#E53935'), borderRadius: 5 }] },
         options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: GRID }, ticks: { callback: (v) => v + '%' } } } } });
+
+      if (c.ecological_impact) {
+        const eco = c.ecological_impact;
+        const ecoCard = el('chEcoCard');
+        if (ecoCard) {
+          ecoCard.style.display = 'block';
+          el('chEcoDetails').innerHTML = `
+            Forest Delta: <b>${eco.forest_loss_ha > 0 ? '-' + eco.forest_loss_ha : '0'} ha</b> · 
+            Estimated Biomass Flux: <b>${eco.biomass_loss_tons > 0 ? '-' + eco.biomass_loss_tons + ' t' : 'Stable'}</b> · 
+            Gross Carbon Flux: <b>${eco.carbon_flux_tco2e > 0 ? '+' + eco.carbon_flux_tco2e + ' tCO₂e' : '0 tCO₂e'}</b>
+          `;
+        }
+      }
       el('changeResult').scrollIntoView({ behavior: 'smooth' });
     }
     async function loadChangeHistory() {

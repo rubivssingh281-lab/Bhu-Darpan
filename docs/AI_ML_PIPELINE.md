@@ -268,7 +268,31 @@ The output provides district disaster managers with instant scenario forecasts t
 
 ---
 
-## 7. Storage, Serialization & Export Pipelines
+## 7. Ecological Biomass & Carbon Sequestration Accounting
+
+To translate raw pixel classification deltas into meaningful climate policy intelligence, Bhū-Darpan integrates an **allometric carbon accounting engine** ([Backend/app/services/biomass.py](file:///d:/Bhu-Darpan/Backend/app/services/biomass.py)) based on **IPCC Tier-1** guidelines and **Forest Survey of India (FSI)** benchmarks for Western Himalayan ecosystems:
+
+### 7.1 Ground Sampling Distance (GSD) & Spatial Hectarage
+Given an input scene resolution of $W \times H$ pixels at Sentinel-2 nominal GSD ($10\text{ m/pixel}$):
+$$\text{Pixel Area} = 10\text{ m} \times 10\text{ m} = 100\text{ m}^2 = 0.01\text{ ha}$$
+$$\text{Total Scene Area (ha)} = \frac{W \times H \times 100}{10,000} = \frac{W \times H}{100}$$
+
+### 7.2 Above-Ground Biomass (AGB) Loss Estimation
+For net vegetative losses ($-\Delta_{\text{Forest}}, -\Delta_{\text{Agri}}$):
+$$\text{Biomass Loss (tonnes)} = \left(\text{Area}_{\text{Forest Loss (ha)}} \times \text{AGB}_{\text{Forest}}\right) + \left(\text{Area}_{\text{Agri Loss (ha)}} \times \text{AGB}_{\text{Agri}}\right)$$
+Where:
+- $\text{AGB}_{\text{Forest}} = 125.0\text{ tonnes dry matter / ha}$ (FSI Western Himalayan mixed coniferous/broadleaved forest standard).
+- $\text{AGB}_{\text{Agri}} = 15.0\text{ tonnes dry matter / ha}$ (cultivated cropland vegetative biomass).
+
+### 7.3 Carbon Equivalent Flux ($\text{tCO}_2\text{e}$)
+Carbon stock is derived via dry biomass carbon fraction ($C_f = 0.47$) and stoichiometric molecular oxidation to carbon dioxide ($\text{MW}_{\text{CO}_2} / \text{MW}_{\text{C}} = 44 / 12 \approx 3.667$):
+$$\text{Carbon Flux } (\text{tCO}_2\text{e}) = \text{Biomass Loss (tonnes)} \times 0.47 \times \left(\frac{44}{12}\right) \approx \text{Biomass Loss} \times 1.723\text{ tCO}_2\text{e}$$
+
+Every hectare of lost alpine forest canopy corresponds to $\approx 215.42\text{ tCO}_2\text{e}$ of gross emissions, surfaced directly inside the change detection interface and disaster alert payloads.
+
+---
+
+## 8. Storage, Serialization & Export Pipelines
 
 | Component | Technology | Path / Artifact | Purpose |
 | :--- | :--- | :--- | :--- |
@@ -281,7 +305,7 @@ The output provides district disaster managers with instant scenario forecasts t
 
 ---
 
-## 8. Summary of AI/ML Execution Commands
+## 9. Summary of AI/ML Execution Commands
 
 To reproduce benchmarks or retrain models from source:
 
