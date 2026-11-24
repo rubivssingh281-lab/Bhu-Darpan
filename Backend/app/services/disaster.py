@@ -186,6 +186,7 @@ def detect(data: bytes, before: bytes | None = None,
         impact |= cur["idx"]["burn"]
 
     # ---- change evidence — ADDED on top when a pre-event baseline is available ---
+    pre = None
     if before is not None:
         pre = _analyse_scene(*_load_rgb(before))
         dwater = cur["water"] - pre["water"]
@@ -339,8 +340,8 @@ def detect(data: bytes, before: bytes | None = None,
     from . import biomass
     forest_pct = cur["pct"].get("Forest", 0.0)
     forest_loss = 0.0
-    if base and base.get("pct"):
-        forest_loss = max(0.0, base["pct"].get("Forest", 0.0) - forest_pct)
+    if pre and pre.get("pct"):
+        forest_loss = max(0.0, pre["pct"].get("Forest", 0.0) - forest_pct)
     elif any("fire" in d["type"].lower() or "vegetation" in d["type"].lower() for d in detections):
         forest_loss = min(forest_pct, affected)
     carbon_flux = biomass.estimate_carbon_flux(
