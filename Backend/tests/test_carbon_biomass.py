@@ -1,6 +1,11 @@
 """Tests for ecological biomass and carbon sequestration flux accounting."""
 from __future__ import annotations
 
+import pathlib
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))  # Backend/
+
 from app.services import biomass
 
 
@@ -37,3 +42,10 @@ def test_estimate_carbon_flux_positive_delta_neutral():
     assert res["biomass_loss_tons"] == 0.0
     assert res["carbon_flux_tco2e"] == 0.0
     assert res["status"] == "neutral_or_sequestering"
+
+
+if __name__ == "__main__":
+    test_estimate_carbon_flux_zero()
+    test_estimate_carbon_flux_forest_loss()
+    test_estimate_carbon_flux_positive_delta_neutral()
+    print("All carbon biomass accounting tests passed successfully!")
