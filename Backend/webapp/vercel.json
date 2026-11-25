@@ -1,5 +1,16 @@
 {
   "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/satellite",
@@ -19,11 +30,11 @@
     },
     {
       "source": "/api/:path*",
-      "destination": "https://bhu-darpan-backend.onrender.com/api/:path*"
+      "destination": "https://bhu-darpan.onrender.com/api/:path*"
     },
     {
       "source": "/storage/:path*",
-      "destination": "https://bhu-darpan-backend.onrender.com/storage/:path*"
+      "destination": "https://bhu-darpan.onrender.com/storage/:path*"
     }
   ]
 }

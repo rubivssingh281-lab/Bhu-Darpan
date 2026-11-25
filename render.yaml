@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: bhu-darpan-backend
+    name: bhu-darpan
     runtime: python
     rootDir: Backend
     plan: free

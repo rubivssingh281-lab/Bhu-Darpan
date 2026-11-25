@@ -57,6 +57,8 @@ def _find(var: str, region: str, climatology: bool,
     for d in _manifest()["datasets"]:
         if d["var"] != var or d["region"] != region:
             continue
+        if not (GRIDDED_DIR / f"{d['id']}.nc").is_file():
+            continue
         is_clim = d.get("kind") == "climatology"
         if is_clim != climatology:
             continue
@@ -114,25 +116,25 @@ def anomaly(var: str, region: str = "jk") -> dict | None:
     if not daily_m or not clim_m:
         return None
 
-    da = xr.open_dataset(GRIDDED_DIR / f"{daily_m['id']}.nc")[var]
-    clim = xr.open_dataset(GRIDDED_DIR / f"{clim_m['id']}.nc")[var]
+    with xr.open_dataset(GRIDDED_DIR / f"{daily_m['id']}.nc") as dds:
+        da = dds[var]
+        months = sorted(set(int(m) for m in np.atleast_1d(da["time"].dt.month.values)))
+        value = da.mean("time", skipna=True)
+        lats = np.asarray(value.lat.values, dtype=float)
+        lons = np.asarray(value.lon.values, dtype=float)
+        val = np.asarray(value.values, dtype=float)
 
-    # months present in the daily window
-    months = sorted(set(int(m) for m in np.atleast_1d(da["time"].dt.month.values)))
-    clim_sel = clim.isel(month=[m - 1 for m in months]).mean("month")
+    with xr.open_dataset(GRIDDED_DIR / f"{clim_m['id']}.nc") as cds:
+        clim_sel = cds[var].isel(month=[m - 1 for m in months]).mean("month")
+        clim_vals = np.asarray(clim_sel.values, dtype=float)
 
-    value = da.mean("time", skipna=True)
-    lats = np.asarray(value.lat.values, dtype=float)
-    lons = np.asarray(value.lon.values, dtype=float)
-    val = np.asarray(value.values, dtype=float)
-    anom = val - np.asarray(clim_sel.values, dtype=float)
+    anom = val - clim_vals
 
     # For rainfall express anomaly as % of the climatological normal too
     pct = None
     if var == "rain":
         with np.errstate(divide="ignore", invalid="ignore"):
-            pct = np.where(np.asarray(clim_sel.values) > 0.1,
-                           anom / np.asarray(clim_sel.values) * 100.0, np.nan)
+            pct = np.where(clim_vals > 0.1, anom / clim_vals * 100.0, np.nan)
 
     fin = anom[np.isfinite(anom)]
     return {
@@ -190,11 +192,11 @@ def forecast_field(var: str, region: str = "jk", lead: int = 7) -> dict | None:
     clim_m = _find(var, region, True)
     if a is None or not clim_m:
         return None
-    clim = xr.open_dataset(GRIDDED_DIR / f"{clim_m['id']}.nc")[var]
-
-    end = a["period"].split("–")[-1]              # YYYYMMDD (snapshot end)
-    target = datetime.strptime(end, "%Y%m%d") + timedelta(days=lead)
-    clim_t = np.asarray(clim.isel(month=target.month - 1).values, dtype=float)
+    with xr.open_dataset(GRIDDED_DIR / f"{clim_m['id']}.nc") as cds:
+        clim = cds[var]
+        end = a["period"].split("–")[-1]              # YYYYMMDD (snapshot end)
+        target = datetime.strptime(end, "%Y%m%d") + timedelta(days=lead)
+        clim_t = np.asarray(clim.isel(month=target.month - 1).values, dtype=float)
 
     fc_anom = a["anomaly"] * _decay(lead)
     fc_value = clim_t + fc_anom
@@ -229,12 +231,12 @@ def forecast_skill(var: str, region: str = "jk") -> dict | None:
     clim_m = _find(var, region, True)
     if not rec or not clim_m:
         return None
-    da = xr.open_dataset(GRIDDED_DIR / f"{rec['id']}.nc")[var]
-    clim = xr.open_dataset(GRIDDED_DIR / f"{clim_m['id']}.nc")[var]
-
-    obs = np.asarray(da.values, dtype=float)                       # (T, ny, nx)
-    months = np.atleast_1d(da["time"].dt.month.values).astype(int)
-    clim_arr = np.asarray(clim.values, dtype=float)                # (13, ny, nx)
+    with xr.open_dataset(GRIDDED_DIR / f"{rec['id']}.nc") as dds:
+        da = dds[var]
+        obs = np.asarray(da.values, dtype=float)                       # (T, ny, nx)
+        months = np.atleast_1d(da["time"].dt.month.values).astype(int)
+    with xr.open_dataset(GRIDDED_DIR / f"{clim_m['id']}.nc") as cds:
+        clim_arr = np.asarray(cds[var].values, dtype=float)            # (13, ny, nx)
     clim_daily = clim_arr[months - 1]                              # (T, ny, nx)
     anom = obs - clim_daily
     T = obs.shape[0]
