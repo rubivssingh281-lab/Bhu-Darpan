@@ -37,6 +37,13 @@ class VerifyOtpRequest(BaseModel):
     code: str = Field(min_length=4, max_length=8)
 
 
+class FirebaseAuthRequest(BaseModel):
+    id_token: str
+    email: EmailStr
+    name: Optional[str] = ""
+    photo_url: Optional[str] = ""
+
+
 class UserOut(BaseModel):
     id: str
     name: str

@@ -25,7 +25,7 @@ from ..config import settings
 from ..database import db
 from ..deps import get_current_user
 from ..schemas import (
-    AuthResponse, LoginRequest, OtpStartResponse, RegisterRequest,
+    AuthResponse, FirebaseAuthRequest, LoginRequest, OtpStartResponse, RegisterRequest,
     RequestOtpRequest, UserOut, VerifyOtpRequest,
 )
 from ..security import create_access_token, hash_password, verify_password
@@ -203,6 +203,41 @@ def login(body: LoginRequest):
     user = db.users.find_one({"email": _normalize_email(body.email)})
     if not user or not verify_password(body.password, user["password_hash"]):
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid email or password")
+    return _issue(user)
+
+
+@router.post("/firebase", response_model=AuthResponse)
+def auth_firebase(body: FirebaseAuthRequest):
+    """Authenticate or register a user verified via Google Firebase Auth."""
+    email = _normalize_email(body.email)
+    user = db.users.find_one({"email": email})
+    now_str = _now().strftime("%Y-%m-%d %H:%M:%S UTC")
+
+    if not user:
+        name = (body.name or "").strip() or email.split("@")[0]
+        user = {
+            "id": uuid.uuid4().hex,
+            "name": name,
+            "email": email,
+            "password_hash": "",
+            "organization": "",
+            "role": "",
+            "email_verified": True,
+            "auth_provider": "google_firebase",
+            "photo_url": body.photo_url or "",
+            "created_at": now_str,
+        }
+        db.users.insert_one(user)
+    else:
+        updates: dict[str, str] = {}
+        if not user.get("name") and body.name:
+            updates["name"] = body.name.strip()
+        if not user.get("photo_url") and body.photo_url:
+            updates["photo_url"] = body.photo_url
+        if updates:
+            db.users.update_one({"email": email}, {"$set": updates})
+            user = db.users.find_one({"email": email}) or user
+
     return _issue(user)
 
 

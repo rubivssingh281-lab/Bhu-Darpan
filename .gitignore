@@ -18,6 +18,7 @@ Backend/storage/
 # extracted EuroSAT images (27k files); the EuroSAT.zip archive IS committed
 Backend/data/eurosat/2750/
 Backend/data/gridded/_imd_raw/
+Backend/data/gridded/*.nc
 
 # --- Large model artefacts ---
 # model_inflow.pkl is 125 MB (over GitHub's 100 MB limit) so the RAW file is
