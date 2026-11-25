@@ -16,6 +16,7 @@ crashes just because torch isn't installed.
 """
 from __future__ import annotations
 
+import gc
 import json
 from functools import lru_cache
 
@@ -151,8 +152,10 @@ def _load():
     model = build_model(ckpt.get("arch", "cnn3"))
     model.load_state_dict(ckpt["state_dict"])
     model.eval()
-    model._tta = int(ckpt.get("tta", 1) or 1)          # rotation TTA views used at inference
-    torch.set_num_threads(max(1, (torch.get_num_threads() or 4)))
+    model._tta = 1 if settings.low_memory_mode else int(ckpt.get("tta", 1) or 1)
+    torch.set_num_threads(1 if settings.low_memory_mode else max(1, (torch.get_num_threads() or 4)))
+    del ckpt
+    gc.collect()
     return model
 
 
@@ -218,24 +221,30 @@ def predict_proba(arr: np.ndarray):
     k = min(getattr(model, "_tta", 1), 4)
 
     coords = [(y, x) for y in ys for x in xs]
-    for i in range(0, len(coords), 256):
-        cc = coords[i:i + 256]
+    batch_sz = 8 if settings.low_memory_mode else 32
+    for i in range(0, len(coords), batch_sz):
+        cc = coords[i:i + batch_sz]
         batch = torch.from_numpy(np.stack([arr[y:y + PATCH, x:x + PATCH, :] for y, x in cc]))
         batch = (batch.permute(0, 3, 1, 2).float() / 255.0 - mean) / std
-        with torch.no_grad():
-            if k > 1:   # rotation test-time augmentation (overhead imagery has no "up")
-                probs = sum(F.softmax(model(torch.rot90(batch, r, dims=(2, 3))), dim=1)
-                            for r in range(k)) / k
-            else:
-                probs = F.softmax(model(batch), dim=1)
-        probs = probs.cpu().numpy()                          # (N,10)
+        with torch.inference_mode():
+            acc_p = F.softmax(model(batch), dim=1)
+            for r in range(1, k):   # sequential TTA accumulation avoids parallel tensor spikes
+                acc_p.add_(F.softmax(model(torch.rot90(batch, r, dims=(2, 3))), dim=1))
+            if k > 1:
+                acc_p.div_(k)
+            probs = acc_p.cpu().numpy()                      # (N,10)
+        del batch, acc_p
         confs.extend((probs @ P).max(axis=1).tolist())
         for (y, x), p in zip(cc, probs):
             acc[y:y + PATCH, x:x + PATCH] += p
             cnt[y:y + PATCH, x:x + PATCH] += 1
 
     p10 = (acc / np.maximum(cnt, 1))[:h0, :w0]
-    return p10 @ P, p10, round(100.0 * float(np.mean(confs)), 1)
+    p5 = p10 @ P
+    mean_conf = round(100.0 * float(np.mean(confs)), 1)
+    del acc, cnt
+    gc.collect()
+    return p5, p10, mean_conf
 
 
 def predict_class_map(arr: np.ndarray):

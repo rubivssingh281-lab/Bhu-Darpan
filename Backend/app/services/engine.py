@@ -2,6 +2,7 @@
 all artefacts (original, segmentation mask, detection overlay, PDF report)."""
 from __future__ import annotations
 
+import gc
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -11,7 +12,6 @@ import numpy as np
 from PIL import Image
 
 from ..config import settings
-from . import change_detection, detection, preprocessing, report, segmentation
 
 
 def _save_png(arr: np.ndarray, path: Path) -> None:
@@ -31,14 +31,16 @@ def analyze_image(data: bytes, name: str, owner: str,
                   location: Optional[dict] = None,
                   n_clusters: Optional[int] = None) -> dict:
     """Full single-image analysis -> persisted analysis document."""
+    from . import detection, landcover_model, preprocessing, report, segmentation
+
     aid = uuid.uuid4().hex
     arr, raw = preprocessing.preprocess_pair(data)
     h, w = arr.shape[:2]
 
     seg = segmentation.segment(arr, n_clusters=n_clusters, raw=raw)
+    del raw
     objects, counts, overlay = detection.detect_objects(arr, seg.class_map)
 
-    from . import landcover_model
     model_info = landcover_model.model_summary() if seg.method == "cnn" else {
         "type": "Unsupervised K-Means clustering", "test_accuracy": None,
     }
@@ -78,19 +80,23 @@ def analyze_image(data: bytes, name: str, owner: str,
         doc["report_url"] = None
         doc["report_error"] = str(exc)
 
+    del arr, seg, overlay
+    gc.collect()
     return doc
 
 
 def analyze_change(before_bytes: bytes, after_bytes: bytes,
                    name: str, owner: str) -> dict:
     """Change detection between two images -> persisted change document."""
+    from . import biomass, change_detection, landcover_model, preprocessing
+
     cid = uuid.uuid4().hex
     before, before_raw = preprocessing.preprocess_pair(before_bytes)
     after, after_raw = preprocessing.preprocess_pair(after_bytes)
 
     result = change_detection.detect_change(before, after, before_raw=before_raw, after_raw=after_raw)
+    del before, before_raw, after, after_raw
 
-    from . import landcover_model
     model_info = landcover_model.model_summary() if result.method.startswith("cnn") else {
         "type": "Spectral difference (CIELAB + Otsu)", "test_accuracy": None,
     }
@@ -102,13 +108,11 @@ def analyze_change(before_bytes: bytes, after_bytes: bytes,
     _save_png(result.after_rgb, after_path)
     _save_png(result.change_map_rgb, map_path)
 
-    from . import biomass
     h, w = result.before_rgb.shape[:2]
     forest_delta = result.class_deltas.get("Forest", 0.0)
     agri_delta = result.class_deltas.get("Agriculture", 0.0)
     eco_impact = biomass.estimate_carbon_flux(forest_delta, agri_delta, total_pixels=h * w)
-
-    return {
+    out = {
         "id": cid,
         "owner": owner,
         "name": name,
@@ -124,3 +128,6 @@ def analyze_change(before_bytes: bytes, after_bytes: bytes,
         "transitions": result.transitions or [],
         "ecological_impact": eco_impact,
     }
+    del result
+    gc.collect()
+    return out

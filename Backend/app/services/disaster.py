@@ -21,7 +21,7 @@ import numpy as np
 from PIL import Image
 
 from ..config import settings
-from . import landcover_model, preprocessing, segmentation
+from .constants import CLASSES
 
 # affected-area (% of scene) -> severity band
 _SEVERITY = [(35, "Severe"), (15, "High"), (5, "Moderate"), (0, "Low")]
@@ -72,6 +72,7 @@ def _index_masks(arr: np.ndarray):
 
 def _model_basis() -> str:
     """One-line model citation for the alert, read from the live metrics file."""
+    from . import landcover_model
     m = landcover_model.metrics() or {}
     acc = m.get("test_accuracy_pct")
     return f"EuroSAT land-cover CNN ({acc}% held-out test)" if acc else "EuroSAT land-cover CNN"
@@ -82,6 +83,7 @@ def _pct(mask: np.ndarray) -> float:
 
 
 def _analyse_scene(arr: np.ndarray, raw: np.ndarray | None = None) -> dict:
+    from . import segmentation
     seg = segmentation.segment(arr, raw=raw)
     p = seg.percentages
     idx = _index_masks(arr)
@@ -119,6 +121,7 @@ def _load_rgb(data: bytes) -> tuple[np.ndarray, np.ndarray]:
     """Decode to (enhanced, raw) RGB uint8 arrays — raw is the unenhanced image the CNN
     expects; fall back to a false-colour preview for multispectral GeoTIFFs that PIL
     can't open (float / 16-bit / >3-band)."""
+    from . import preprocessing
     try:
         return preprocessing.preprocess_pair(data)
     except Exception:
@@ -161,7 +164,7 @@ def detect(data: bytes, before: bytes | None = None,
         detections.append({"type": "Flood / standing water", "confidence": round(conf, 2),
                            "affected_area_pct": round(cur["water"], 1),
                            "evidence": f"Open water covers {cur['water']:.1f}% of the scene (supply a matching pre-event image to rule out a permanent water body)."})
-        standing_water = (cur["seg"].class_map == segmentation.CLASSES.index("Water")) | cur["idx"]["water"]
+        standing_water = (cur["seg"].class_map == CLASSES.index("Water")) | cur["idx"]["water"]
         impact |= standing_water
     if cur["snow_pct"] > 22:
         conf = float(np.clip(0.4 + cur["snow_pct"] / 100.0, 0, 0.92))
@@ -177,7 +180,7 @@ def detect(data: bytes, before: bytes | None = None,
         detections.append({"type": "Drought / vegetation stress", "confidence": round(conf, 2),
                            "affected_area_pct": round(bare_like, 1),
                            "evidence": f"Vegetation only {cur['veg']:.1f}% with {bare_like:.1f}% bare/exposed ground — moisture-stressed / arid."})
-        impact |= cur["idx"]["bare"] | ((cur["seg"].class_map == segmentation.CLASSES.index("Others")) & ~cur["idx"]["snow"])
+        impact |= cur["idx"]["bare"] | ((cur["seg"].class_map == CLASSES.index("Others")) & ~cur["idx"]["snow"])
     if cur["burn_pct"] > 10:
         conf = float(np.clip(0.3 + cur["burn_pct"] / 60.0, 0, 0.85))
         detections.append({"type": "Wildfire / burn scar", "confidence": round(conf, 2),
@@ -207,7 +210,7 @@ def detect(data: bytes, before: bytes | None = None,
             detections.append({"type": "Flood (post-event rise)", "confidence": round(conf, 2),
                                "affected_area_pct": round(dwater, 1),
                                "evidence": f"Open-water cover rose {dwater:+.1f}% vs the pre-event baseline — new inundation."})
-            impact |= cur["seg"].class_map == segmentation.CLASSES.index("Water")
+            impact |= cur["seg"].class_map == CLASSES.index("Water")
         if dveg < -8 and dbare > 4:
             conf = float(np.clip(0.4 + abs(dveg) / 50.0, 0, 0.95))
             detections.append({"type": "Landslide / land loss", "confidence": round(conf, 2),
@@ -304,7 +307,7 @@ def detect(data: bytes, before: bytes | None = None,
             severity = "High"
 
     # exposure proxy: built-up cover, and how much of it sits in the impact zone
-    urban_idx = cur["seg"].class_map == segmentation.CLASSES.index("Urban")
+    urban_idx = cur["seg"].class_map == CLASSES.index("Urban")
     exposed = urban_idx & impact
     exposed_pct = _pct(exposed) if impact.any() else 0.0
     exposure = {
@@ -349,6 +352,7 @@ def detect(data: bytes, before: bytes | None = None,
         total_pixels=arr.shape[0] * arr.shape[1],
     )
 
+    from . import landcover_model
     return {
         "mode": mode,
         "region": region_name,

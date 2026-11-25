@@ -6,6 +6,7 @@ derived from segmenting both epochs. Produces a red/green change overlay.
 """
 from __future__ import annotations
 
+import gc
 from dataclasses import dataclass
 
 import cv2
@@ -46,7 +47,9 @@ def detect_change(before: np.ndarray, after: np.ndarray,
 
     idx = {n: i for i, n in enumerate(CLASSES)}
     seg_b = segment(before, raw=before_raw)
+    gc.collect()
     seg_a = segment(after, raw=after_raw)
+    gc.collect()
     class_deltas = {c: round(seg_a.percentages[c] - seg_b.percentages[c], 2) for c in CLASSES}
 
     # Super-class map: Forest + Agriculture -> one 'vegetation' code, so crop/forest
@@ -63,6 +66,7 @@ def detect_change(before: np.ndarray, after: np.ndarray,
     lab_a = cv2.cvtColor(after, cv2.COLOR_RGB2LAB).astype(np.float32)
     diff = np.sqrt(np.sum((lab_a - lab_b) ** 2, axis=2))
     spectral_sig = diff > 14.0
+    del lab_b, lab_a, diff
 
     change_bool = structural & spectral_sig
     cm_u8 = cv2.morphologyEx(change_bool.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
