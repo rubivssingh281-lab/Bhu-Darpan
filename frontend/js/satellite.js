@@ -112,6 +112,10 @@ if (el('googleAuthBtn')) {
         msg = 'Sign-in popup closed before completion.';
       } else if (msg.includes('auth/cancelled-popup-request')) {
         msg = 'Sign-in was cancelled.';
+      } else if (msg.includes('auth/configuration-not-found') || msg.includes('auth/operation-not-allowed')) {
+        msg = 'Enable Google Sign-In in Firebase Console -> Authentication -> Sign-in method.';
+      } else if (msg.includes('auth/unauthorized-domain')) {
+        msg = 'Authorize this domain in Firebase Console -> Authentication -> Settings -> Authorized domains.';
       } else if (msg.includes('AIzaSy_YOUR_API_KEY_HERE') || msg.includes('API key not valid')) {
         msg = 'Firebase Configuration Needed: Please update your API key in js/firebase-config.js.';
       }

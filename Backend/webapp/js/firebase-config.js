@@ -5,12 +5,13 @@
 // =========================================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSy_YOUR_API_KEY_HERE",
+  apiKey: "AIzaSyBQ97GOuY2O3SGYK3_7jmS2YbxSWGTFUpk",
   authDomain: "bhu-darpan.firebaseapp.com",
   projectId: "bhu-darpan",
-  storageBucket: "bhu-darpan.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890"
+  storageBucket: "bhu-darpan.firebasestorage.app",
+  messagingSenderId: "610135649050",
+  appId: "1:610135649050:web:ee4debdc582b1d4366daa3",
+  measurementId: "G-82HEXXELM3"
 };
 
 /**
