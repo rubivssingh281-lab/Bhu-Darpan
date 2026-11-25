@@ -83,6 +83,10 @@ class Settings:
         self.news_provider: str = os.getenv("NEWS_PROVIDER", "newsapi").strip().lower()
         self.news_api_key: str = os.getenv("NEWS_API_KEY", "").strip()
 
+        # --- Firebase Web Auth (server-side token verification) ----------- #
+        self.firebase_project_id: str = os.getenv("FIREBASE_PROJECT_ID", "bhu-darpan").strip()
+        self.firebase_api_key: str = os.getenv("FIREBASE_API_KEY", "").strip()
+
         self.base_dir: Path = BASE_DIR
         self.storage_dir: Path = BASE_DIR / "storage"
         self.uploads_dir: Path = self.storage_dir / "uploads"

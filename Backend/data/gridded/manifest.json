@@ -1852,7 +1852,7 @@
       "max": 2.715,
       "native_res_deg": 0.5,
       "path": "data\\gridded\\power_rain_jk_20261023_20261122.nc",
-      "created_at": "2026-11-25T08:46:40+00:00",
+      "created_at": "2026-11-25T10:13:55+00:00",
       "status": "ingested"
     },
     {
@@ -1882,7 +1882,7 @@
       "max": 24.335,
       "native_res_deg": 0.5,
       "path": "data\\gridded\\power_tmean_jk_20261023_20261122.nc",
-      "created_at": "2026-11-25T08:46:41+00:00",
+      "created_at": "2026-11-25T10:13:56+00:00",
       "status": "ingested"
     },
     {
@@ -1912,7 +1912,7 @@
       "max": 23.63,
       "native_res_deg": 0.5,
       "path": "data\\gridded\\power_lst_jk_20261023_20261122.nc",
-      "created_at": "2026-11-25T08:46:42+00:00",
+      "created_at": "2026-11-25T10:13:58+00:00",
       "status": "ingested"
     },
     {
@@ -1942,7 +1942,7 @@
       "max": 4.071,
       "native_res_deg": 0.25,
       "path": "data\\gridded\\openmeteo_rain_jk_20261023_20261122.nc",
-      "created_at": "2026-11-25T08:46:52+00:00",
+      "created_at": "2026-11-25T10:14:04+00:00",
       "status": "ingested"
     },
     {
@@ -1972,7 +1972,37 @@
       "max": 21.242,
       "native_res_deg": 0.25,
       "path": "data\\gridded\\openmeteo_tmean_jk_20261023_20261122.nc",
-      "created_at": "2026-11-25T08:46:59+00:00",
+      "created_at": "2026-11-25T10:14:30+00:00",
+      "status": "ingested"
+    },
+    {
+      "id": "power_rain_india_20261023_20261122",
+      "source": "NASA POWER",
+      "var": "rain",
+      "units": "mm/day",
+      "region": "india",
+      "bbox": [
+        6.5,
+        38.5,
+        66.5,
+        100.0
+      ],
+      "res_deg": 0.5,
+      "start": "20261023",
+      "end": "20261122",
+      "days": 31,
+      "grid_shape": [
+        65,
+        68
+      ],
+      "n_cells": 4420,
+      "valid_cells": 4355,
+      "mean": 3.534,
+      "min": 0.0,
+      "max": 35.796,
+      "native_res_deg": 0.5,
+      "path": "data\\gridded\\power_rain_india_20261023_20261122.nc",
+      "created_at": "2026-11-25T10:14:56+00:00",
       "status": "ingested"
     },
     {
@@ -2002,7 +2032,7 @@
       "max": 29.744,
       "native_res_deg": 0.5,
       "path": "data\\gridded\\power_tmean_india_20261023_20261122.nc",
-      "created_at": "2026-11-25T08:48:46+00:00",
+      "created_at": "2026-11-25T10:15:25+00:00",
       "status": "ingested"
     }
   ]

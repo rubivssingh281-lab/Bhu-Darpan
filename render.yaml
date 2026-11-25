@@ -23,3 +23,5 @@ services:
         value: "https://*.vercel.app,http://localhost:5173,http://localhost:8010"
       - key: AUTO_REFRESH_HOURS
         value: "0"
+      - key: FIREBASE_PROJECT_ID
+        value: "bhu-darpan"

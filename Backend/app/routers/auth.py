@@ -15,10 +15,13 @@ fully demo-able offline.
 from __future__ import annotations
 
 import math
+import re
 import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 
+import jwt
+import requests
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from ..config import settings
@@ -206,15 +209,86 @@ def login(body: LoginRequest):
     return _issue(user)
 
 
+def _resolve_firebase_api_key() -> str:
+    """Resolve the Firebase Web API key from environment or webapp/js/firebase-config.js."""
+    if settings.firebase_api_key:
+        return settings.firebase_api_key
+    cfg_path = settings.base_dir / "webapp" / "js" / "firebase-config.js"
+    if cfg_path.is_file():
+        m = re.search(r'apiKey\s*:\s*["\']([^"\']+)["\']', cfg_path.read_text(encoding="utf-8"))
+        if m and m.group(1) and "YOUR_API_KEY" not in m.group(1):
+            return m.group(1).strip()
+    return ""
+
+
+def _verify_firebase_token(id_token: str) -> dict:
+    """Verify a Firebase ID token against Google Identity Toolkit and return account claims."""
+    if not id_token or id_token.count(".") != 2:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid Firebase ID token")
+
+    try:
+        unverified = jwt.decode(
+            id_token,
+            options={"verify_signature": False, "verify_exp": False, "verify_aud": False},
+        )
+    except jwt.PyJWTError as exc:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Malformed Firebase ID token") from exc
+
+    expected_project = settings.firebase_project_id
+    if expected_project:
+        aud = unverified.get("aud")
+        iss = unverified.get("iss")
+        if aud != expected_project or iss != f"https://securetoken.google.com/{expected_project}":
+            raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Firebase token project mismatch")
+
+    api_key = _resolve_firebase_api_key()
+    if not api_key:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Firebase API key is not configured on the server.",
+        )
+
+    try:
+        resp = requests.post(
+            f"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={api_key}",
+            json={"idToken": id_token},
+            timeout=8,
+        )
+    except requests.RequestException as exc:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Unable to verify Google token with Firebase at this time.",
+        ) from exc
+
+    if resp.status_code != 200:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid or expired Google Sign-In session")
+
+    users = resp.json().get("users") or []
+    if not users or not users[0].get("email"):
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Firebase account email missing")
+
+    account = users[0]
+    if account.get("disabled"):
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Firebase account is disabled")
+    return account
+
+
 @router.post("/firebase", response_model=AuthResponse)
 def auth_firebase(body: FirebaseAuthRequest):
     """Authenticate or register a user verified via Google Firebase Auth."""
-    email = _normalize_email(body.email)
+    account = _verify_firebase_token(body.id_token)
+    email = _normalize_email(account["email"])
+    if _normalize_email(body.email) != email:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Token email mismatch")
+
+    verified_name = (account.get("displayName") or body.name or "").strip()
+    verified_photo = (account.get("photoUrl") or body.photo_url or "").strip()
+
     user = db.users.find_one({"email": email})
     now_str = _now().strftime("%Y-%m-%d %H:%M:%S UTC")
 
     if not user:
-        name = (body.name or "").strip() or email.split("@")[0]
+        name = verified_name or email.split("@")[0]
         user = {
             "id": uuid.uuid4().hex,
             "name": name,
@@ -222,18 +296,18 @@ def auth_firebase(body: FirebaseAuthRequest):
             "password_hash": "",
             "organization": "",
             "role": "",
-            "email_verified": True,
+            "email_verified": bool(account.get("emailVerified", True)),
             "auth_provider": "google_firebase",
-            "photo_url": body.photo_url or "",
+            "photo_url": verified_photo,
             "created_at": now_str,
         }
         db.users.insert_one(user)
     else:
         updates: dict[str, str] = {}
-        if not user.get("name") and body.name:
-            updates["name"] = body.name.strip()
-        if not user.get("photo_url") and body.photo_url:
-            updates["photo_url"] = body.photo_url
+        if not user.get("name") and verified_name:
+            updates["name"] = verified_name
+        if not user.get("photo_url") and verified_photo:
+            updates["photo_url"] = verified_photo
         if updates:
             db.users.update_one({"email": email}, {"$set": updates})
             user = db.users.find_one({"email": email}) or user
