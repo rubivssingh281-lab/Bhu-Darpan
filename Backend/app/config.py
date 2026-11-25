@@ -49,11 +49,15 @@ class Settings:
         self.db_name: str = os.getenv("DB_NAME", "bhudarpan")
 
         self.seg_clusters: int = _env_int("SEG_CLUSTERS", 6, 1)
-        self.max_image_dim: int = _env_int("MAX_IMAGE_DIM", 900, 1)
 
-        # Near-real-time refresh: >0 enables the background scheduler (hours). On by
-        # default in local dev, but defaulted to 0 on Render / low-memory containers.
+        # Near-real-time refresh & memory envelope: Render Free tier has a strict 512 MB RAM cap.
         is_render = os.getenv("RENDER", "").lower() in ("1", "true", "yes")
+        self.low_memory_mode: bool = os.getenv(
+            "LOW_MEMORY", "true" if is_render else "false"
+        ).lower() in ("1", "true", "yes")
+        default_img_dim = 512 if self.low_memory_mode else 900
+        self.max_image_dim: int = _env_int("MAX_IMAGE_DIM", default_img_dim, 1)
+
         default_refresh = "0" if is_render else "6"
         self.auto_refresh_hours: float = max(
             0.0, _env_float("AUTO_REFRESH_HOURS", float(default_refresh))

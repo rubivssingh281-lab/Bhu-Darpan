@@ -12,7 +12,6 @@ from ..config import settings
 from ..database import db
 from ..deps import get_current_user
 from ..schemas import AnalysisOut
-from ..services import engine, report as report_service
 
 router = APIRouter(prefix="/api/analysis", tags=["analysis"])
 
@@ -38,6 +37,7 @@ async def create_analysis(
     location = {"lat": lat, "lon": lon} if (lat is not None and lon is not None) else None
     display_name = (name or file.filename or "Untitled").strip()
 
+    from ..services import engine
     doc = await run_in_threadpool(
         engine.analyze_image, data, display_name, user["id"], location, clusters,
     )
@@ -88,6 +88,7 @@ def regenerate_report(analysis_id: str, user: dict = Depends(get_current_user)):
     original = settings.uploads_dir / f"{aid}.png"
     seg = settings.masks_dir / f"{aid}_seg.png"
     det = settings.masks_dir / f"{aid}_det.png"
+    from ..services import report as report_service
     report_service.generate_report(doc, report_path, original, seg, det)
     report_url = f"/storage/reports/{aid}.pdf"
     db.analyses.update_one({"id": aid}, {"$set": {"report_url": report_url}})

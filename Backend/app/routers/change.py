@@ -11,7 +11,6 @@ from fastapi.concurrency import run_in_threadpool
 from ..database import db
 from ..deps import get_current_user
 from ..schemas import ChangeOut
-from ..services import engine
 
 router = APIRouter(prefix="/api/change", tags=["change-detection"])
 
@@ -35,6 +34,7 @@ async def create_change(
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Both images are required")
 
     display_name = (name or "Change analysis").strip()
+    from ..services import engine
     doc = await run_in_threadpool(
         engine.analyze_change, before_data, after_data, display_name, user["id"],
     )

@@ -11,7 +11,7 @@ from fastapi.concurrency import run_in_threadpool
 from ..config import settings
 from ..database import db
 from ..deps import get_current_user
-from ..services import basemap, disaster
+from ..services import basemap
 
 router = APIRouter(prefix="/api/disaster", tags=["disaster"])
 
@@ -58,6 +58,7 @@ async def detect(
         baseline_url = f"/storage/masks/{bid}_baseline.jpg"
         baseline_source = f"Esri World Imagery · ~{extent_km:g} km box @ {lat}, {lon}"
 
+    from ..services import disaster
     result = await run_in_threadpool(
         disaster.detect, data, before_data,
         region or "Jammu & Kashmir", location,

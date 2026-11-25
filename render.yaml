@@ -23,5 +23,17 @@ services:
         value: "https://*.vercel.app,http://localhost:5173,http://localhost:8010"
       - key: AUTO_REFRESH_HOURS
         value: "0"
+      - key: LOW_MEMORY
+        value: "true"
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: MALLOC_ARENA_MAX
+        value: "2"
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: OPENBLAS_NUM_THREADS
+        value: "1"
+      - key: MKL_NUM_THREADS
+        value: "1"
       - key: FIREBASE_PROJECT_ID
         value: "bhu-darpan"
