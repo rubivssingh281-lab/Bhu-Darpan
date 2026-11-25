@@ -66,6 +66,8 @@ def _load_models():
         m.load_state_dict(ckpt[var]["state_dict"])
         m.eval()
         out[var] = (m, float(ckpt[var]["sd"]))
+    if settings.low_memory_mode:
+        torch.set_num_threads(1)
     return out
 
 
@@ -113,7 +115,7 @@ def forecast_series(var: str, horizon: int = HORIZON, anchor_index: int | None =
     n = len(dat.dates)
     a = n - 1 if anchor_index is None else max(WINDOW, min(int(anchor_index), n - 1))
     feat = _window_features(dat, clim, sd, end=a)
-    with torch.no_grad():
+    with torch.inference_mode():
         pred_z = model(torch.from_numpy(feat)).numpy()[0]      # (HORIZON,)
 
     last = dat.dates[a]

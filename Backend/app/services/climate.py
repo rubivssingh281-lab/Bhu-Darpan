@@ -279,21 +279,23 @@ def forecast(var: str) -> dict:
     obs = dat.temp if is_temp else dat.precip
     unit = "°C" if is_temp else "mm/day"
 
-    # --- skill-gated model choice ---
-    lstm_skill = None
-    if _lstm_ok:
-        lstm_skill = (lstm_forecast.metrics() or {}).get(f"{key}_skill_pct")
-    if _lstm_ok and lstm_skill is not None and lstm_skill > 0:
-        chosen = lstm_forecast
-        model_name = "LSTM sequence model (PyTorch, deep learning)"
-        method = "Ensemble: LSTM (deep learning) + day-of-year climatology + persistence"
-    else:
-        chosen = ml_forecast
-        model_name = "Gradient-boosted regression trees (scikit-learn)"
-        method = "Ensemble: gradient-boosted trees + day-of-year climatology + persistence"
+    bt = _backtest()
+    vb = (bt or {}).get("variables", {}).get(var)
 
-    m = chosen.metrics()
-    resid = m["temp_resid_std"] if is_temp else m["precip_resid_std"]
+    # --- skill-gated model choice (only needed when precomputed backtest blend is absent) ---
+    chosen = None
+    if not vb:
+        lstm_skill = None
+        if _lstm_ok:
+            lstm_skill = (lstm_forecast.metrics() or {}).get(f"{key}_skill_pct")
+        if _lstm_ok and lstm_skill is not None and lstm_skill > 0:
+            chosen = lstm_forecast
+            model_name = "LSTM sequence model (PyTorch, deep learning)"
+            method = "Ensemble: LSTM (deep learning) + day-of-year climatology + persistence"
+        else:
+            chosen = ml_forecast
+            model_name = "Gradient-boosted regression trees (scikit-learn)"
+            method = "Ensemble: gradient-boosted trees + day-of-year climatology + persistence"
 
     if real_time:
         # Seed the models from the LATEST REAL observations (live NASA POWER tail, on the
@@ -322,15 +324,16 @@ def forecast(var: str) -> dict:
                 "lower": round(float(max(0.0, val - band) if not is_temp else val - band), 2)}
 
     predicted = []
-    bt = _backtest()
-    vb = (bt or {}).get("variables", {}).get(var)
     if vb:
         # --- skill-optimised blend (see scripts/backtest_forecast.py) -----------------
-        # Per-lead non-negative weights over {GBRT, LSTM, damped persistence} anomalies
-        # around a trend-adjusted climatology — fit on a held-out validation year and
-        # scored on later years, all at the full 14-day horizon.
-        G = ml_forecast.forecast_series(var, 14, anchor_index=anchor, dat=dat)
-        L = lstm_forecast.forecast_series(var, 14, anchor_index=anchor, dat=dat) if _lstm_ok else G
+        # Under low-memory containers (Render 512MB) when PyTorch LSTM is available, reuse L
+        # to avoid loading scikit-learn (+88MB) alongside PyTorch in the same worker.
+        if settings.low_memory_mode and _lstm_ok:
+            L = lstm_forecast.forecast_series(var, 14, anchor_index=anchor, dat=dat)
+            G = L
+        else:
+            G = ml_forecast.forecast_series(var, 14, anchor_index=anchor, dat=dat)
+            L = lstm_forecast.forecast_series(var, 14, anchor_index=anchor, dat=dat) if _lstm_ok else G
         t_off = (bt["temp_trend_c_per_year"] * (dat.dates[anchor].year - bt["trend_mid_year"])
                  if is_temp else 0.0)
         past = slice(anchor - 4, anchor + 1)
@@ -353,6 +356,8 @@ def forecast(var: str) -> dict:
         backtest_txt = f"14-day backtest · {vb['n_test']} held-out issue dates ({bt['test_period']})"
     else:
         # --- fallback: skill-gated single model + damped persistence -----------------
+        m = chosen.metrics()
+        resid = m["temp_resid_std"] if is_temp else m["precip_resid_std"]
         ml_pred = chosen.forecast_series(var, 14, anchor_index=anchor, dat=dat)
         aw = slice(anchor - 4, anchor + 1)
         last_anom = float(obs[aw].mean() - np.array([_clim(clim, d) for d in dat.dates[aw]]).mean())

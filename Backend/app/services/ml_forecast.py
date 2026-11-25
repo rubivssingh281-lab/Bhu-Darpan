@@ -13,14 +13,14 @@ PyTorch model can be dropped in later (see train_lstm.py) without touching the A
 """
 from __future__ import annotations
 
+import gc
 from dataclasses import dataclass
 from datetime import timedelta
 from functools import lru_cache
 
 import numpy as np
-from sklearn.ensemble import HistGradientBoostingRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error
 
+from ..config import settings
 from .climate import _load, _clim
 
 LAGS = [1, 2, 3, 7, 14, 30]
@@ -47,13 +47,16 @@ def _features(temp: np.ndarray, precip: np.ndarray, doy: np.ndarray,
 
 @dataclass
 class _Model:
-    temp_model: HistGradientBoostingRegressor
-    precip_model: HistGradientBoostingRegressor
+    temp_model: object
+    precip_model: object
     metrics: dict
 
 
 @lru_cache(maxsize=1)
 def _train() -> _Model:
+    from sklearn.ensemble import HistGradientBoostingRegressor
+    from sklearn.metrics import mean_absolute_error, mean_squared_error
+
     dat = _load()
     temp, precip, doy = dat.temp, dat.precip, dat.doy
     yearfrac = (dat.year - dat.year.min()) / (dat.year.max() - dat.year.min() + 1e-9)
@@ -66,9 +69,9 @@ def _train() -> _Model:
         yt.append(temp[i])
         yp.append(precip[i])
         idx.append(i)
-    X = np.array(X)
-    yt = np.array(yt)
-    yp = np.array(yp)
+    X = np.array(X, dtype=np.float32)
+    yt = np.array(yt, dtype=np.float32)
+    yp = np.array(yp, dtype=np.float32)
     idx = np.array(idx)
 
     # Time-based split: train on all but the last 3 years, validate on the last 3.
@@ -76,9 +79,10 @@ def _train() -> _Model:
     train = dat.year[idx] <= split_year
     test = ~train
 
-    temp_m = HistGradientBoostingRegressor(max_iter=300, learning_rate=0.05,
+    n_iter = 150 if settings.low_memory_mode else 300
+    temp_m = HistGradientBoostingRegressor(max_iter=n_iter, learning_rate=0.05,
                                            max_depth=6, random_state=0)
-    precip_m = HistGradientBoostingRegressor(max_iter=300, learning_rate=0.05,
+    precip_m = HistGradientBoostingRegressor(max_iter=n_iter, learning_rate=0.05,
                                              max_depth=6, random_state=0)
     temp_m.fit(X[train], yt[train])
     precip_m.fit(X[train], yp[train])
@@ -106,6 +110,8 @@ def _train() -> _Model:
     }
     m["temp_skill_pct"] = round((1 - m["temp_rmse"] / m["temp_clim_rmse"]) * 100, 1)
     m["precip_skill_pct"] = round((1 - m["precip_rmse"] / m["precip_clim_rmse"]) * 100, 1)
+    del X, yt, yp, idx, train, test, pt, pp, clim_t, clim_p
+    gc.collect()
     return _Model(temp_m, precip_m, m)
 
 

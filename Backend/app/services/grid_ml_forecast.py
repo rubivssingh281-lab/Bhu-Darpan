@@ -23,12 +23,13 @@ last 25 % test (reported skill).
 """
 from __future__ import annotations
 
+import gc
 from datetime import datetime, timedelta
 from functools import lru_cache
 
 import numpy as np
-from sklearn.ensemble import HistGradientBoostingRegressor
 
+from ..config import settings
 from ingest.config import GRIDDED_DIR
 from .gridded_analysis import _find, _sample, anomaly, markers_for
 
@@ -58,14 +59,17 @@ def _load_record(var: str, region: str):
     clim_m = _find(var, region, True)
     if not rec or not clim_m:
         return None
-    da = xr.open_dataset(GRIDDED_DIR / f"{rec['id']}.nc")[var]
-    clim = np.asarray(xr.open_dataset(GRIDDED_DIR / f"{clim_m['id']}.nc")[var].values, dtype=np.float32)
+    with xr.open_dataset(GRIDDED_DIR / f"{rec['id']}.nc") as ds:
+        da = ds[var]
+        doy = np.atleast_1d(da["time"].dt.dayofyear.values).astype(int)
+        obs = np.asarray(da.values, dtype=np.float32)
+        lats = np.asarray(da.lat.values, dtype=np.float32)
+        lons = np.asarray(da.lon.values, dtype=np.float32)
+    with xr.open_dataset(GRIDDED_DIR / f"{clim_m['id']}.nc") as cds:
+        clim = np.asarray(cds[var].values, dtype=np.float32)
     table = _daily_clim(clim[:12])
-    doy = np.atleast_1d(da["time"].dt.dayofyear.values).astype(int)
-    obs = np.asarray(da.values, dtype=np.float32)
     return {"obs": obs, "doy": doy, "table": table,
-            "lats": np.asarray(da.lat.values, dtype=np.float32),
-            "lons": np.asarray(da.lon.values, dtype=np.float32), "units": rec["units"]}
+            "lats": lats, "lons": lons, "units": rec["units"]}
 
 
 def _seed(anom: np.ndarray, t: int) -> np.ndarray:
@@ -99,50 +103,93 @@ def train(var: str, region: str = "jk"):
         return None
     anom = R["obs"] - R["table"][R["doy"]]
     T, ny, nx = anom.shape
-    LA, LO = _grid_xy(R["lats"], R["lons"])
     _, t_va = int(T * 0.60), int(T * 0.75)
 
-    blocks = []                                  # (lead, t, X, y, seed)
-    for lead in LEADS:
-        for t in range(SEED_DAYS, T - lead, STEP):
-            s = np.nan_to_num(_seed(anom, t)).ravel()
-            X = _cols(R["doy"][t + lead], lead, LA, LO, s, float(s.mean()), ny * nx)
-            blocks.append((lead, t, X, anom[t + lead].ravel(), s))
-
-    def stack(pred):
-        sel = [b for b in blocks if pred(b)]
-        if not sel:
-            return None
-        X = np.concatenate([b[2] for b in sel])
-        y = np.concatenate([b[3] for b in sel])
-        s = np.concatenate([b[4] for b in sel])
-        ok = np.isfinite(y) & np.isfinite(X).all(1)
-        return X[ok], y[ok], s[ok]
-
-    Xtr, ytr, _ = stack(lambda b: b[1] < t_va)
-    model = HistGradientBoostingRegressor(max_iter=250, learning_rate=0.05, max_depth=6,
-                                          min_samples_leaf=200, l2_regularization=1.0, random_state=0)
-    model.fit(Xtr, ytr)                                   # evaluated for transparency only
-
     phi, metrics = {}, {}
-    for lead in LEADS:
-        _, ytv, stv = stack(lambda b, L=lead: b[0] == L and b[1] < t_va)
-        phi[lead] = float(np.clip(np.dot(stv, ytv) / (np.dot(stv, stv) + 1e-9), 0.0, 1.0))
-        Xt, yt, st = stack(lambda b, L=lead: b[0] == L and b[1] >= t_va)
-        r_op = _rmse(phi[lead] * st, yt)                  # operational model
-        r_ml = _rmse(model.predict(Xt), yt)
-        r_cl = _rmse(0.0 * yt, yt)                        # climatology (anomaly = 0)
-        r_nv = _rmse((0.6 ** lead) * st, yt)              # naive persistence baseline
-        metrics[str(lead)] = {
-            "rmse": round(r_op, 2), "clim_rmse": round(r_cl, 2), "persist_rmse": round(r_nv, 2),
-            "ml_rmse": round(r_ml, 2),
-            "skill_vs_clim_pct": round((1 - r_op / r_cl) * 100, 1) if r_cl else None,
-            "skill_vs_persist_pct": round((1 - r_op / r_nv) * 100, 1) if r_nv else None,
-            "persist_decay": round(phi[lead], 3),
-        }
-    return {"model": model, "phi": phi, "metrics": metrics,
-            "table": R["table"], "lats": R["lats"], "lons": R["lons"],
-            "units": R["units"], "test_days": T - t_va}
+    if settings.low_memory_mode:
+        # Streaming decay-fit without allocating multi-column GBRT matrices (~5x lower peak RAM)
+        for lead in LEADS:
+            num = 0.0
+            den = 0.0
+            st_list, yt_list = [], []
+            for t in range(SEED_DAYS, T - lead, STEP):
+                s = np.nan_to_num(_seed(anom, t)).ravel()
+                y = anom[t + lead].ravel()
+                ok = np.isfinite(y) & np.isfinite(s)
+                if t < t_va:
+                    sv = s[ok].astype(np.float64)
+                    yv = y[ok].astype(np.float64)
+                    num += float(np.dot(sv, yv))
+                    den += float(np.dot(sv, sv))
+                else:
+                    st_list.append(s[ok])
+                    yt_list.append(y[ok])
+            phi[lead] = float(np.clip(num / (den + 1e-9), 0.0, 1.0))
+            st = np.concatenate(st_list) if st_list else np.empty(0, dtype=np.float32)
+            yt = np.concatenate(yt_list) if yt_list else np.empty(0, dtype=np.float32)
+            r_op = _rmse(phi[lead] * st, yt) if yt.size else 0.0
+            r_cl = _rmse(0.0 * yt, yt) if yt.size else 0.0
+            r_nv = _rmse((0.6 ** lead) * st, yt) if yt.size else 0.0
+            metrics[str(lead)] = {
+                "rmse": round(r_op, 2), "clim_rmse": round(r_cl, 2), "persist_rmse": round(r_nv, 2),
+                "ml_rmse": None,
+                "skill_vs_clim_pct": round((1 - r_op / r_cl) * 100, 1) if r_cl else None,
+                "skill_vs_persist_pct": round((1 - r_op / r_nv) * 100, 1) if r_nv else None,
+                "persist_decay": round(phi[lead], 3),
+            }
+    else:
+        from sklearn.ensemble import HistGradientBoostingRegressor
+
+        LA, LO = _grid_xy(R["lats"], R["lons"])
+        blocks = []                                  # (lead, t, X, y, seed)
+        for lead in LEADS:
+            for t in range(SEED_DAYS, T - lead, STEP):
+                s = np.nan_to_num(_seed(anom, t)).ravel()
+                X = _cols(R["doy"][t + lead], lead, LA, LO, s, float(s.mean()), ny * nx)
+                blocks.append((lead, t, X, anom[t + lead].ravel(), s))
+
+        def stack(pred):
+            sel = [b for b in blocks if pred(b)]
+            if not sel:
+                return None
+            X = np.concatenate([b[2] for b in sel])
+            y = np.concatenate([b[3] for b in sel])
+            s = np.concatenate([b[4] for b in sel])
+            ok = np.isfinite(y) & np.isfinite(X).all(1)
+            return X[ok], y[ok], s[ok]
+
+        Xtr, ytr, _ = stack(lambda b: b[1] < t_va)
+        model = HistGradientBoostingRegressor(max_iter=250, learning_rate=0.05, max_depth=6,
+                                              min_samples_leaf=200, l2_regularization=1.0, random_state=0)
+        model.fit(Xtr, ytr)                                   # evaluated for transparency only
+        del Xtr, ytr
+
+        for lead in LEADS:
+            _, ytv, stv = stack(lambda b, L=lead: b[0] == L and b[1] < t_va)
+            phi[lead] = float(np.clip(np.dot(stv, ytv) / (np.dot(stv, stv) + 1e-9), 0.0, 1.0))
+            Xt, yt, st = stack(lambda b, L=lead: b[0] == L and b[1] >= t_va)
+            r_op = _rmse(phi[lead] * st, yt)                  # operational model
+            r_ml = _rmse(model.predict(Xt), yt)
+            r_cl = _rmse(0.0 * yt, yt)                        # climatology (anomaly = 0)
+            r_nv = _rmse((0.6 ** lead) * st, yt)              # naive persistence baseline
+            metrics[str(lead)] = {
+                "rmse": round(r_op, 2), "clim_rmse": round(r_cl, 2), "persist_rmse": round(r_nv, 2),
+                "ml_rmse": round(r_ml, 2),
+                "skill_vs_clim_pct": round((1 - r_op / r_cl) * 100, 1) if r_cl else None,
+                "skill_vs_persist_pct": round((1 - r_op / r_nv) * 100, 1) if r_nv else None,
+                "persist_decay": round(phi[lead], 3),
+            }
+        del blocks, model
+
+    table = R["table"]
+    lats = R["lats"]
+    lons = R["lons"]
+    units = R["units"]
+    del R, anom
+    gc.collect()
+    return {"phi": phi, "metrics": metrics,
+            "table": table, "lats": lats, "lons": lons,
+            "units": units, "test_days": T - t_va}
 
 
 def _lead_phi(tr, lead) -> float:
@@ -171,18 +218,20 @@ def forecast_field(var: str, region: str = "jk", lead: int = 7) -> dict | None:
     daily_m = _find(var, region, False, max_days=180, source_contains="POWER")
     if tr is None or a is None or not daily_m:
         return None
-    da = xr.open_dataset(GRIDDED_DIR / f"{daily_m['id']}.nc")[var]
-    obs = np.asarray(da.values, dtype=np.float32)
-    if obs.shape[1:] != tr["table"].shape[1:]:
-        return None
-    tdoy = np.atleast_1d(da["time"].dt.dayofyear.values).astype(int)
+    with xr.open_dataset(GRIDDED_DIR / f"{daily_m['id']}.nc") as ds:
+        da = ds[var]
+        obs = np.asarray(da.values, dtype=np.float32)
+        if obs.shape[1:] != tr["table"].shape[1:]:
+            return None
+        tdoy = np.atleast_1d(da["time"].dt.dayofyear.values).astype(int)
+        time_vals = da["time"].values
     anom = obs - tr["table"][tdoy]
     valid = [t for t in range(anom.shape[0]) if np.isfinite(anom[t]).mean() > 0.5]
     if not valid:
         return None
     t_last = valid[-1]
     seed = np.nan_to_num(_seed(anom, t_last))
-    last_date = datetime.strptime(str(np.datetime_as_string(da["time"].values[t_last], unit="D")), "%Y-%m-%d")
+    last_date = datetime.strptime(str(np.datetime_as_string(time_vals[t_last], unit="D")), "%Y-%m-%d")
     target = last_date + timedelta(days=lead)
     doy_tgt = min(target.timetuple().tm_yday, 366)
 
