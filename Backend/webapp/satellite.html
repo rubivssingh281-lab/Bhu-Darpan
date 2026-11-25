@@ -15,7 +15,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="css/satellite.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="js/firebase-config.js?v=5"></script>
+  <link rel="stylesheet" href="css/satellite.css?v=5" />
 </head>
 
 <body>
@@ -29,12 +32,24 @@
       <svg class="map-svg" viewBox="0 0 900 1040" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <!-- Real Esri satellite imagery of the J&K pilot region -->
         <image href="images/jk_satellite.jpg" xlink:href="images/jk_satellite.jpg" x="0" y="0" width="900" height="1040"
-               preserveAspectRatio="xMidYMid slice"/>
+          preserveAspectRatio="xMidYMid slice" />
         <!-- pilot points, geo-aligned to the imagery (dots only, labels omitted to keep text clear) -->
-        <g class="map-point"><circle class="halo map-ping" cx="327" cy="324" r="13"/><circle class="core" cx="327" cy="324" r="6"/></g>
-        <g class="map-point"><circle class="halo map-ping" cx="213" cy="332" r="13"/><circle class="core" cx="213" cy="332" r="6"/></g>
-        <g class="map-point"><circle class="halo map-ping" cx="207" cy="289" r="13"/><circle class="core" cx="207" cy="289" r="6"/></g>
-        <g class="map-point"><circle class="halo map-ping" cx="346" cy="714" r="13"/><circle class="core" cx="346" cy="714" r="6"/></g>
+        <g class="map-point">
+          <circle class="halo map-ping" cx="327" cy="324" r="13" />
+          <circle class="core" cx="327" cy="324" r="6" />
+        </g>
+        <g class="map-point">
+          <circle class="halo map-ping" cx="213" cy="332" r="13" />
+          <circle class="core" cx="213" cy="332" r="6" />
+        </g>
+        <g class="map-point">
+          <circle class="halo map-ping" cx="207" cy="289" r="13" />
+          <circle class="core" cx="207" cy="289" r="6" />
+        </g>
+        <g class="map-point">
+          <circle class="halo map-ping" cx="346" cy="714" r="13" />
+          <circle class="core" cx="346" cy="714" r="6" />
+        </g>
       </svg>
       <div class="auth-scrim"></div>
 
@@ -51,14 +66,30 @@
         <p class="av-tag">An AI-powered digital twin of the Jammu &amp; Kashmir climate — fused
           from national satellite &amp; ground datasets, paired with satellite-image intelligence.</p>
         <ul class="av-features">
-          <li><span class="ic">🌦️</span><div><div class="ft">Climate Digital Twin</div>
-            <div class="fd">Live district anomalies, 14-day AI forecasts &amp; what-if scenarios.</div></div></li>
-          <li><span class="ic">🛰️</span><div><div class="ft">Satellite Scene Analysis</div>
-            <div class="fd" id="lcModelFeat">Land-cover CNN trained on EuroSAT, fused with spectral physics.</div></div></li>
-          <li><span class="ic">🔀</span><div><div class="ft">Change Detection</div>
-            <div class="fd">Compare two epochs and reveal semantic land-cover shifts.</div></div></li>
-          <li><span class="ic">⚠️</span><div><div class="ft">Hazard Intelligence</div>
-            <div class="fd">Drought (SPI), heatwave &amp; monsoon-onset monitoring.</div></div></li>
+          <li><span class="ic">🌦️</span>
+            <div>
+              <div class="ft">Climate Digital Twin</div>
+              <div class="fd">Live district anomalies, 14-day AI forecasts &amp; what-if scenarios.</div>
+            </div>
+          </li>
+          <li><span class="ic">🛰️</span>
+            <div>
+              <div class="ft">Satellite Scene Analysis</div>
+              <div class="fd" id="lcModelFeat">Land-cover CNN trained on EuroSAT, fused with spectral physics.</div>
+            </div>
+          </li>
+          <li><span class="ic">🔀</span>
+            <div>
+              <div class="ft">Change Detection</div>
+              <div class="fd">Compare two epochs and reveal semantic land-cover shifts.</div>
+            </div>
+          </li>
+          <li><span class="ic">⚠️</span>
+            <div>
+              <div class="ft">Hazard Intelligence</div>
+              <div class="fd">Drought (SPI), heatwave &amp; monsoon-onset monitoring.</div>
+            </div>
+          </li>
         </ul>
       </div>
 
@@ -79,6 +110,8 @@
           <button type="button" data-mode="login" class="on">Sign in</button>
           <button type="button" data-mode="register">Create account</button>
         </div>
+
+        <div class="auth-alt" id="authAlt"><a id="altOtp">✉️ Email me a one-time code instead</a></div>
 
         <div class="err-box" id="authErr" hidden></div>
 
@@ -115,10 +148,27 @@
           <div class="otp-hint" id="otpHint" hidden></div>
         </div>
 
-        <button class="btn btn-primary" id="authBtn" style="width:100%;justify-content:center" type="submit">Sign in</button>
+        <button class="btn btn-primary" id="authBtn" style="width:100%;justify-content:center" type="submit">Sign
+          in</button>
 
-        <div class="auth-alt" id="authAlt"><a id="altOtp">✉️ Email me a one-time code instead</a></div>
-        <div class="auth-alt" id="otpBack" hidden><a id="toBack">← Use a different method</a> · <a id="otpResend">Resend code</a></div>
+        <div class="auth-divider" id="authDivider"><span>OR</span></div>
+
+        <button type="button" class="btn btn-google" id="googleAuthBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4"
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+            <path fill="#34A853"
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+            <path fill="#FBBC05"
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+            <path fill="#EA4335"
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+          </svg>
+          <span id="googleAuthText">Sign in with Google</span>
+        </button>
+
+        <div class="auth-alt" id="otpBack" hidden><a id="toBack">← Use a different method</a> · <a id="otpResend">Resend
+            code</a></div>
 
         <div class="switch-auth" id="authSwitch"></div>
       </form>
@@ -146,7 +196,8 @@
         <a href="#reports">Reports</a>
       </div>
       <div class="nav-right">
-        <button class="acct-btn" id="acctBtn" aria-label="Account" title="Account"><span id="acctInitial">U</span></button>
+        <button class="acct-btn" id="acctBtn" aria-label="Account" title="Account"><span
+            id="acctInitial">U</span></button>
         <div class="acct-panel" id="acctPanel" hidden>
           <div class="acct-head">
             <div class="acct-av" id="acctAv">U</div>
@@ -156,7 +207,8 @@
             </div>
           </div>
           <div class="acct-details" id="acctDetails"></div>
-          <button class="btn btn-ghost btn-sm" id="logoutBtn" style="width:100%;justify-content:center">Sign out</button>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn" style="width:100%;justify-content:center">Sign
+            out</button>
         </div>
       </div>
     </nav>
@@ -170,20 +222,35 @@
         </div>
         <p class="sec-desc">A continuously-updated snapshot of the region, fused from IMD gridded
           observations and satellite reanalysis and compared against the 1973–2023 climate normal.
-          <span id="satOvLive" style="display:block;margin-top:8px;color:var(--teal);font-family:var(--font-mono);font-size:12px"><span class="pulse" style="display:inline-block;margin-right:6px"></span>Live · initialising…</span></p>
+          <span id="satOvLive"
+            style="display:block;margin-top:8px;color:var(--teal);font-family:var(--font-mono);font-size:12px"><span
+              class="pulse" style="display:inline-block;margin-right:6px"></span>Live · initialising…</span>
+        </p>
       </div>
-      <div class="grid g4" id="satKpis"><div class="card" style="grid-column:1/-1">Loading live state…</div></div>
+      <div class="grid g4" id="satKpis">
+        <div class="card" style="grid-column:1/-1">Loading live state…</div>
+      </div>
     </section>
 
     <section id="metrics" style="padding-top:0">
       <div class="grid g2" style="align-items:start">
-        <div class="card"><h3>Regional summary</h3><div class="card-sub">Latest assimilation snapshot</div><div id="satSummary" style="margin-top:14px"></div></div>
-        <div class="card"><h3>Data assimilation pipeline</h3><div class="card-sub">National &amp; live datasets feeding the twin</div><div id="satPipe" style="margin-top:12px"></div></div>
+        <div class="card">
+          <h3>Regional summary</h3>
+          <div class="card-sub">Latest assimilation snapshot</div>
+          <div id="satSummary" style="margin-top:14px"></div>
+        </div>
+        <div class="card">
+          <h3>Data assimilation pipeline</h3>
+          <div class="card-sub">National &amp; live datasets feeding the twin</div>
+          <div id="satPipe" style="margin-top:12px"></div>
+        </div>
       </div>
       <div class="card" style="margin-top:22px">
         <h3>District conditions</h3>
         <div class="card-sub">Per-district anomalies sampled live from the gridded state · Jammu &amp; Kashmir</div>
-        <div class="grid g3" id="satDistricts" style="margin-top:16px"><div class="card-sub">Loading districts…</div></div>
+        <div class="grid g3" id="satDistricts" style="margin-top:16px">
+          <div class="card-sub">Loading districts…</div>
+        </div>
       </div>
     </section>
 
@@ -208,14 +275,22 @@
             <button class="toggle" data-layer="temp">Temperature anomaly</button>
           </div>
           <div id="districtMap"></div>
-          <div class="district-info" id="districtInfo">Hover or tap a district to inspect its current fused climate state.</div>
+          <div class="district-info" id="districtInfo">Hover or tap a district to inspect its current fused climate
+            state.</div>
         </div>
         <div>
-          <div class="side-card reveal"><h4>Layer legend</h4><div id="legendBox"></div></div>
-          <div class="side-card reveal"><h4 id="monitoredHead">Districts monitored</h4>
-            <div id="monitoredList" style="font-family:var(--font-mono);font-size:12.5px;color:var(--muted);line-height:2.1">Srinagar · Baramulla · Anantnag · Kishtwar · Doda · Udhampur · Rajouri · Kathua · Jammu</div>
+          <div class="side-card reveal">
+            <h4>Layer legend</h4>
+            <div id="legendBox"></div>
           </div>
-          <div class="side-card reveal"><h4>Pilot snapshot</h4>
+          <div class="side-card reveal">
+            <h4 id="monitoredHead">Districts monitored</h4>
+            <div id="monitoredList"
+              style="font-family:var(--font-mono);font-size:12.5px;color:var(--muted);line-height:2.1">Srinagar ·
+              Baramulla · Anantnag · Kishtwar · Doda · Udhampur · Rajouri · Kathua · Jammu</div>
+          </div>
+          <div class="side-card reveal">
+            <h4>Pilot snapshot</h4>
             <div class="status-rows">
               <div class="status-row"><span>Coverage area</span><span>~2.22 lakh km²</span></div>
               <div class="status-row"><span>Coordinate bounds</span><span>32.3–37.1°N · 73.9–80.3°E</span></div>
@@ -257,14 +332,27 @@
               <input type="range" id="rainSlider" min="-50" max="50" value="0" step="1">
             </div>
             <div class="slider-block">
-              <div class="slider-label"><span>Temperature deviation from normal</span><span id="tempVal">+0.0°C</span></div>
+              <div class="slider-label"><span>Temperature deviation from normal</span><span id="tempVal">+0.0°C</span>
+              </div>
               <input type="range" id="tempSlider" min="-2" max="5" value="0" step="0.1">
             </div>
             <div class="impact-cards">
-              <div class="impact-card"><div class="k">Soil moisture index</div><div class="v" id="impSoil">0.41</div></div>
-              <div class="impact-card"><div class="k">Drought risk score</div><div class="v" id="impDrought">42</div></div>
-              <div class="impact-card"><div class="k">Crop water stress</div><div class="v" id="impCrop">Low</div></div>
-              <div class="impact-card"><div class="k">Reservoir inflow est.</div><div class="v" id="impWater">−4%</div></div>
+              <div class="impact-card">
+                <div class="k">Soil moisture index</div>
+                <div class="v" id="impSoil">0.41</div>
+              </div>
+              <div class="impact-card">
+                <div class="k">Drought risk score</div>
+                <div class="v" id="impDrought">42</div>
+              </div>
+              <div class="impact-card">
+                <div class="k">Crop water stress</div>
+                <div class="v" id="impCrop">Low</div>
+              </div>
+              <div class="impact-card">
+                <div class="k">Reservoir inflow est.</div>
+                <div class="v" id="impWater">−4%</div>
+              </div>
             </div>
           </div>
           <div class="sim-chart"><canvas id="whatIfChart"></canvas></div>
@@ -276,7 +364,9 @@
         <div class="card reveal">
           <h3>Sector risk response</h3>
           <div class="card-sub">How this perturbation propagates to J&amp;K's key sectors</div>
-          <div id="scSectors" style="margin-top:14px"><div class="card-sub">Move a slider to compute sector impacts…</div></div>
+          <div id="scSectors" style="margin-top:14px">
+            <div class="card-sub">Move a slider to compute sector impacts…</div>
+          </div>
         </div>
         <div class="card reveal">
           <h3>Water balance</h3>
@@ -300,11 +390,26 @@
           derived from ensemble spread — the short-horizon layer of the twin.</p>
       </div>
       <div class="mini-stats" id="fcStats" style="margin-bottom:26px">
-        <div class="mini-stat"><div class="n" id="fcTempSkill">—</div><div class="l">Temp skill vs climatology</div></div>
-        <div class="mini-stat"><div class="n" id="fcTempRmse">—</div><div class="l">Temp RMSE</div></div>
-        <div class="mini-stat"><div class="n" id="fcRainSkill">—</div><div class="l">Rain skill vs climatology</div></div>
-        <div class="mini-stat"><div class="n" id="fcRainRmse">—</div><div class="l">Rain RMSE</div></div>
-        <div class="mini-stat"><div class="n">14<small>d</small></div><div class="l">Forecast horizon</div></div>
+        <div class="mini-stat">
+          <div class="n" id="fcTempSkill">—</div>
+          <div class="l">Temp skill vs climatology</div>
+        </div>
+        <div class="mini-stat">
+          <div class="n" id="fcTempRmse">—</div>
+          <div class="l">Temp RMSE</div>
+        </div>
+        <div class="mini-stat">
+          <div class="n" id="fcRainSkill">—</div>
+          <div class="l">Rain skill vs climatology</div>
+        </div>
+        <div class="mini-stat">
+          <div class="n" id="fcRainRmse">—</div>
+          <div class="l">Rain RMSE</div>
+        </div>
+        <div class="mini-stat">
+          <div class="n">14<small>d</small></div>
+          <div class="l">Forecast horizon</div>
+        </div>
       </div>
       <div class="forecast-grid">
         <div class="chart-card reveal">
@@ -348,7 +453,11 @@
           <h3>Scene to assess</h3>
           <div class="card-sub">Post-event image · JPG · PNG · WEBP · TIFF</div>
           <div class="dropzone" id="dzDis">
-            <div id="dzDisEmpty"><div class="dz-ic">🛑</div><h4>Drop a scene here</h4><p>or click to browse</p></div>
+            <div id="dzDisEmpty">
+              <div class="dz-ic">🛑</div>
+              <h4>Drop a scene here</h4>
+              <p>or click to browse</p>
+            </div>
             <img class="preview" id="dzDisPrev" hidden />
           </div>
           <input type="file" id="disFile" accept="image/*" hidden />
@@ -366,7 +475,10 @@
           <div id="disManualBefore" hidden>
             <div class="card-sub" style="margin-top:16px">Pre-event baseline (upload)</div>
             <div class="dropzone" id="dzDisB" style="min-height:96px;padding:16px">
-              <div id="dzDisBEmpty"><div class="dz-ic" style="font-size:22px">🕘</div><p>Drop a "before" image</p></div>
+              <div id="dzDisBEmpty">
+                <div class="dz-ic" style="font-size:22px">🕘</div>
+                <p>Drop a "before" image</p>
+              </div>
               <img class="preview" id="dzDisBPrev" hidden />
             </div>
             <input type="file" id="disBefore" accept="image/*" hidden />
@@ -375,7 +487,8 @@
         <div class="card">
           <h3>Report parameters</h3>
           <div class="card-sub">Location stamped on the authority alert</div>
-          <div class="field"><label>Region / area</label><input id="disRegion" placeholder="Jammu &amp; Kashmir" /></div>
+          <div class="field"><label>Region / area</label><input id="disRegion" placeholder="Jammu &amp; Kashmir" />
+          </div>
           <div class="two">
             <div class="field"><label>Latitude</label><input id="disLat" placeholder="34.08" /></div>
             <div class="field"><label>Longitude</label><input id="disLon" placeholder="74.80" /></div>
@@ -385,8 +498,11 @@
             <button class="btn btn-primary" id="disRun" disabled>⚠ Scan for disasters</button>
             <button class="btn btn-ghost" id="disClear" hidden>Clear</button>
           </div>
-          <div class="processing" id="disProc" hidden><span class="spinner"></span>Segmenting → indices → exposure → alert…</div>
-          <div class="card-sub" style="margin-top:16px;line-height:1.65">Backbone: EuroSAT land-cover CNN<span id="disModelAcc"></span> + physically-grounded spectral indices. Decision-support triage — verify on the ground before acting.</div>
+          <div class="processing" id="disProc" hidden><span class="spinner"></span>Segmenting → indices → exposure →
+            alert…</div>
+          <div class="card-sub" style="margin-top:16px;line-height:1.65">Backbone: EuroSAT land-cover CNN<span
+              id="disModelAcc"></span> + physically-grounded spectral indices. Decision-support triage — verify on the
+            ground before acting.</div>
         </div>
       </div>
 
@@ -406,18 +522,26 @@
         </div>
         <div class="grid g2" style="align-items:start">
           <div class="card">
-            <h3>Impact overlay</h3><div class="card-sub">Affected pixels highlighted over the scene</div>
-            <img id="disOverlay" style="width:100%;border-radius:10px;border:1px solid var(--line);margin-top:10px;background:var(--panel-2)" hidden />
-            <div id="disNoOverlay" class="card-sub" style="margin-top:10px" hidden>No impact zone highlighted for this scene.</div>
+            <h3>Impact overlay</h3>
+            <div class="card-sub">Affected pixels highlighted over the scene</div>
+            <img id="disOverlay"
+              style="width:100%;border-radius:10px;border:1px solid var(--line);margin-top:10px;background:var(--panel-2)"
+              hidden />
+            <div id="disNoOverlay" class="card-sub" style="margin-top:10px" hidden>No impact zone highlighted for this
+              scene.</div>
             <div id="disBaselineBox" hidden style="margin-top:14px">
-              <div class="card-sub" style="margin-bottom:6px">Pre-event baseline · <span id="disBaselineSrc" style="color:var(--teal)"></span></div>
-              <img id="disBaseline" style="width:100%;border-radius:10px;border:1px solid var(--line);background:var(--panel-2)" />
+              <div class="card-sub" style="margin-bottom:6px">Pre-event baseline · <span id="disBaselineSrc"
+                  style="color:var(--teal)"></span></div>
+              <img id="disBaseline"
+                style="width:100%;border-radius:10px;border:1px solid var(--line);background:var(--panel-2)" />
             </div>
             <div id="disDetections" style="margin-top:16px"></div>
           </div>
           <div class="card">
-            <h3>Authority alert</h3><div class="card-sub">Copy &amp; send to J&amp;K SDMA / District Control Room</div>
-            <pre id="disAlert" style="white-space:pre-wrap;font-family:var(--font-mono);font-size:12.5px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px;line-height:1.65;color:var(--ink)"></pre>
+            <h3>Authority alert</h3>
+            <div class="card-sub">Copy &amp; send to J&amp;K SDMA / District Control Room</div>
+            <pre id="disAlert"
+              style="white-space:pre-wrap;font-family:var(--font-mono);font-size:12.5px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:10px;line-height:1.65;color:var(--ink)"></pre>
             <button class="btn btn-ghost btn-sm" id="disCopy" style="margin-top:10px">⧉ Copy alert</button>
             <div id="disExposure" style="margin-top:18px"></div>
             <div id="disLimits" class="card-sub" style="margin-top:16px;line-height:1.7"></div>
@@ -427,7 +551,10 @@
 
       <div class="card" id="disHistory" style="margin-top:22px">
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-          <div><h3 style="margin:0">Previous disaster scans</h3><div class="card-sub" style="margin-top:4px" id="disHistSub">Your recent assessments</div></div>
+          <div>
+            <h3 style="margin:0">Previous disaster scans</h3>
+            <div class="card-sub" style="margin-top:4px" id="disHistSub">Your recent assessments</div>
+          </div>
           <span class="dis-badge" id="disHistCount" style="background:#eef2f7;color:#33507a">0</span>
         </div>
         <div class="rlist" id="disHistoryList" style="margin-top:14px"></div>
@@ -441,14 +568,19 @@
           <div class="sec-num">05 — Workspace</div>
           <div class="sec-title">Analyse a satellite scene</div>
         </div>
-        <p class="sec-desc">Drop an image (e.g. a Sentinel/INSAT tile over J&amp;K), tune the options, and run the full pipeline.</p>
+        <p class="sec-desc">Drop an image (e.g. a Sentinel/INSAT tile over J&amp;K), tune the options, and run the full
+          pipeline.</p>
       </div>
       <div class="work-grid" id="uploadArea">
         <div class="card">
           <h3>Satellite image</h3>
           <div class="card-sub">JPG · PNG · WEBP · TIFF · BMP</div>
           <div class="dropzone" id="dropzone">
-            <div id="dzEmpty"><div class="dz-ic">🛰️</div><h4>Drop an image here</h4><p>or click to browse</p></div>
+            <div id="dzEmpty">
+              <div class="dz-ic">🛰️</div>
+              <h4>Drop an image here</h4>
+              <p>or click to browse</p>
+            </div>
             <img class="preview" id="dzPreview" hidden />
           </div>
           <input type="file" id="fileInput" accept="image/*" hidden />
@@ -462,49 +594,67 @@
             <div class="field"><label>Latitude</label><input id="optLat" placeholder="34.08" /></div>
             <div class="field"><label>Longitude</label><input id="optLon" placeholder="74.80" /></div>
           </div>
-          <div class="field"><label>Segmentation detail — <span id="clusterVal">6</span> clusters</label><input type="range" id="optClusters" min="4" max="10" value="6" /></div>
+          <div class="field"><label>Segmentation detail — <span id="clusterVal">6</span> clusters</label><input
+              type="range" id="optClusters" min="4" max="10" value="6" /></div>
           <div class="err-box" id="uploadErr" hidden></div>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
             <button class="btn btn-primary" id="runBtn" disabled>⚡ Run analysis</button>
             <button class="btn btn-ghost" id="clearBtn" hidden>Clear</button>
           </div>
-          <div class="processing" id="processing" hidden><span class="spinner"></span>Preprocessing → segmentation → detection → report…</div>
+          <div class="processing" id="processing" hidden><span class="spinner"></span>Preprocessing → segmentation →
+            detection → report…</div>
         </div>
       </div>
 
       <div id="resultArea" hidden style="margin-top:22px">
-        <div class="card" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:22px">
-          <div><h3 style="margin:0" id="resTitle">Analysis complete</h3><div class="card-sub" style="margin:4px 0 0" id="resMeta"></div></div>
+        <div class="card"
+          style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:22px">
+          <div>
+            <h3 style="margin:0" id="resTitle">Analysis complete</h3>
+            <div class="card-sub" style="margin:4px 0 0" id="resMeta"></div>
+          </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn btn-ghost btn-sm" id="resPdf" target="_blank" rel="noreferrer">▤ Download PDF</a>
             <button class="btn btn-primary btn-sm" id="newBtn">+ New analysis</button>
           </div>
         </div>
         <div class="frames">
-          <div class="frame"><img id="resOrig" /><div class="cap">Original (preprocessed)</div></div>
-          <div class="frame"><img id="resSeg" /><div class="cap">Land-cover segmentation</div></div>
-          <div class="frame"><img id="resDet" /><div class="cap">Object detection</div></div>
+          <div class="frame"><img id="resOrig" />
+            <div class="cap">Original (preprocessed)</div>
+          </div>
+          <div class="frame"><img id="resSeg" />
+            <div class="cap">Land-cover segmentation</div>
+          </div>
+          <div class="frame"><img id="resDet" />
+            <div class="cap">Object detection</div>
+          </div>
         </div>
         <div class="grid g2" style="margin-top:22px">
           <div class="card">
-            <h3>Land-cover distribution</h3><div class="card-sub" id="resDim"></div>
+            <h3>Land-cover distribution</h3>
+            <div class="card-sub" id="resDim"></div>
             <div class="chart-box"><canvas id="resDonut"></canvas></div>
             <div class="legend" id="resLegend"></div>
           </div>
           <div class="card">
-            <h3>Detected objects &amp; confidence</h3><div class="card-sub" id="resObjCount"></div>
+            <h3>Detected objects &amp; confidence</h3>
+            <div class="card-sub" id="resObjCount"></div>
             <div class="objchips" id="resObjs" style="margin-bottom:20px"></div>
             <div class="gauge-wrap">
               <div class="gauge">
                 <svg width="108" height="108">
                   <circle cx="54" cy="54" r="46" fill="none" stroke="#e6dfce" stroke-width="9" />
-                  <circle id="gaugeArc" cx="54" cy="54" r="46" fill="none" stroke="var(--teal)" stroke-width="9" stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289" style="transition:stroke-dashoffset .8s ease" />
+                  <circle id="gaugeArc" cx="54" cy="54" r="46" fill="none" stroke="var(--teal)" stroke-width="9"
+                    stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289"
+                    style="transition:stroke-dashoffset .8s ease" />
                 </svg>
                 <div class="gval" id="gaugeVal">0%</div>
               </div>
               <div>
                 <div class="mono" style="font-size:12px;color:var(--muted)">MODEL CONFIDENCE</div>
-                <div class="mono" style="font-size:12px;color:var(--muted);margin-top:8px;max-width:26ch;line-height:1.6">Mean class probability across the scene (EuroSAT-CNN + spectral-texture).</div>
+                <div class="mono"
+                  style="font-size:12px;color:var(--muted);margin-top:8px;max-width:26ch;line-height:1.6">Mean class
+                  probability across the scene (EuroSAT-CNN + spectral-texture).</div>
               </div>
             </div>
           </div>
@@ -515,38 +665,61 @@
     <!-- 06 · CHANGE DETECTION -->
     <section id="change">
       <div class="sec-head">
-        <div><div class="sec-num">06 — Change detection</div><div class="sec-title">Compare two moments in time</div></div>
-        <p class="sec-desc">Upload two co-located scenes (before &amp; after) to reveal what changed and by how much.</p>
+        <div>
+          <div class="sec-num">06 — Change detection</div>
+          <div class="sec-title">Compare two moments in time</div>
+        </div>
+        <p class="sec-desc">Upload two co-located scenes (before &amp; after) to reveal what changed and by how much.
+        </p>
       </div>
       <div class="card">
         <div class="grid g2">
           <div>
             <div class="field"><label>Before</label></div>
-            <div class="dropzone" id="beforeDz"><div id="beforeEmpty"><div class="dz-ic" style="font-size:26px">🖼️</div><p>Click or drop the "before" image</p></div><img class="preview" id="beforePrev" hidden /></div>
+            <div class="dropzone" id="beforeDz">
+              <div id="beforeEmpty">
+                <div class="dz-ic" style="font-size:26px">🖼️</div>
+                <p>Click or drop the "before" image</p>
+              </div><img class="preview" id="beforePrev" hidden />
+            </div>
             <input type="file" id="beforeInput" accept="image/*" hidden />
           </div>
           <div>
             <div class="field"><label>After</label></div>
-            <div class="dropzone" id="afterDz"><div id="afterEmpty"><div class="dz-ic" style="font-size:26px">🖼️</div><p>Click or drop the "after" image</p></div><img class="preview" id="afterPrev" hidden /></div>
+            <div class="dropzone" id="afterDz">
+              <div id="afterEmpty">
+                <div class="dz-ic" style="font-size:26px">🖼️</div>
+                <p>Click or drop the "after" image</p>
+              </div><img class="preview" id="afterPrev" hidden />
+            </div>
             <input type="file" id="afterInput" accept="image/*" hidden />
           </div>
         </div>
-        <div class="field" style="max-width:340px;margin-top:16px"><label>Analysis name</label><input id="changeName" placeholder="e.g. Dal_Lake_2015_2026" /></div>
+        <div class="field" style="max-width:340px;margin-top:16px"><label>Analysis name</label><input id="changeName"
+            placeholder="e.g. Dal_Lake_2015_2026" /></div>
         <div class="err-box" id="changeErr" hidden></div>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           <button class="btn btn-primary" id="changeBtn" disabled>⇄ Detect changes</button>
           <button class="btn btn-ghost" id="changeClear" hidden>Clear</button>
         </div>
-        <div class="processing" id="changeProc" hidden><span class="spinner"></span>Aligning &amp; differencing scenes…</div>
+        <div class="processing" id="changeProc" hidden><span class="spinner"></span>Aligning &amp; differencing scenes…
+        </div>
       </div>
       <div id="changeResult" hidden style="margin-top:22px">
         <div class="frames">
-          <div class="frame"><img id="chBefore" /><div class="cap">Before</div></div>
-          <div class="frame"><img id="chAfter" /><div class="cap">After</div></div>
-          <div class="frame"><img id="chMap" /><div class="cap">Change map — red = changed</div></div>
+          <div class="frame"><img id="chBefore" />
+            <div class="cap">Before</div>
+          </div>
+          <div class="frame"><img id="chAfter" />
+            <div class="cap">After</div>
+          </div>
+          <div class="frame"><img id="chMap" />
+            <div class="cap">Change map — red = changed</div>
+          </div>
         </div>
         <div class="grid g2" style="margin-top:22px">
-          <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+          <div class="card"
+            style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
             <div class="mono" style="font-size:12px;color:var(--muted)">CHANGED AREA</div>
             <div class="conf-big" style="color:var(--terracotta)" id="chPercent">0%</div>
             <div class="mono" style="font-size:12px;color:var(--muted)" id="chConf"></div>
@@ -555,20 +728,28 @@
               <div class="lg"><span class="sw" style="background:var(--forest)"></span>No change</div>
             </div>
           </div>
-          <div class="card"><h3>Land-cover shift</h3><div class="card-sub">Change in each class (after − before)</div><div class="chart-box"><canvas id="chDeltaChart"></canvas></div></div>
+          <div class="card">
+            <h3>Land-cover shift</h3>
+            <div class="card-sub">Change in each class (after − before)</div>
+            <div class="chart-box"><canvas id="chDeltaChart"></canvas></div>
+          </div>
         </div>
-        <div class="card" id="chEcoCard" style="margin-top:16px;display:none;background:rgba(46,125,50,0.08);border:1px solid rgba(46,125,50,0.25);border-radius:12px;padding:14px 18px">
+        <div class="card" id="chEcoCard"
+          style="margin-top:16px;display:none;background:rgba(46,125,50,0.08);border:1px solid rgba(46,125,50,0.25);border-radius:12px;padding:14px 18px">
           <div style="display:flex;align-items:center;gap:10px">
             <span style="font-size:20px">🌿</span>
             <div>
-              <div style="font-size:13px;font-weight:700;color:var(--forest);text-transform:uppercase;letter-spacing:0.04em">Ecological Biomass &amp; Carbon Accounting (IPCC / FSI)</div>
+              <div
+                style="font-size:13px;font-weight:700;color:var(--forest);text-transform:uppercase;letter-spacing:0.04em">
+                Ecological Biomass &amp; Carbon Accounting (IPCC / FSI)</div>
               <div id="chEcoDetails" style="font-size:12.5px;margin-top:4px;color:var(--text)"></div>
             </div>
           </div>
         </div>
       </div>
       <div class="card" id="changeHistory" hidden style="margin-top:22px">
-        <h3>Previous change analyses</h3><div class="rlist" id="changeHistoryList" style="margin-top:12px"></div>
+        <h3>Previous change analyses</h3>
+        <div class="rlist" id="changeHistoryList" style="margin-top:12px"></div>
       </div>
 
     </section>
@@ -576,38 +757,75 @@
     <!-- 07 · DASHBOARD -->
     <section id="dashboard">
       <div class="sec-head">
-        <div><div class="sec-num">07 — Satellite dashboard</div><div class="sec-title">Live statistics</div></div>
+        <div>
+          <div class="sec-num">07 — Satellite dashboard</div>
+          <div class="sec-title">Live statistics</div>
+        </div>
         <p class="sec-desc" id="dashSub">Aggregated across every scene you have analysed.</p>
       </div>
       <div id="dashEmpty" class="card empty" hidden>
-        <div class="em-ic">🛰️</div><h3>No analyses yet</h3>
+        <div class="em-ic">🛰️</div>
+        <h3>No analyses yet</h3>
         <p style="margin-top:8px">Analyse your first scene in the workspace above to populate the dashboard.</p>
       </div>
       <div id="dashContent" hidden>
         <div class="grid g2">
-          <div class="card"><h3>Land-cover distribution</h3><div class="card-sub">Average composition across all scenes</div><div class="chart-box"><canvas id="dashDonut"></canvas></div></div>
-          <div class="card"><h3>Area change</h3><div class="card-sub">Recent scenes vs earlier scenes (Δ %)</div><div class="chart-box"><canvas id="dashBar"></canvas></div></div>
+          <div class="card">
+            <h3>Land-cover distribution</h3>
+            <div class="card-sub">Average composition across all scenes</div>
+            <div class="chart-box"><canvas id="dashDonut"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Area change</h3>
+            <div class="card-sub">Recent scenes vs earlier scenes (Δ %)</div>
+            <div class="chart-box"><canvas id="dashBar"></canvas></div>
+          </div>
         </div>
         <div class="grid g2" style="margin-top:22px">
-          <div class="card"><h3>Detected objects</h3><div class="card-sub" id="dashObjSub">Total detections across all scenes</div><div class="chart-box"><canvas id="dashObjChart"></canvas></div></div>
-          <div class="card"><h3>Confidence trend</h3><div class="card-sub" id="dashConfSub">Model confidence per scene</div><div class="chart-box"><canvas id="dashLine"></canvas></div></div>
+          <div class="card">
+            <h3>Detected objects</h3>
+            <div class="card-sub" id="dashObjSub">Total detections across all scenes</div>
+            <div class="chart-box"><canvas id="dashObjChart"></canvas></div>
+          </div>
+          <div class="card">
+            <h3>Confidence trend</h3>
+            <div class="card-sub" id="dashConfSub">Model confidence per scene</div>
+            <div class="chart-box"><canvas id="dashLine"></canvas></div>
+          </div>
         </div>
-        <div class="card" style="margin-top:22px"><h3>Recent analyses</h3><div class="rlist" id="recentList" style="margin-top:12px"></div></div>
+        <div class="card" style="margin-top:22px">
+          <h3>Recent analyses</h3>
+          <div class="rlist" id="recentList" style="margin-top:12px"></div>
+        </div>
       </div>
     </section>
 
     <!-- 08 · REPORTS -->
     <section id="reports">
       <div class="sec-head">
-        <div><div class="sec-num">08 — Reports</div><div class="sec-title">Downloadable PDF reports</div></div>
+        <div>
+          <div class="sec-num">08 — Reports</div>
+          <div class="sec-title">Downloadable PDF reports</div>
+        </div>
         <p class="sec-desc">Every analysis auto-generates a PDF with imagery, charts and statistics.</p>
       </div>
       <div class="mini-stats" id="repStats" style="margin-bottom:22px">
-        <div class="mini-stat"><div class="n" id="repCount">0</div><div class="l">Reports generated</div></div>
-        <div class="mini-stat"><div class="n">PDF</div><div class="l">Format · portable</div></div>
-        <div class="mini-stat"><div class="n">4</div><div class="l">Sections per report</div></div>
+        <div class="mini-stat">
+          <div class="n" id="repCount">0</div>
+          <div class="l">Reports generated</div>
+        </div>
+        <div class="mini-stat">
+          <div class="n">PDF</div>
+          <div class="l">Format · portable</div>
+        </div>
+        <div class="mini-stat">
+          <div class="n">4</div>
+          <div class="l">Sections per report</div>
+        </div>
       </div>
-      <div class="card"><div class="rlist" id="reportsList"></div></div>
+      <div class="card">
+        <div class="rlist" id="reportsList"></div>
+      </div>
     </section>
 
     <footer>
@@ -617,7 +835,7 @@
     </footer>
   </div>
 
-  <script src="js/satellite.js"></script>
+  <script src="js/satellite.js?v=5"></script>
 </body>
 
 </html>
