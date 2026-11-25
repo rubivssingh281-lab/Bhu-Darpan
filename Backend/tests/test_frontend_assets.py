@@ -20,6 +20,7 @@ def test_asset_files_exist():
         assert (base / "css" / "satellite.css").is_file(), f"Missing satellite.css in {base}"
         assert (base / "js" / "landing.js").is_file(), f"Missing landing.js in {base}"
         assert (base / "js" / "satellite.js").is_file(), f"Missing satellite.js in {base}"
+        assert (base / "js" / "firebase-config.js").is_file(), f"Missing firebase-config.js in {base}"
         assert (base / "images" / "logo.png").is_file(), f"Missing logo.png in {base}/images"
         assert (base / "images" / "jk_satellite.jpg").is_file(), f"Missing jk_satellite.jpg in {base}/images"
 
@@ -40,7 +41,7 @@ def test_html_references_resolve():
             for href in link_pattern.findall(content):
                 if href.startswith("http://") or href.startswith("https://") or href.startswith("/"):
                     continue
-                target = base / href
+                target = base / href.split("?")[0]
                 assert target.is_file(), f"Broken stylesheet/icon reference '{href}' in {html_file}"
                 assert target.stat().st_size > 0, f"Empty stylesheet/icon '{href}' in {html_file}"
 
@@ -48,7 +49,7 @@ def test_html_references_resolve():
             for src in script_pattern.findall(content):
                 if src.startswith("http://") or src.startswith("https://") or src.startswith("/"):
                     continue
-                target = base / src
+                target = base / src.split("?")[0]
                 assert target.is_file(), f"Broken script reference '{src}' in {html_file}"
                 assert target.stat().st_size > 0, f"Empty script '{src}' in {html_file}"
 
@@ -73,6 +74,7 @@ def test_frontend_webapp_synchronization():
         "css/satellite.css",
         "js/landing.js",
         "js/satellite.js",
+        "js/firebase-config.js",
         "images/logo.png",
         "images/jk_satellite.jpg",
     ]

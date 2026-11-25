@@ -9,7 +9,9 @@
   <link rel="apple-touch-icon" href="images/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -37,7 +39,8 @@
     </nav>
     <div class="status">
       <a class="sat-link" href="/satellite.html" title="Satellite image analysis module">Satellite module →</a>
-      <div class="live" id="liveBadge" style="cursor:pointer" title="Pull the latest available data (near-real-time)"><span class="dot"></span><span id="liveText">Assimilating…</span></div>
+      <div class="live" id="liveBadge" style="cursor:pointer" title="Pull the latest available data (near-real-time)">
+        <span class="dot"></span><span id="liveText">Assimilating…</span></div>
     </div>
   </aside>
 
@@ -67,35 +70,72 @@
         </div>
         <div class="telemetry" id="ovTelemetry">
           <div class="tele-cap">LIVE CLIMATE DOWNLINK · JAMMU &amp; KASHMIR</div>
-          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Rainfall anomaly</div><div><span class="tele-value" id="tRain">—</span><span class="tele-unit">% of normal</span></div></div>
-          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Surface temp anomaly</div><div><span class="tele-value" id="tTemp">—</span><span class="tele-unit">°C</span></div></div>
-          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Soil moisture index</div><div><span class="tele-value" id="tSoil">—</span><span class="tele-unit">(0–1)</span></div></div>
-          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Drought risk class</div><div><span class="tele-value" id="tDrought">—</span></div></div>
-          <div class="tele-row"><div class="tele-label"><span class="pulse"></span>Last assimilation</div><div><span class="tele-value" style="font-size:14px;color:var(--muted)" id="tAsOf">—</span></div></div>
+          <div class="tele-row">
+            <div class="tele-label"><span class="pulse"></span>Rainfall anomaly</div>
+            <div><span class="tele-value" id="tRain">—</span><span class="tele-unit">% of normal</span></div>
+          </div>
+          <div class="tele-row">
+            <div class="tele-label"><span class="pulse"></span>Surface temp anomaly</div>
+            <div><span class="tele-value" id="tTemp">—</span><span class="tele-unit">°C</span></div>
+          </div>
+          <div class="tele-row">
+            <div class="tele-label"><span class="pulse"></span>Soil moisture index</div>
+            <div><span class="tele-value" id="tSoil">—</span><span class="tele-unit">(0–1)</span></div>
+          </div>
+          <div class="tele-row">
+            <div class="tele-label"><span class="pulse"></span>Drought risk class</div>
+            <div><span class="tele-value" id="tDrought">—</span></div>
+          </div>
+          <div class="tele-row">
+            <div class="tele-label"><span class="pulse"></span>Last assimilation</div>
+            <div><span class="tele-value" style="font-size:14px;color:var(--muted)" id="tAsOf">—</span></div>
+          </div>
         </div>
       </div>
       <div class="statband" id="ovStatband"></div>
-      <div class="cs" id="ovLive" style="margin-top:16px;color:var(--seaweed)"><span class="dot" style="display:inline-block;margin-right:6px"></span>Live · initialising…</div>
+      <div class="cs" id="ovLive" style="margin-top:16px;color:var(--seaweed)"><span class="dot"
+          style="display:inline-block;margin-right:6px"></span>Live · initialising…</div>
 
       <div class="grid g2" style="margin-top:26px;align-items:start">
         <div class="card">
           <h3>Jammu &amp; Kashmir — region at a glance</h3>
           <div class="cs">Physiographic &amp; demographic context of the pilot region</div>
           <div class="factgrid">
-            <div><div class="fk">Total area</div><div class="fv">2,22,236 km²</div></div>
-            <div><div class="fk">Elevation range</div><div class="fv">247 – 7,135 m</div></div>
-            <div><div class="fk">Major rivers</div><div class="fv">Jhelum · Chenab · Indus · Ravi</div></div>
-            <div><div class="fk">Forest cover</div><div class="fv">~39% of area</div></div>
-            <div><div class="fk">Population</div><div class="fv">~1.36 crore</div></div>
-            <div><div class="fk">Districts</div><div class="fv">20 · 9 monitored</div></div>
+            <div>
+              <div class="fk">Total area</div>
+              <div class="fv">2,22,236 km²</div>
+            </div>
+            <div>
+              <div class="fk">Elevation range</div>
+              <div class="fv">247 – 7,135 m</div>
+            </div>
+            <div>
+              <div class="fk">Major rivers</div>
+              <div class="fv">Jhelum · Chenab · Indus · Ravi</div>
+            </div>
+            <div>
+              <div class="fk">Forest cover</div>
+              <div class="fv">~39% of area</div>
+            </div>
+            <div>
+              <div class="fk">Population</div>
+              <div class="fv">~1.36 crore</div>
+            </div>
+            <div>
+              <div class="fk">Districts</div>
+              <div class="fv">20 · 9 monitored</div>
+            </div>
           </div>
           <div class="cs" style="margin-top:16px;line-height:1.6">Steep Himalayan gradients, high year-to-year
-            variability and recurring water stress make J&amp;K a demanding, high-value test case for a climate twin.</div>
+            variability and recurring water stress make J&amp;K a demanding, high-value test case for a climate twin.
+          </div>
         </div>
         <div class="card">
           <h3>This season so far</h3>
           <div class="cs">Live seasonal signals from the current record · detailed on the Hazards tab</div>
-          <div id="ovSeason" class="season-grid" style="margin-top:16px"><div class="loading">Loading seasonal signals…</div></div>
+          <div id="ovSeason" class="season-grid" style="margin-top:16px">
+            <div class="loading">Loading seasonal signals…</div>
+          </div>
         </div>
       </div>
     </section>
@@ -105,7 +145,8 @@
       <div class="view-head">
         <div class="eb">Interactive geospatial layer</div>
         <h2>District climate map</h2>
-        <p>Real gridded anomaly field (per-cell value − climatology) with markers sampled from the grid. Switch region (J&amp;K / All India) and layer; use the time control to view the ML forecast; hover any cell.</p>
+        <p>Real gridded anomaly field (per-cell value − climatology) with markers sampled from the grid. Switch region
+          (J&amp;K / All India) and layer; use the time control to view the ML forecast; hover any cell.</p>
       </div>
       <div class="grid map-grid">
         <div class="card">
@@ -124,9 +165,19 @@
           <div class="distinfo" id="distinfo">Hover the map to inspect a grid cell or district.</div>
         </div>
         <div>
-          <div class="card" style="margin-bottom:20px"><h3>Layer legend</h3><div class="cs">Anomaly severity</div><div id="legend"></div></div>
-          <div class="card" style="margin-bottom:20px"><h3 id="monHead">Districts monitored</h3><div class="cs" id="monSub">Sampled from the grid</div><div id="monitored" style="font-family:var(--fm);font-size:12.5px;color:var(--muted);line-height:2.1"></div></div>
-          <div class="card"><h3>Pilot snapshot</h3><div class="cs">Twin configuration</div>
+          <div class="card" style="margin-bottom:20px">
+            <h3>Layer legend</h3>
+            <div class="cs">Anomaly severity</div>
+            <div id="legend"></div>
+          </div>
+          <div class="card" style="margin-bottom:20px">
+            <h3 id="monHead">Districts monitored</h3>
+            <div class="cs" id="monSub">Sampled from the grid</div>
+            <div id="monitored" style="font-family:var(--fm);font-size:12.5px;color:var(--muted);line-height:2.1"></div>
+          </div>
+          <div class="card">
+            <h3>Pilot snapshot</h3>
+            <div class="cs">Twin configuration</div>
             <div class="snap"><span>Grid resolution</span><span>4 km</span></div>
             <div class="snap"><span>Fusion cadence</span><span>Daily</span></div>
             <div class="snap"><span>Forecast horizon</span><span>14 days</span></div>
@@ -142,20 +193,35 @@
       <div class="view-head">
         <div class="eb">Short-range prediction</div>
         <h2>14-day rainfall &amp; temperature outlook</h2>
-        <p>A skill-optimised ensemble — an LSTM, gradient-boosted trees and damped persistence blended around a trend-adjusted climatology — seeded from the latest real observations. Bands show the backtested error at each lead; every model is scored on the same 14-day backtest.</p>
+        <p>A skill-optimised ensemble — an LSTM, gradient-boosted trees and damped persistence blended around a
+          trend-adjusted climatology — seeded from the latest real observations. Bands show the backtested error at each
+          lead; every model is scored on the same 14-day backtest.</p>
         <div class="cs" id="fcMeta" style="margin-top:8px;color:var(--seaweed)">Issuing live outlook…</div>
       </div>
       <div class="grid g2">
-        <div class="card"><h3>Rainfall forecast</h3><div class="cs" id="rainFcSub">mm/day · observed vs predicted · ±1σ</div><div class="chart-box"><canvas id="rainFc"></canvas></div></div>
-        <div class="card"><h3>Temperature forecast</h3><div class="cs" id="tempFcSub">°C · observed vs predicted · ±1σ</div><div class="chart-box"><canvas id="tempFc"></canvas></div></div>
+        <div class="card">
+          <h3>Rainfall forecast</h3>
+          <div class="cs" id="rainFcSub">mm/day · observed vs predicted · ±1σ</div>
+          <div class="chart-box"><canvas id="rainFc"></canvas></div>
+        </div>
+        <div class="card">
+          <h3>Temperature forecast</h3>
+          <div class="cs" id="tempFcSub">°C · observed vs predicted · ±1σ</div>
+          <div class="chart-box"><canvas id="tempFc"></canvas></div>
+        </div>
       </div>
       <div class="card" style="margin-top:20px">
-        <h3>Forecast skill &amp; validation</h3><div class="cs">Unified 14-day backtest · every model scored identically on held-out issue dates</div>
+        <h3>Forecast skill &amp; validation</h3>
+        <div class="cs">Unified 14-day backtest · every model scored identically on held-out issue dates</div>
         <div class="skill" id="skill"></div>
       </div>
       <div class="card" style="margin-top:20px">
-        <h3>Gridded per-cell forecast (spatial)</h3><div class="cs">Optimised damped persistence on a daily climatology (a per-cell GBRT was tested and not selected) · explore leads on the Climate Map</div>
-        <div class="skill" id="gridSkill"><div class="cs">Loading spatial validation…</div></div>
+        <h3>Gridded per-cell forecast (spatial)</h3>
+        <div class="cs">Optimised damped persistence on a daily climatology (a per-cell GBRT was tested and not
+          selected) · explore leads on the Climate Map</div>
+        <div class="skill" id="gridSkill">
+          <div class="cs">Loading spatial validation…</div>
+        </div>
       </div>
     </section>
 
@@ -164,23 +230,28 @@
       <div class="view-head">
         <div class="eb">Hazard intelligence</div>
         <h2>Hazards, trends &amp; extremes</h2>
-        <p>Standard climate-hazard indices, long-term trends and record extremes — computed from the real J&amp;K daily record (1973 onward), extended to the present with live NASA POWER data.</p>
+        <p>Standard climate-hazard indices, long-term trends and record extremes — computed from the real J&amp;K daily
+          record (1973 onward), extended to the present with live NASA POWER data.</p>
       </div>
       <div class="grid g3">
         <div class="card">
-          <h3>Drought monitor</h3><div class="cs" id="drSub">SPI-3</div>
+          <h3>Drought monitor</h3>
+          <div class="cs" id="drSub">SPI-3</div>
           <div class="hz-big" id="drVal">—</div>
           <div style="margin:6px 0 4px"><span class="pill" id="drClass">—</span></div>
           <div class="chart-sm" style="margin-top:12px"><canvas id="drChart"></canvas></div>
         </div>
         <div class="card">
-          <h3>Heatwave</h3><div class="cs" id="hwSub">Daily-max heat stress</div>
+          <h3>Heatwave</h3>
+          <div class="cs" id="hwSub">Daily-max heat stress</div>
           <div style="margin:6px 0"><span class="pill" id="hwStatus" style="font-size:14px">—</span></div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Recent daily-max anomaly: <b id="hwAnom" style="color:var(--ink)">—</b></div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Recent daily-max anomaly: <b id="hwAnom"
+              style="color:var(--ink)">—</b></div>
           <div class="chart-sm"><canvas id="hwChart"></canvas></div>
         </div>
         <div class="card">
-          <h3>Monsoon (JJAS)</h3><div class="cs" id="mnSub">Seasonal progress</div>
+          <h3>Monsoon (JJAS)</h3>
+          <div class="cs" id="mnSub">Seasonal progress</div>
           <div class="hz-big" id="mnProg">—</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="mnDetail"></div>
           <div class="chart-sm"><canvas id="mnChart"></canvas></div>
@@ -189,31 +260,48 @@
 
       <div class="grid g3" style="margin-top:20px">
         <div class="card">
-          <h3>Warming trend</h3><div class="cs" id="wtSub">Annual mean temperature</div>
+          <h3>Warming trend</h3>
+          <div class="cs" id="wtSub">Annual mean temperature</div>
           <div class="hz-big" id="wtVal" style="color:#c9773f">—</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="wtDetail"></div>
           <div class="chart-sm"><canvas id="wtChart"></canvas></div>
         </div>
         <div class="card">
-          <h3>Extreme rainfall</h3><div class="cs" id="erSub">Heavy-rain days / year</div>
+          <h3>Extreme rainfall</h3>
+          <div class="cs" id="erSub">Heavy-rain days / year</div>
           <div class="hz-big" id="erVal" style="color:#2f7d9a">—</div>
           <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="erDetail"></div>
           <div class="chart-sm"><canvas id="erChart"></canvas></div>
         </div>
         <div class="card">
-          <h3>Cold wave &amp; frost</h3><div class="cs" id="cwSub">Frost days / year</div>
+          <h3>Cold wave &amp; frost</h3>
+          <div class="cs" id="cwSub">Frost days / year</div>
           <div style="margin:6px 0"><span class="pill" id="cwStatus" style="font-size:14px">—</span></div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Latest year: <b id="cwVal" style="color:var(--ink)">—</b></div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:8px">Latest year: <b id="cwVal"
+              style="color:var(--ink)">—</b></div>
           <div class="chart-sm"><canvas id="cwChart"></canvas></div>
         </div>
       </div>
 
       <div class="card" style="margin-top:20px">
-        <h3>Climate records</h3><div class="cs" id="rcSub">All-time daily extremes</div>
+        <h3>Climate records</h3>
+        <div class="cs" id="rcSub">All-time daily extremes</div>
         <div class="grid g3" style="gap:14px;margin-top:8px">
-          <div class="imp"><div class="k">Hottest day</div><div class="v" id="rcHot" style="color:#d2694a">—</div><div class="cs" id="rcHotD" style="margin:2px 0 0"></div></div>
-          <div class="imp"><div class="k">Coldest day</div><div class="v" id="rcCold" style="color:#3b9be6">—</div><div class="cs" id="rcColdD" style="margin:2px 0 0"></div></div>
-          <div class="imp"><div class="k">Wettest day</div><div class="v" id="rcWet" style="color:#2f7d9a">—</div><div class="cs" id="rcWetD" style="margin:2px 0 0"></div></div>
+          <div class="imp">
+            <div class="k">Hottest day</div>
+            <div class="v" id="rcHot" style="color:#d2694a">—</div>
+            <div class="cs" id="rcHotD" style="margin:2px 0 0"></div>
+          </div>
+          <div class="imp">
+            <div class="k">Coldest day</div>
+            <div class="v" id="rcCold" style="color:#3b9be6">—</div>
+            <div class="cs" id="rcColdD" style="margin:2px 0 0"></div>
+          </div>
+          <div class="imp">
+            <div class="k">Wettest day</div>
+            <div class="v" id="rcWet" style="color:#2f7d9a">—</div>
+            <div class="cs" id="rcWetD" style="margin:2px 0 0"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -223,11 +311,13 @@
       <div class="view-head">
         <div class="eb">Scenario engine</div>
         <h2>What-if simulator</h2>
-        <p>Perturb rainfall and temperature against the fused baseline and watch the twin propagate impacts through a physically-grounded water-balance model.</p>
+        <p>Perturb rainfall and temperature against the fused baseline and watch the twin propagate impacts through a
+          physically-grounded water-balance model.</p>
       </div>
       <div class="grid g2">
         <div class="card">
-          <h3>Atmospheric forcing</h3><div class="cs">Drag to explore a scenario</div>
+          <h3>Atmospheric forcing</h3>
+          <div class="cs">Drag to explore a scenario</div>
           <div style="margin:18px 0 26px">
             <div class="slbl"><span>Rainfall deviation from normal</span><b id="rainV">0%</b></div>
             <input type="range" id="rainS" min="-50" max="50" value="0" step="1">
@@ -245,29 +335,64 @@
             <button class="toggle" data-r="0" data-t="0">Reset</button>
           </div>
           <div class="grid g2" style="gap:14px;margin-top:24px">
-            <div class="imp"><div class="k">Soil-moisture index</div><div class="v" id="iSoil">—</div></div>
-            <div class="imp"><div class="k">Drought-risk score</div><div class="v" id="iDrought">—</div></div>
-            <div class="imp"><div class="k">Crop-water stress</div><div class="v" id="iCrop">—</div></div>
-            <div class="imp"><div class="k">Reservoir inflow</div><div class="v" id="iWater">—</div></div>
+            <div class="imp">
+              <div class="k">Soil-moisture index</div>
+              <div class="v" id="iSoil">—</div>
+            </div>
+            <div class="imp">
+              <div class="k">Drought-risk score</div>
+              <div class="v" id="iDrought">—</div>
+            </div>
+            <div class="imp">
+              <div class="k">Crop-water stress</div>
+              <div class="v" id="iCrop">—</div>
+            </div>
+            <div class="imp">
+              <div class="k">Reservoir inflow</div>
+              <div class="v" id="iWater">—</div>
+            </div>
           </div>
         </div>
-        <div class="card"><h3>Baseline vs scenario</h3><div class="cs">Normalised impact comparison</div><div class="chart-box"><canvas id="simChart"></canvas></div></div>
-      </div>
-
-      <div class="card" style="margin-top:20px">
-        <h3>Scenario outcome</h3><div class="cs">Plain-language summary &amp; daily water balance</div>
-        <p id="simNarrative" style="font-size:14px;color:var(--ink-soft);margin:12px 0 6px;max-width:90ch">Adjust a scenario to see its outcome.</p>
-        <div class="cs" id="simBaseline" style="margin:0 0 18px"></div>
-        <div class="grid g4" style="gap:14px">
-          <div class="imp"><div class="k">Rainfall in</div><div class="v" id="wbRain" style="color:#2f7d9a">—</div><div class="cs" style="margin-top:2px">mm/day</div></div>
-          <div class="imp"><div class="k">Evapotranspiration out</div><div class="v" id="wbEt" style="color:#d2694a">—</div><div class="cs" style="margin-top:2px">mm/day</div></div>
-          <div class="imp"><div class="k">Net balance</div><div class="v" id="wbNet">—</div><div class="cs" style="margin-top:2px">mm/day</div></div>
-          <div class="imp"><div class="k">Shift vs normal</div><div class="v" id="wbDelta">—</div><div class="cs" style="margin-top:2px">mm/day</div></div>
+        <div class="card">
+          <h3>Baseline vs scenario</h3>
+          <div class="cs">Normalised impact comparison</div>
+          <div class="chart-box"><canvas id="simChart"></canvas></div>
         </div>
       </div>
 
       <div class="card" style="margin-top:20px">
-        <h3>Sector impact assessment</h3><div class="cs">How the scenario propagates to J&amp;K sectors</div>
+        <h3>Scenario outcome</h3>
+        <div class="cs">Plain-language summary &amp; daily water balance</div>
+        <p id="simNarrative" style="font-size:14px;color:var(--ink-soft);margin:12px 0 6px;max-width:90ch">Adjust a
+          scenario to see its outcome.</p>
+        <div class="cs" id="simBaseline" style="margin:0 0 18px"></div>
+        <div class="grid g4" style="gap:14px">
+          <div class="imp">
+            <div class="k">Rainfall in</div>
+            <div class="v" id="wbRain" style="color:#2f7d9a">—</div>
+            <div class="cs" style="margin-top:2px">mm/day</div>
+          </div>
+          <div class="imp">
+            <div class="k">Evapotranspiration out</div>
+            <div class="v" id="wbEt" style="color:#d2694a">—</div>
+            <div class="cs" style="margin-top:2px">mm/day</div>
+          </div>
+          <div class="imp">
+            <div class="k">Net balance</div>
+            <div class="v" id="wbNet">—</div>
+            <div class="cs" style="margin-top:2px">mm/day</div>
+          </div>
+          <div class="imp">
+            <div class="k">Shift vs normal</div>
+            <div class="v" id="wbDelta">—</div>
+            <div class="cs" style="margin-top:2px">mm/day</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px">
+        <h3>Sector impact assessment</h3>
+        <div class="cs">How the scenario propagates to J&amp;K sectors</div>
         <div class="grid g3" id="simSectors" style="gap:14px;margin-top:12px"></div>
       </div>
     </section>
@@ -286,7 +411,10 @@
         <div class="grid g2" style="align-items:stretch;gap:26px">
           <div class="data-hero-fig">
             <div class="fig-head">
-              <div><div class="eb" style="color:var(--seaweed)">Live gridded field</div><div class="cs" id="gridTitle" style="margin-top:2px">Gridded field preview</div></div>
+              <div>
+                <div class="eb" style="color:var(--seaweed)">Live gridded field</div>
+                <div class="cs" id="gridTitle" style="margin-top:2px">Gridded field preview</div>
+              </div>
               <div class="live" style="cursor:default"><span class="dot"></span>NetCDF · 0.25°</div>
             </div>
             <figure class="fig-frame">
@@ -297,8 +425,11 @@
           </div>
           <div class="data-hero-side">
             <h3 style="margin-bottom:2px">Live gridded data ingestion</h3>
-            <div class="cs" style="margin-bottom:14px">Real NetCDF grids · download → decode → regrid (0.25°) → store</div>
-            <div class="dlist" id="gridList"><div class="loading" style="padding:16px">Loading ingested grids…</div></div>
+            <div class="cs" style="margin-bottom:14px">Real NetCDF grids · download → decode → regrid (0.25°) → store
+            </div>
+            <div class="dlist" id="gridList">
+              <div class="loading" style="padding:16px">Loading ingested grids…</div>
+            </div>
             <div class="legend" style="margin-top:14px" id="gridSources"></div>
           </div>
         </div>
@@ -318,11 +449,16 @@
             <div id="fuseSources"></div>
             <div class="skill" id="fuseVal" style="margin-top:16px"></div>
             <div class="eb" style="color:var(--seaweed);margin:22px 0 8px">Fused field by district</div>
-            <div id="fuseDistricts"><div class="loading" style="padding:10px">Assimilating…</div></div>
+            <div id="fuseDistricts">
+              <div class="loading" style="padding:10px">Assimilating…</div>
+            </div>
           </div>
           <div>
             <div class="fig-head">
-              <div><div class="eb" style="color:var(--seaweed)">Inter-source uncertainty</div><div class="cs" id="fuseSpreadTitle" style="margin-top:2px">Where the two reanalyses disagree</div></div>
+              <div>
+                <div class="eb" style="color:var(--seaweed)">Inter-source uncertainty</div>
+                <div class="cs" id="fuseSpreadTitle" style="margin-top:2px">Where the two reanalyses disagree</div>
+              </div>
               <div class="live" style="cursor:default"><span class="dot"></span>|POWER − ERA5|</div>
             </div>
             <figure class="fig-frame"><canvas id="fuseHeat" width="870" height="630"></canvas></figure>
@@ -330,9 +466,25 @@
           </div>
         </div>
       </div>
-      <div class="card" style="margin-bottom:20px"><h3>Data sources</h3><div class="cs" id="dataSpan"></div><div id="srcFull"></div></div>
-      <div class="card"><h3>Model registry</h3><div class="cs">Trained AI models · validated on a held-out time split</div>
-        <table class="tbl"><thead><tr><th>Variable</th><th>Model</th><th>RMSE (vs climatology)</th><th>Skill</th></tr></thead><tbody id="models"></tbody></table>
+      <div class="card" style="margin-bottom:20px">
+        <h3>Data sources</h3>
+        <div class="cs" id="dataSpan"></div>
+        <div id="srcFull"></div>
+      </div>
+      <div class="card">
+        <h3>Model registry</h3>
+        <div class="cs">Trained AI models · validated on a held-out time split</div>
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Variable</th>
+              <th>Model</th>
+              <th>RMSE (vs climatology)</th>
+              <th>Skill</th>
+            </tr>
+          </thead>
+          <tbody id="models"></tbody>
+        </table>
       </div>
     </section>
 
@@ -347,18 +499,28 @@
 
       <div class="card" style="margin-top:24px">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-          <div><h3>Live weather across Jammu &amp; Kashmir</h3><div class="cs" id="wxSub">Real-time conditions</div></div>
+          <div>
+            <h3>Live weather across Jammu &amp; Kashmir</h3>
+            <div class="cs" id="wxSub">Real-time conditions</div>
+          </div>
           <div class="live" style="cursor:default"><span class="dot"></span><span id="wxUpdated">Fetching…</span></div>
         </div>
-        <div class="grid g3" id="wxGrid" style="margin-top:16px"><div class="loading">Fetching live weather…</div></div>
+        <div class="grid g3" id="wxGrid" style="margin-top:16px">
+          <div class="loading">Fetching live weather…</div>
+        </div>
       </div>
 
       <div class="card" style="margin-top:24px">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-          <div><h3>J&amp;K weather headlines</h3><div class="cs" id="newsSub">Live weather news</div></div>
+          <div>
+            <h3>J&amp;K weather headlines</h3>
+            <div class="cs" id="newsSub">Live weather news</div>
+          </div>
           <div class="live" style="cursor:default"><span class="dot"></span><span id="newsUpdated">—</span></div>
         </div>
-        <div id="newsList" style="margin-top:14px"><div class="loading">Loading headlines…</div></div>
+        <div id="newsList" style="margin-top:14px">
+          <div class="loading">Loading headlines…</div>
+        </div>
       </div>
     </section>
   </main>
