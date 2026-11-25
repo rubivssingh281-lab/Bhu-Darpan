@@ -7,7 +7,21 @@ const el = id => document.getElementById(id);
 const API_BASE = (window.location.hostname === 'localhost' && window.location.port === '8010')
   ? 'http://localhost:8000'
   : '';
-const api = (p, o) => fetch((p.startsWith('http') ? p : API_BASE + (p.startsWith('/') ? p : '/' + p)), o).then(r => r.json());
+const api = async (p, o) => {
+  const url = p.startsWith('http') ? p : API_BASE + (p.startsWith('/') ? p : '/' + p);
+  let res = await fetch(url, o);
+  if (res.status === 502 || res.status === 503) {
+    await new Promise(ok => setTimeout(ok, 1500));
+    res = await fetch(url, o);
+  }
+  const text = await res.text();
+  let data = {};
+  if (text) {
+    try { data = JSON.parse(text); } catch { data = {}; }
+  }
+  if (!res.ok) throw new Error(data.detail || (`Request failed (${res.status})`));
+  return data;
+};
 
 // Anomaly colour scales (teal / ochre / terracotta / water)
 const C = { clay: '#d2694a', ochre: '#dd9138', seaweed: '#2aa38a', ocean: '#2f7d9a', algae: '#0e9c8a' };
