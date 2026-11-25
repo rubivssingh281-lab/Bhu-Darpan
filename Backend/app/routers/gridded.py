@@ -24,7 +24,11 @@ def _manifest() -> dict:
 @router.get("/status")
 def status():
     m = _manifest()
-    ds = sorted(m.get("datasets", []), key=lambda d: d.get("created_at", ""), reverse=True)
+    ds = sorted(
+        (d for d in m.get("datasets", []) if (GRIDDED_DIR / f"{d['id']}.nc").is_file()),
+        key=lambda d: d.get("created_at", ""),
+        reverse=True,
+    )
     return {
         "count": len(ds),
         "datasets": ds,
@@ -43,22 +47,24 @@ def _field(ds_id: str, max_cells: int = 28):
     path = GRIDDED_DIR / f"{ds_id}.nc"
     if not path.exists():
         return None
-    ds = xr.open_dataset(path)
-    var = [v for v in ds.data_vars][0]
-    da = ds[var]
-    if "time" in da.dims:
-        da = da.mean("time", skipna=True)
-    # thin to <= max_cells per axis for a light payload
-    ny, nx = da.sizes["lat"], da.sizes["lon"]
-    sy, sx = max(1, ny // max_cells), max(1, nx // max_cells)
-    da = da.isel(lat=slice(None, None, sy), lon=slice(None, None, sx))
-    vals = np.asarray(da.values, dtype=float)
+    with xr.open_dataset(path) as ds:
+        var = [v for v in ds.data_vars][0]
+        da = ds[var]
+        if "time" in da.dims:
+            da = da.mean("time", skipna=True)
+        # thin to <= max_cells per axis for a light payload
+        ny, nx = da.sizes["lat"], da.sizes["lon"]
+        sy, sx = max(1, ny // max_cells), max(1, nx // max_cells)
+        da = da.isel(lat=slice(None, None, sy), lon=slice(None, None, sx))
+        vals = np.asarray(da.values, dtype=float)
+        lats = [round(float(x), 3) for x in np.asarray(da.lat.values)]
+        lons = [round(float(x), 3) for x in np.asarray(da.lon.values)]
     finite = vals[np.isfinite(vals)]
     grid = [[None if not np.isfinite(v) else round(float(v), 2) for v in row] for row in vals]
     return {
         "var": var,
-        "lats": [round(float(x), 3) for x in np.asarray(da.lat.values)],
-        "lons": [round(float(x), 3) for x in np.asarray(da.lon.values)],
+        "lats": lats,
+        "lons": lons,
         "values": grid,
         "vmin": round(float(finite.min()), 2) if finite.size else None,
         "vmax": round(float(finite.max()), 2) if finite.size else None,

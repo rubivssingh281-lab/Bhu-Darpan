@@ -589,15 +589,25 @@ async function loadGridded() {
   drawHeat(vars[0].id, vars[0].var);
 }
 async function drawHeat(id, varName) {
-  const f = await api('/api/gridded/field?id=' + id);
-  const cv = el('gridHeat');
-  const cols = f.values[0].length, rows = f.values.length;
-  const ramp = RAMPS[varName] || RAMPS.tmean, rng = (f.vmax - f.vmin) || 1;
-  smoothField(cv, f.values, v => rampRGB(ramp, (v - f.vmin) / rng));
-  el('gridTitle').textContent = `${VAR_LABEL[f.var] || f.var} · ${f.source} · ${f.res_deg}° grid (${cols}×${rows})`;
-  el('gridScale').innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px">${f.vmin}
+  try {
+    const f = await api('/api/gridded/field?id=' + encodeURIComponent(id));
+    if (!f || !Array.isArray(f.values) || !f.values.length || !Array.isArray(f.values[0])) {
+      el('gridTitle').textContent = 'Grid dataset unavailable';
+      el('gridScale').innerHTML = '';
+      return;
+    }
+    const cv = el('gridHeat');
+    const cols = f.values[0].length, rows = f.values.length;
+    const ramp = RAMPS[varName] || RAMPS.tmean, rng = (f.vmax - f.vmin) || 1;
+    smoothField(cv, f.values, v => rampRGB(ramp, (v - f.vmin) / rng));
+    el('gridTitle').textContent = `${VAR_LABEL[f.var] || f.var} · ${f.source} · ${f.res_deg}° grid (${cols}×${rows})`;
+    el('gridScale').innerHTML = `<span style="display:inline-flex;align-items:center;gap:8px">${f.vmin}
         <span style="display:inline-block;width:120px;height:10px;border-radius:5px;background:linear-gradient(90deg,${ramp.map(s => s[1]).join(',')})"></span>
         ${f.vmax} ${f.units} · mean ${f.mean}</span>`;
+  } catch (err) {
+    el('gridTitle').textContent = 'Grid dataset unavailable';
+    el('gridScale').innerHTML = '';
+  }
 }
 
 // ---------- Reports ----------
