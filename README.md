@@ -24,7 +24,7 @@ Detailed technical documentation and architecture blueprints:
 
 ---
 
-## TL;DR for an AI agent / first-time runner
+## Quick Start for First-Time Runners
 
 Everything installs into a **local virtual environment** inside the project. Nothing
 is installed globally and **no system or Program Files directories are touched.**
