@@ -9,10 +9,11 @@ const API_BASE = (window.location.hostname === 'localhost' && window.location.po
   : '';
 const api = async (p, o) => {
   const url = p.startsWith('http') ? p : API_BASE + (p.startsWith('/') ? p : '/' + p);
-  let res = await fetch(url, o);
-  if (res.status === 502 || res.status === 503) {
-    await new Promise(ok => setTimeout(ok, 1500));
+  let res;
+  for (let attempt = 0; attempt < 4; attempt++) {
     res = await fetch(url, o);
+    if (res.status !== 502 && res.status !== 503 && res.status !== 504) break;
+    if (attempt < 3) await new Promise(ok => setTimeout(ok, (attempt + 1) * 2000));
   }
   const text = await res.text();
   let data = {};

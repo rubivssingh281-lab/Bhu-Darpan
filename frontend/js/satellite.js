@@ -25,7 +25,12 @@ async function api(path, { method = 'GET', body, form } = {}) {
     ? 'http://localhost:8000'
     : '';
   const fullPath = path.startsWith('http') ? path : API_BASE + (path.startsWith('/') ? path : '/' + path);
-  const res = await fetch(fullPath, { method, headers, body: payload });
+  let res;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    res = await fetch(fullPath, { method, headers, body: payload });
+    if (res.status !== 502 && res.status !== 503 && res.status !== 504) break;
+    if (attempt < 3) await new Promise(ok => setTimeout(ok, (attempt + 1) * 2000));
+  }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.detail || ('Request failed (' + res.status + ')'));
   return data;
