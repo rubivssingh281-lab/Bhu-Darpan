@@ -61,18 +61,48 @@ def _live_tail(base) -> dict | None:
     so it splices on continuously and the hazard indices run through the current month.
     Returns appended arrays, or None on any failure (the app then uses the CSV alone)."""
     try:
+        import json
         import requests
+
         csv_end = base["dates"][-1]
         today = date.today()
         if today <= csv_end:
             return None
-        r = requests.get(
-            "https://power.larc.nasa.gov/api/temporal/daily/point",
-            params={"parameters": "T2M,T2M_MAX,T2M_MIN,PRECTOTCORR", "community": "AG",
-                    "longitude": _POWER_LON, "latitude": _POWER_LAT,
-                    "start": "20000101", "end": today.strftime("%Y%m%d"), "format": "JSON"},
-            timeout=45)
-        p = r.json()["properties"]["parameter"]
+
+        cache_file = settings.storage_dir / "power_tail_cache.json"
+        today_str = today.isoformat()
+        p = None
+        if cache_file.is_file():
+            try:
+                cached = json.loads(cache_file.read_text(encoding="utf-8"))
+                if cached.get("date") == today_str and cached.get("parameter"):
+                    p = cached["parameter"]
+            except (OSError, json.JSONDecodeError):
+                p = None
+
+        if p is None:
+            try:
+                r = requests.get(
+                    "https://power.larc.nasa.gov/api/temporal/daily/point",
+                    params={"parameters": "T2M,T2M_MAX,T2M_MIN,PRECTOTCORR", "community": "AG",
+                            "longitude": _POWER_LON, "latitude": _POWER_LAT,
+                            "start": "20000101", "end": today.strftime("%Y%m%d"), "format": "JSON"},
+                    timeout=(4, 8))
+                r.raise_for_status()
+                p = r.json()["properties"]["parameter"]
+                try:
+                    cache_file.write_text(json.dumps({"date": today_str, "parameter": p}), encoding="utf-8")
+                except OSError:
+                    pass
+            except Exception:
+                # Fall back to last cached NASA POWER payload if available rather than hanging
+                if cache_file.is_file():
+                    try:
+                        p = json.loads(cache_file.read_text(encoding="utf-8")).get("parameter")
+                    except (OSError, json.JSONDecodeError):
+                        p = None
+                if p is None:
+                    return None
         t2m, txx, tnn, prc = p["T2M"], p["T2M_MAX"], p["T2M_MIN"], p["PRECTOTCORR"]
         keys = sorted(k for k in t2m if t2m[k] > -900 and prc.get(k, -999) > -900)
         if not keys:
